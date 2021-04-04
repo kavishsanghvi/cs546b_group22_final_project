@@ -1,0 +1,23 @@
+{
+  "name": "cs546b_group22_final_project",
+  "version": "1.0.0",
+  "description": "Final Project",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kavishsanghvi/cs546b_group22_final_project.git"
+  },
+  "author": "Group - 22",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kavishsanghvi/cs546b_group22_final_project/issues"
+  },
+  "homepage": "https://github.com/kavishsanghvi/cs546b_group22_final_project#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongodb": "^3.6.5"
+  }
+}
