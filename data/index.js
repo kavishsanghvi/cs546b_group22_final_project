@@ -1,5 +1,7 @@
 const usersData = require("./users")
+const loginData = require("./login")
 
 module.exports = {
-    users: usersData
+    users: usersData,
+    login : loginData
 }
