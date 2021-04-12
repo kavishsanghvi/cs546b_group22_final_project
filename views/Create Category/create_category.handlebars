@@ -1,0 +1,24 @@
+<div class="container">
+    <h1>{{title}}</h1>
+    <br><br>
+    
+{{#if success }}
+  <p class="success text-success"> {{message}} </p>
+{{/if}}
+    
+{{#if is_error}}
+    <p class="error text-danger"> {{message}} </p>
+{{/if}}
+
+<form method="post">
+    <label for="category_name">Category Name</label>
+    <input type="text" id="category_name" name="category_name">
+    <br><br>
+    <label for="sub_category_name">Sub Category Name</label>
+    <input type="text" id="sub_category_name" name="sub_category_name">
+    <br><br>
+    <button type="submit" name="submitCategoryData" id="submitCategoryData" class="btn btn-primary">Submit</button>
+</form>
+<br><br>
+<a href='/' class="create_category btn btn-primary"> Go Back</a>
+</div>

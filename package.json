@@ -4,7 +4,7 @@
   "description": "Final Project",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --inspect index.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -18,8 +18,7 @@
   "homepage": "https://github.com/kavishsanghvi/cs546b_group22_final_project#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "jsonwebtoken": "^8.5.1",
-    "mongodb": "^3.6.5",
-    "nodemon": "^2.0.7"
+    "express-handlebars": "^5.3.0",
+    "mongodb": "^3.6.5"
   }
 }
