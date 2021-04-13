@@ -1,6 +1,6 @@
 {
   "mongoConfig": {
-    "serverUrl": "mongodb+srv://ashivank:mongodb2021@cluster0.szjer.mongodb.net/Group22_Final_Project_CS546?retryWrites=true&w=majority",
+    "serverUrl": "mongodb://localhost:27017/",
     "database": "Group22_Final_Project_CS546"
   }
 }
