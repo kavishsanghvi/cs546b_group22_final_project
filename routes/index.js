@@ -3,12 +3,14 @@ const jwt = require('jsonwebtoken');
 const usersRoutes = require('./users');
 const createCategoryRoutes = require('./create_category');
 const path = require('path');
+const quizDataRoutes = require('./quizData');
 
 
 const constructorMethod = (app) => {
   app.use('/users', usersRoutes);
   app.use('/login', loginRoutes);
   app.use('/create_category', createCategoryRoutes);
+  app.use('/quizData', quizDataRoutes);
     
   app.get('/', (req, res) => {
     res.sendFile(path.resolve('static/index.html'));
