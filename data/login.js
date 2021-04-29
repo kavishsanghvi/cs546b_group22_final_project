@@ -3,6 +3,7 @@ const usersObj = mongoCollections.users;
 const jwt = require('jsonwebtoken');
 
 const login = async function login(email,password) {
+    console.log(email);
     const localUsersObj = await usersObj();
     const loggerInUser = await localUsersObj.find({email:email,password:password}).toArray();
     if (loggerInUser.length === 0)

@@ -1,15 +1,27 @@
-const usersRoutes = require('./users');
 const loginRoutes = require('./login');
 const jwt = require('jsonwebtoken');
+const usersRoutes = require('./users');
+const createCategoryRoutes = require('./create_category');
+const path = require('path');
+const quizDataRoutes = require('./quizData');
+
 
 const constructorMethod = (app) => {
-  app.use('/users', authenticateToken, usersRoutes);
+  app.use('/users', usersRoutes);
   app.use('/login', loginRoutes);
-
+  app.use('/create_category', createCategoryRoutes);
+  app.use('/quizData', quizDataRoutes);
+    
+  app.get('/', (req, res) => {
+    res.sendFile(path.resolve('static/index.html'));
+  });
+  
+    
   app.use('*', (req, res) => {
     res.status(404).json({ error: 'Not found' });
   });
 };
+
 
 const  authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization']
