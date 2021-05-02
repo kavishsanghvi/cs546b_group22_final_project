@@ -130,10 +130,10 @@ const updateStudentStatus = async function updateStudentStatus(id) {
     // if (Object.keys(getStudentData).length > 0) {
     if (getStudentData.isActive == false) {
         let localUsersObj = await usersObj();
-        const insertNewBookIntoDB = await localUsersObj.updateOne({ _id: objOfObjectID(id) }, { $set: { "isActive": true } });
-        if (insertNewBookIntoDB.modifiedCount === 0)
+        const updateisActiveIntoDB = await localUsersObj.updateOne({ _id: objOfObjectID(id) }, { $set: { "isActive": true } });
+        if (updateisActiveIntoDB.modifiedCount === 0)
             return { status: false, message: "Not Verified!!" }
-        if (insertNewBookIntoDB.modifiedCount === 1)
+        if (updateisActiveIntoDB.modifiedCount === 1)
             return { status: true, message: "Verified Successfully!!" }
     } else {
         return { status: false, message: "Not Verified!!" }

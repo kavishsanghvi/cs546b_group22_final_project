@@ -10,10 +10,11 @@ const constructorMethod = (app) => {
   app.use('/users', usersRoutes);
   app.use('/login', loginRoutes);
   app.use('/create_category', createCategoryRoutes);
-  app.use('/quizData', quizDataRoutes);
+  app.use('/quiz', quizDataRoutes);
     
   app.get('/', (req, res) => {
-    res.sendFile(path.resolve('static/index.html'));
+    // res.sendFile(path.resolve('static/index.html'));
+    res.render('posts/index')
   });
   
     

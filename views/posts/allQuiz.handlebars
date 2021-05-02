@@ -38,19 +38,39 @@
       <h1>Avialable Quiz</h1>
       <div class="card" style="width: 50rem;">
         <div class="card-body">
-          <h2 class="card-title">Category Name</h2>
+          <h2 class="card-title">All Student</h2>
         </div>
-        {{#each subCategoriesResult}}
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item"><a href="/users/category/subCategory/{{this}}">{{this}}</a></li>
+        <ul class="list-group list-group-flush" id="todoArea">
+          {{#each allQuizData}}
+          <li class="list-group-item"><a>{{subCategory}}</a>
+            {{#if quizReleased }}
+            {{!-- <button type="submit" class="btn btn-primary timerToggle" data-id="{{_id}}" id="timerToggleID">Disable
+              Timer</button>
+            <button type="submit" class="btn btn-primary quizReleaseToggle" data-id="{{_id}}"
+              id="quizReleaseToggleID">Quiz Release</button> --}}
+            {{else}}
+            {{#if isTimerEnabled}}
+            <button type="submit" class="btn btn-primary disableToggleClass" data-id="{{_id}}"
+              data-value="{{isTimerEnabled}}" id="timerToggleID">Disable
+              Timer</button>
+            {{else}}
+            <button type="submit" class="btn btn-primary enableToggleClass" data-id="{{_id}}"
+              data-value="{{isTimerEnabled}}" id="timerToggleID">Enable
+              Timer</button>
+            {{/if}}
+            <button type="submit" class="btn btn-primary quizReleaseToggleClass" data-id="{{_id}}"
+              data-value="{{quizReleased}}" id="quizReleaseToggleID">Quiz Release</button>
+            {{/if}}
+          </li>
+          {{/each}}
         </ul>
-        {{/each}}
       </div>
 
       {{!-- <div class="card" style="width: 18rem;">
         <div class="card-body">
           <h5 class="card-title">Card title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+            content.</p>
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item"><a href="table.html">Cras justo odio</a></li>
@@ -66,7 +86,8 @@
       <div class="card" style="width: 18rem;">
         <div class="card-body">
           <h5 class="card-title">Card title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+            content.</p>
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item"><a href="table.html">Cras justo odio</a></li>
@@ -79,8 +100,11 @@
         </div> -->
         <a href="#" class="btn btn-primary">View All</a>
       </div> --}}
-      
+
 
     </div>
   </div>
 </div>
+{{!--
+<script src='/public/JS/site.js'></script> --}}
+<script src='/public/JS/site_jquery.js'></script>
