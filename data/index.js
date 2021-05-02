@@ -1,11 +1,13 @@
 const usersData = require("./users");
 const loginData = require("./login");
-const createCategoryData = require("./create_category")
+const createCategoryData = require("./createCategory")
+const createQuizData = require("./createQuiz")
 const quizDataIndex = require("./quizData")
 
 module.exports = {
     users: usersData,
     login: loginData,
-    create_category: createCategoryData,
-    retriveQuizData: quizDataIndex
+    createCategory: createCategoryData,
+    retriveQuizData: quizDataIndex,
+    createQuiz: createQuizData
 }
