@@ -6,7 +6,7 @@ const categoryData = data.create_category;
 router.get('/', async (req, res) => {
     try {
         console.log('on create category page')
-        res.render('Create Category/create_category', { title: 'Create category'});
+        res.render('Create Category/createCategory', { title: 'Create category'});
     } catch (e) {
         res.status(500).json({ error: e });
     }
@@ -20,9 +20,9 @@ router.post('/', async (req, res) => {
        const categoryInfo = await categoryData.createCategory(req.body.category_name, req.body.sub_category_name);
        message = `Category "${req.body.category_name}" and Sub Category "${req.body.sub_category_name}" was successsfully created`
 
-       res.render('Create Category/create_category', { success: 1, message: message, title: 'Create category'});
+       res.render('Create Category/createCategory', { success: 1, message: message, title: 'Create category'});
   } catch (e) {
-    res.status(400).render('Create Category/create_category', {is_error: 1, message: e, title: 'Create category'});
+    res.status(400).render('Create Category/createCategory', {is_error: 1, message: e, title: 'Create category'});
   }
 });
 
