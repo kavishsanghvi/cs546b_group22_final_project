@@ -3,9 +3,15 @@ const app = express();
 const configRoutes = require('./routes');
 const static = express.static(__dirname + '/public');
 const path = require('path');
-
-
 const exphbs = require('express-handlebars');
+const session = require('express-session');
+
+app.use(session({
+    name: 'AuthCookie',
+    secret: '%rt8322f8AAAi5n-sdkjhfrtyyyyyyy',
+    resave: false,
+    saveUninitialized: true
+}));
 
 app.use('/public', static);
 app.use(express.json());

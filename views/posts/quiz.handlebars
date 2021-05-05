@@ -1,196 +1,247 @@
-  <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
     <a class="navbar-brand" href="#">Navbar</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-      <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="navbar-collapse collapse w-100 order-3 dual-collapse2" id="collapsibleNavbar">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="index.html">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="login.html">Login</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="index.html">Logout</a>
-        </li>
-      </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="login.html">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">Logout</a>
+            </li>
+        </ul>
     </div>
-  </nav>
+</nav>
 
-  <div class="container" style="margin-top:30px">
+<div class="container" style="margin-top:30px">
     <div class="row justify-content-md-center row-custom">
-      <div class="col-sm-8">
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item"><a href="#">Library</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Data</li>
-          </ol>
-        </nav>
-        <h2>
-          Quiz
-          <p class="timer" id="app"></p>
-        </h2>
-        <form>
-          <div class="form-group">
-            <p>Question : Email address ??</p>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1"
-              checked>
-            <label class="form-check-label" for="exampleRadios1">
-              A : Default radio
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-            <label class="form-check-label" for="exampleRadios2">
-              B : Second default radio
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option1"
-              checked>
-            <label class="form-check-label" for="exampleRadios3">
-              C : Default radio
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios4" value="option2">
-            <label class="form-check-label" for="exampleRadios4">
-              D : Second default radio
-            </label>
-          </div>
-          <button type="submit" class="btn btn-primary">Submit Answer</button>
-        </form>
-      </div>
+        <div class="col-sm-8">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Library</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Data</li>
+                </ol>
+            </nav>
+            <h2>
+                {{quizData.category}} : {{quizData.subCategory}}
+                <p class="timer" id="app"></p>
+            </h2>
+            {{#each quizData.questions}}
+            <div class="question" id="question{{@index}}">
+                <form class="quizSubmit" id="{{@index}}" data-id="{{this.questionID}}">
+                    <div class="form-group">
+                        <p>Question : {{this.question}}</p>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="answerChoice{{@index}}" id="exampleRadios1"
+                            value="{{this.answerChoice1}}">
+                        <label class="form-check-label" for="exampleRadios1">
+                            A : {{this.answerChoice1}}
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="answerChoice{{@index}}" id="exampleRadios2"
+                            value="{{this.answerChoice2}}">
+                        <label class="form-check-label" for="exampleRadios2">
+                            B : {{this.answerChoice2}}
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="answerChoice{{@index}}" id="exampleRadios3"
+                            value="{{this.answerChoice3}}">
+                        <label class="form-check-label" for="exampleRadios3">
+                            C : {{this.answerChoice3}}
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="answerChoice{{@index}}" id="exampleRadios4"
+                            value="{{this.answerChoice4}}">
+                        <label class="form-check-label" for="exampleRadios4">
+                            D : {{this.answerChoice4}}
+                        </label>
+                    </div>
+                    <button type="submit" data-id="{{@index}}" class="btn btn-primary">Submit Answer</button>
+                </form>
+            </div>
+            {{/each}}
+            <input type="hidden" value="{{quizData2}}" name="quizDataStr" id="quizDataStr" />
+        </div>
+        <div class="col-sm-2" style="overflow-y: scroll; overflow-x: hidden; height: 157px;">
+            <div class="card" style="width: 18rem;">
+                <ul class="list-group list-group-flush">
+                    {{#each quizData.questions}}
+                    <li class="list-group-item">Question({{@index}}) </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
     </div>
-  </div>
+</div>
 
-  <div class="jumbotron text-center" style="margin-bottom:0">
+<div class="jumbotron text-center" style="margin-bottom:0">
     <p>Footer</p>
-  </div>
+    <button class="named" data-id="1"> value 1 </button>
+    <button class="named" data-id="2"> value 2 </button>
 
-  <script>
-    // Credit: Mateusz Rybczonec
+    <script>
+        //localStorage.removeItem("mytime");
+        /*
+        $("#question0").css("display", "block");
+        $(".btn-primary").click(function () {
+            console.log($(this).data("id"));
+            let dataId = $(this).data("id");
+            let id1 = $("#question" + dataId);
+            let id2 = $("#question" + (dataId + 1));
+            id1.css("display", "none");
+            id2.css("display", "block");
+        });*/
 
+        $(".named").click(function () {
+            alert();
+        });
+
+        var quizDataStr = $('#quizDataStr').val();
+        var quizData = JSON.parse(quizDataStr);
+        localStorage.setItem("quizDataStr", quizDataStr);
+    </script>
+</div>
+
+<script>
     const FULL_DASH_ARRAY = 283;
     const WARNING_THRESHOLD = 10;
     const ALERT_THRESHOLD = 5;
 
     const COLOR_CODES = {
-      info: {
-        color: "green"
-      },
-      warning: {
-        color: "orange",
-        threshold: WARNING_THRESHOLD
-      },
-      alert: {
-        color: "red",
-        threshold: ALERT_THRESHOLD
-      }
+        info: {
+            color: "green"
+        },
+        warning: {
+            color: "orange",
+            threshold: WARNING_THRESHOLD
+        },
+        alert: {
+            color: "red",
+            threshold: ALERT_THRESHOLD
+        }
     };
 
-    const TIME_LIMIT = 200;
-    let timePassed = 0;
+
+    //Devendra
+    let QUIZ_TIME;
+    if (localStorage.getItem('timer') && !isNaN(localStorage.getItem('timer')) && (localStorage.getItem('timer') !== "")) {
+        QUIZ_TIME = localStorage.getItem('timer');
+    } else {
+        localStorage.setItem("timer", (JSON.parse(localStorage.getItem('quizDataStr'))).timer);
+        localStorage.setItem("TotalTime", (JSON.parse(localStorage.getItem('quizDataStr'))).timer);
+        QUIZ_TIME = localStorage.getItem('timer');
+    }
+    const TIME_LIMIT = Number(QUIZ_TIME) * 60;
+    let timePassed = Number(localStorage.getItem('timer')) - Number(QUIZ_TIME);
+    //Devendra
     let timeLeft = TIME_LIMIT;
     let timerInterval = null;
     let remainingPathColor = COLOR_CODES.info.color;
 
     document.getElementById("app").innerHTML = `
-<div class="base-timer">
-  <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-    <g class="base-timer__circle">
-      <circle class="base-timer__path-elapsed" cx="50" cy="50" r="45"></circle>
-      <path
-        id="base-timer-path-remaining"
-        stroke-dasharray="283"
-        class="base-timer__path-remaining ${remainingPathColor}"
-        d="
-          M 50, 50
-          m -45, 0
-          a 45,45 0 1,0 90,0
-          a 45,45 0 1,0 -90,0
-        "
-      ></path>
-    </g>
-  </svg>
-  <span id="base-timer-label" class="base-timer__label">${formatTime(
-    timeLeft
-  )}</span>
-</div>
-`;
+        <div class="base-timer">
+        <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <g class="base-timer__circle">
+            <circle class="base-timer__path-elapsed" cx="50" cy="50" r="45"></circle>
+            <path
+                id="base-timer-path-remaining"
+                stroke-dasharray="283"
+                class="base-timer__path-remaining ${remainingPathColor}"
+                d="
+                M 50, 50
+                m -45, 0
+                a 45,45 0 1,0 90,0
+                a 45,45 0 1,0 -90,0
+                "
+            ></path>
+            </g>
+        </svg>
+        <span id="base-timer-label" class="base-timer__label">${formatTime(
+        timeLeft
+    )}</span>
+        </div>`;
 
     startTimer();
 
     function onTimesUp() {
-      clearInterval(timerInterval);
+        clearInterval(timerInterval);
     }
 
     function startTimer() {
-      timerInterval = setInterval(() => {
-        timePassed = timePassed += 1;
-        timeLeft = TIME_LIMIT - timePassed;
-        document.getElementById("base-timer-label").innerHTML = formatTime(
-          timeLeft
-        );
-        setCircleDasharray();
-        setRemainingPathColor(timeLeft);
+        timerInterval = setInterval(() => {
 
-        if (timeLeft === 0) {
-          onTimesUp();
-        }
-      }, 1000);
+            timePassed = timePassed += 1;
+            timeLeft = TIME_LIMIT - timePassed;
+            document.getElementById("base-timer-label").innerHTML = formatTime(
+                timeLeft
+            );
+            setCircleDasharray();
+            setRemainingPathColor(timeLeft);
+            //console.log(timeLeft);
+            localStorage.setItem('timer', Number(timeLeft) / 60);
+            //console.log( Number(localStorage.getItem('timer'))/60);
+            if (timeLeft === 0) {
+                onTimesUp();
+            }
+        }, 1000);
     }
 
     function formatTime(time) {
-      const minutes = Math.floor(time / 60);
-      let seconds = time % 60;
+        const minutes = Math.floor(time / 60);
+        let seconds = time % 60;
 
-      if (seconds < 10) {
-        seconds = `0${seconds}`;
-      }
+        if (seconds < 10) {
+            seconds = `0${seconds}`;
+        }
 
-      return `${minutes}:${seconds}`;
+        return `${minutes}:${seconds}`;
     }
 
     function setRemainingPathColor(timeLeft) {
-      const {
-        alert,
-        warning,
-        info
-      } = COLOR_CODES;
-      if (timeLeft <= alert.threshold) {
-        document
-          .getElementById("base-timer-path-remaining")
-          .classList.remove(warning.color);
-        document
-          .getElementById("base-timer-path-remaining")
-          .classList.add(alert.color);
-      } else if (timeLeft <= warning.threshold) {
-        document
-          .getElementById("base-timer-path-remaining")
-          .classList.remove(info.color);
-        document
-          .getElementById("base-timer-path-remaining")
-          .classList.add(warning.color);
-      }
+        const {
+            alert,
+            warning,
+            info
+        } = COLOR_CODES;
+        if (timeLeft <= alert.threshold) {
+            document
+                .getElementById("base-timer-path-remaining")
+                .classList.remove(warning.color);
+            document
+                .getElementById("base-timer-path-remaining")
+                .classList.add(alert.color);
+        } else if (timeLeft <= warning.threshold) {
+            document
+                .getElementById("base-timer-path-remaining")
+                .classList.remove(info.color);
+            document
+                .getElementById("base-timer-path-remaining")
+                .classList.add(warning.color);
+        }
     }
 
     function calculateTimeFraction() {
-      const rawTimeFraction = timeLeft / TIME_LIMIT;
-      return rawTimeFraction - (1 / TIME_LIMIT) * (1 - rawTimeFraction);
+        const rawTimeFraction = timeLeft / TIME_LIMIT;
+        return rawTimeFraction - (1 / TIME_LIMIT) * (1 - rawTimeFraction);
     }
 
     function setCircleDasharray() {
-      const circleDasharray = `${(
-    calculateTimeFraction() * FULL_DASH_ARRAY
-  ).toFixed(0)} 283`;
-      document
-        .getElementById("base-timer-path-remaining")
-        .setAttribute("stroke-dasharray", circleDasharray);
+        const circleDasharray = `${(
+            calculateTimeFraction() * FULL_DASH_ARRAY
+        ).toFixed(0)} 283`;
+        document
+            .getElementById("base-timer-path-remaining")
+            .setAttribute("stroke-dasharray", circleDasharray);
     }
-  </script>
+</script>

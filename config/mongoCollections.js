@@ -19,5 +19,6 @@ module.exports = {
     users: getCollectionFn('users'),
     quiz: getCollectionFn('quiz'),
     grades: getCollectionFn('grades'),
-    categories: getCollectionFn('categories')
+    categories: getCollectionFn('categories'),
+    studentSubmittedQuiz: getCollectionFn('studentSubmittedQuiz')
 };
