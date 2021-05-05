@@ -18,6 +18,7 @@ const getCollectionFn = (collection) => {
 module.exports = {
     users: getCollectionFn('users'),
     quiz: getCollectionFn('quiz'),
+    studentSubmittedQuiz: getCollectionFn('studentSubmittedQuiz'),
     grades: getCollectionFn('grades'),
     categories: getCollectionFn('categories'),
     studentSubmittedQuiz: getCollectionFn('studentSubmittedQuiz')

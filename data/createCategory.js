@@ -83,12 +83,29 @@ const createCategory = async function createCategory(categoryName, subCategoryNa
     
 }
 
+const getCategories = async function getCategories() {
+    const categoryCollection = await categories();
+    var categoryList = await categoryCollection.distinct('category');
+    return categoryList
+}
+
+const getSubCategories = async function getSubCategories(categoryName) {
+    const categoryCollection = await categories();
+    var subCategoryData = await categoryCollection.find({category: {$eq: categoryName}}, {subCategory: 1}).toArray()
+    var subCategoryList = []
+    
+    for (i in subCategoryData){
+        subCategoryList.push(subCategoryData[i]['subCategory'])  
+    }
+    return subCategoryList
+}
 
 module.exports = {
     getCategoryByID,
     createCategory,
     getCatOrSubCatByName,
-    
+    getCategories,
+    getSubCategories
 }
 
 

@@ -1,17 +1,24 @@
 const loginRoutes = require('./login');
 const jwt = require('jsonwebtoken');
 const usersRoutes = require('./users');
-const createCategoryRoutes = require('./create_category');
+const createCategoryRoutes = require('./createCategory');
 const path = require('path');
+const quizDataRoutes = require('./quizData');
+const createQuizRoutes = require('./createQuiz');
+
 
 
 const constructorMethod = (app) => {
   app.use('/users', usersRoutes);
   app.use('/login', loginRoutes);
-  app.use('/create_category', createCategoryRoutes);
+  app.use('/createCategory', createCategoryRoutes);
+  app.use('/quiz', quizDataRoutes);
+  app.use('/createQuiz', createQuizRoutes);
+    
     
   app.get('/', (req, res) => {
-    res.sendFile(path.resolve('static/index.html'));
+    // res.sendFile(path.resolve('static/index.html'));
+    res.render('posts/index')
   });
   
     

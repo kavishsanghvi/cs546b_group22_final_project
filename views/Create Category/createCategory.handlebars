@@ -1,0 +1,54 @@
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <a class="navbar-brand" href="#">Quiz</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2" id="collapsibleNavbar">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="login.html">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container" style="margin-top:30px">
+    <div class="row justify-content-md-center row-custom">
+        <div class="col-sm-8">
+            <h2>{{title}}</h2>
+            {{#if success }}
+            <p class="success text-success"> {{message}} </p>
+            {{/if}}
+
+            {{#if is_error}}
+            <p class="error text-danger"> {{message}} </p>
+            {{/if}}
+            <form method="post">
+                <div class="form-group">
+                    <label for="category_name">Category Name: </label>
+                    <input list="category_name_list" class="form-control" name="category_name" id="category_name"
+                        placeholder="Search/Enter Category">
+                    <datalist id="category_name_list">
+                        {{#each getAllCategoryData}}
+                        <option value="{{this}}">
+                            {{/each}}
+                    </datalist>
+                </div>
+                <div class="form-group">
+                    <label for="sub_category_name">Sub Category Name</label>
+                    <input type="text" id="sub_category_name" name="sub_category_name" class="form-control"
+                        placeholder="Enter Sub Category">
+                </div>
+                <button type="submit" name="submitCategoryData" id="submitCategoryData"
+                    class="btn btn-primary">Submit</button>
+            </form>
+            {{!-- <a href='/' class="create_category btn btn-primary"> Go Back</a> --}}
+        </div>
+    </div>
+</div>
