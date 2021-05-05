@@ -1,4 +1,5 @@
 const mongoCollections = require('../config/mongoCollections');
+const quizObj = mongoCollections.quiz;
 const usersObj = mongoCollections.users;
 const categoryObj = mongoCollections.categories;
 const objOfObjectID = require('mongodb').ObjectID;
@@ -17,6 +18,12 @@ const addUserData = async function addUserData(userInfo) {
     let addUser = await localUsersObj.insertOne(userInfo);
     if (addUser.insertedCount === 0) throw 'Could not add post';
     return JSON.parse(JSON.stringify(addUser.ops[0]));
+}
+
+const getQuiz = async function getQuiz(){
+    let quizObjData = await quizObj();
+    const getAllUsersData = await quizObjData.find({}).toArray();
+    return getAllUsersData[0];
 }
 
 const getProfessorData = async function getProfessorData() {
@@ -149,5 +156,7 @@ module.exports = {
     // getIsActiveFalseUserData,
     getProfessorData,
     getAllStudentUnderProfessorData,
-    updateStudentStatus
+    updateStudentStatus,
+    getQuiz
 }
+    

@@ -52,6 +52,17 @@
     font-size: 16px;
   }
 
+
+  .question{
+    display: none;
+  }
+
+  .question-display{
+    display:block;
+  }
+
+
+  
   .card {
     display: inline-block;
   }
