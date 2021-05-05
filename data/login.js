@@ -6,10 +6,10 @@ const login = async function login(email, password) {
     const localUsersObj = await usersObj();
     const loggerInUser = await localUsersObj.find({email: email,password: password}).toArray();
     if (loggerInUser.length === 0)
-        return {"result": false,"token": token,"message": "User not found!"};
+        return {"result": false,"token": token,"message": "User not found!", userData:null};
     if (loggerInUser.length > 0) {
         var token = jwt.sign({loggerInUser}, '3e2c5bea78f9020f7c5e2bb24ac10d8b390c2ddb9fab2560ee12c24ede61d1a7', {expiresIn: '1800s'});
-        return {"result": true,"token": token,"message": "user verified.."};
+        return {"result": true,"token": token,"message": "user verified..",  userData:loggerInUser[0]};
     }
 }
 

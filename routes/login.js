@@ -50,11 +50,12 @@ router.post('/', async (req, res) => {
 
         let addUser = await loginData.login(email, password);
         req.session.user = {
-            firstName: addUser.token[0].firstName,
-            lastName: addUser.token[0].lastName,
-            isActive: addUser.token[0].isActive,
-            universityName: addUser.token[0].universityName,
-            userType: addUser.token[0].userType
+            firstName: addUser.userData.firstName,
+            lastName: addUser.userData.lastName,
+            isActive: addUser.userData.isActive,
+            universityName: addUser.userData.universityName,
+            userType: addUser.userData.userType,
+            userID:addUser.userData._id
 
         }
         res.redirect('users/category')
