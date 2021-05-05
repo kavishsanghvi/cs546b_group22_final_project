@@ -24,7 +24,8 @@ router.post('/', async (req, res) => {
         let getAllCategoryData = await usersData.getCategoryData("category");
         res.render('Create Category/createCategory', { success: 1, message: message, title: 'Create category', getAllCategoryData });
     } catch (e) {
-        res.status(400).render('Create Category/createCategory', { is_error: 1, message: e, title: 'Create category', getAllCategoryData });
+        let getAllCategoryData = await usersData.getCategoryData("category");
+        res.status(400).render('Create Category/createCategory', { is_error: 1, message: e, title: 'Create category', getAllCategoryData});
     }
 });
 
