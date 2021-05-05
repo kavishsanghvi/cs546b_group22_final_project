@@ -43,6 +43,7 @@ router.post('/', async (req, res) => {
 
 router.get('/category2', async (req, res) => {
     try {
+        console.log(req.session.user);
         let quiz = await quizDataStudent.getQuiz("6080a7e37c378456cbcbf278");
         res.render('posts/quiz', {title: "Quiz", quizData : quiz, quizData2 : JSON.stringify(quiz)});
     } catch (e) {
