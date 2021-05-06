@@ -26,9 +26,9 @@ const getQuiz = async function getQuiz(){
     return getAllUsersData[0];
 }
 
-const getProfessorData = async function getProfessorData() {
+const getProfessorData = async function getProfessorData(session) {
     const localUsersObj = await usersObj();
-    const getProfessorDetails = await localUsersObj.findOne({ $and: [{ _id: objOfObjectID("6080a6e17c378456cbcbf273"), userType: "professor" }] });
+    const getProfessorDetails = await localUsersObj.findOne({ $and: [{ _id: objOfObjectID(session.userID), userType: "professor" }] });
     // if (getProfessorDetails.length === 0)
     //     return []
     // if (getProfessorDetails.length > 0)
@@ -37,7 +37,7 @@ const getProfessorData = async function getProfessorData() {
     return getProfessorDetails;
 }
 
-const getStudentRecord = async function getStudentRecord(studentUserIDs) {
+const getStudentRecord = async function getStudentRecord(session, studentUserIDs) {
     const localUsersObj = await usersObj();
     // console.log("Inside User Data")
     // console.log(studentUserIDs.length)
@@ -66,25 +66,26 @@ const getStudentRecord = async function getStudentRecord(studentUserIDs) {
     return getStudentRecord;
 }
 
-const getCategoryData = async function getCategoryData(reqType) {
+const getCategoryData = async function getCategoryData(session, reqType) {
     const localCategoryObj = await categoryObj();
+    console.log(objOfObjectID(session.userID))
     // const getAllCategoryData = await localCategoryObj.find({}).toArray();
-    let getProfessorCategories = await localCategoryObj.distinct(reqType, { createdBy: objOfObjectID("6080a6e17c378456cbcbf273") })
+    let getProfessorCategories = await localCategoryObj.distinct(reqType, { createdBy: objOfObjectID(session.userID) })
     // console.log(a)
     return getProfessorCategories
 }
 
-const getSubCategoryOfCategory = async function getSubCategoryOfCategory(mainCategory, subCategory) {
+const getSubCategoryOfCategory = async function getSubCategoryOfCategory(session, mainCategory, subCategory) {
     const localCategoryObj = await categoryObj();
     // const getAllCategoryData = await localCategoryObj.find({}).toArray();
-    let getProfessorCategories = await localCategoryObj.distinct(subCategory, { createdBy: objOfObjectID("6080a6e17c378456cbcbf273"), category: mainCategory })
+    let getProfessorCategories = await localCategoryObj.distinct(subCategory, { createdBy: objOfObjectID(session.userID), category: mainCategory })
     // console.log(a)
     return getProfessorCategories
 }
 
-const getAllStudentUnderProfessorData = async function getAllStudentUnderProfessorData() {
+const getAllStudentUnderProfessorData = async function getAllStudentUnderProfessorData(session) {
     // let localUsersObj = await usersObj();
-    let returnDataFromProfessor = await getProfessorData();
+    let returnDataFromProfessor = await getProfessorData(session);
     const getStudentsUnderProfessorRecord = []
     for (let i = 0; i < Object.keys(returnDataFromProfessor.enrolledStudents).length; i++) {
         let keyName = Object.keys(returnDataFromProfessor.enrolledStudents)[i];
@@ -93,14 +94,14 @@ const getAllStudentUnderProfessorData = async function getAllStudentUnderProfess
         }
         // console.log(returnDataFromProfessor.enrolledStudents[i]);
     }
-    let returnStudentData = await getOneStudentRecord(getStudentsUnderProfessorRecord);
+    let returnStudentData = await getOneStudentRecord(session, getStudentsUnderProfessorRecord);
     // const getAllCategoryData = await localCategoryObj.find({}).toArray();
     // let getInActiveUserData = await localUsersObj.find({isActive: false}).toArray();
     // console.log(a)
     return returnStudentData
 }
 
-const getOneStudentRecord = async function getOneStudentRecord(studentUserIDs) {
+const getOneStudentRecord = async function getOneStudentRecord(session, studentUserIDs) {
     let localUsersObj = await usersObj();
     const getStudentRecord = []
     for (let i = 0; i < studentUserIDs.length; i++)
@@ -131,7 +132,7 @@ const fetchStudentData = async function fetchStudentData(id) {
     return await localUsersObj.findOne({ _id: objOfObjectID(id) })
 }
 
-const updateStudentStatus = async function updateStudentStatus(id) {
+const updateStudentStatus = async function updateStudentStatus(session, id) {
     let getStudentData = await fetchStudentData(id);
     let result = { status: false, message: "" }
     // if (Object.keys(getStudentData).length > 0) {

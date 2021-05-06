@@ -6,7 +6,7 @@ const usersData = data.users;
 
 router.get('/', async (req, res) => {
     try {
-        let getAllCategoryData = await usersData.getCategoryData("category");
+        let getAllCategoryData = await usersData.getCategoryData(req.session.user, "category");
         console.log('on create category page')
         res.render('Create Category/createCategory', { title: 'Create category', getAllCategoryData });
     } catch (e) {
@@ -21,9 +21,10 @@ router.post('/', async (req, res) => {
         if (!req.body.sub_category_name) throw 'Error: Sub Category Name is required'
         const categoryInfo = await categoryData.createCategory(req.body.category_name, req.body.sub_category_name);
         message = `Category "${req.body.category_name}" and Sub Category "${req.body.sub_category_name}" was successsfully created`
-        let getAllCategoryData = await usersData.getCategoryData("category");
+        let getAllCategoryData = await usersData.getCategoryData(req.session.user, "category");
         res.render('Create Category/createCategory', { success: 1, message: message, title: 'Create category', getAllCategoryData });
     } catch (e) {
+        let getAllCategoryData = await usersData.getCategoryData(req.session.user, "category");
         res.status(400).render('Create Category/createCategory', { is_error: 1, message: e, title: 'Create category', getAllCategoryData });
     }
 });
