@@ -16,10 +16,10 @@
 
 <form method="post" action="" align="center">
     <label for="startDate">Start Date</label>
-    <input type="text" id="startDate" name="startDate" placeholder="mm/dd/yyy">
+    <input type="text" id="startDate" name="startDate" placeholder="mm/dd/yyyy">
     <br><br>
     <label for="End Date">End Date</label>
-    <input type="text" id="end_Date" name="endDate" placeholder="mm/dd/yyy">
+    <input type="text" id="end_Date" name="endDate" placeholder="mm/dd/yyyy">
     <br><br>
    
     <label for="Categories">Select Category:</label>
@@ -38,15 +38,17 @@
     
     <br><br>
     
+<!--
     <input type="checkbox" id="isTimerEnabled" name="isTimerEnabled" value="enabled">
     <label for="isTimerEnabled"> Enable Timer</label><br>
 
     
     <input type="checkbox" id="quizReleased" name="quizReleased" value="enabled">
     <label for="quizReleased"> Release Quiz</label><br>
+-->
     
-    <label for="timer"> Timer(in seconds)</label>
-    <input type="number" id="timer" name="timer" value="timer"><br>
+    <label for="timer"> Timer(in minutes)</label>
+    <input type="number" id="timer" name="timer" value="timer" placeholder="30"><br>
     
     <button name="addQuestion" id="addQuestion" class="btn btn-success" onclick="add()" type="button">Add Question</button>
     <br><br>
