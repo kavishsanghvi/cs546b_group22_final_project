@@ -41,10 +41,17 @@ router.post('/', async (req, res) => {
 //     }
 // });
 
+router.get('/logout', async (req, res) => {
+    req.session.destroy();
+    //res.send('Logged out!!');
+    //return res.render('posts/index', {error: "You are logout now", title: "Login", notFound: false });
+    res.redirect('../../login');
+})
+
 router.get('/category2', async (req, res) => {
     try {
         console.log(req.session.user);
-        let quiz = await quizDataStudent.getQuiz("6080a7e37c378456cbcbf278");
+        let quiz = await quizDataStudent.getQuiz(req.session.user,"6080a7e37c378456cbcbf278");
         res.render('posts/quiz', {title: "Quiz", quizData : quiz, quizData2 : JSON.stringify(quiz)});
     } catch (e) {
         console.log(e.err);
@@ -66,8 +73,8 @@ router.post('/quiz-student-update', async (req, res) => {
     try {
         let questionId = req.body.questionId 
         let selectedAns = req.body.selectedAns
-
-        let quiz = await quizData.updateStudentQuiz(req.body,"6080a7e37c378456cbcbf278");
+        let userID = req.session.userID ? req.session.userID : "6081d5fc3dcd1dbfb511bc78";
+        let quiz = await quizDataStudent.updateStudentQuiz(userID,req.body);
         res.json(quiz);
     } catch (e) {
         console.log(e.err);
