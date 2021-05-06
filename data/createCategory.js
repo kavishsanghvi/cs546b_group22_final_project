@@ -47,11 +47,12 @@ const getCategoryByID = async function getCategoryByID(id) {
 }
 
 
-const createCategory = async function createCategory(categoryName, subCategoryName) {
+const createCategory = async function createCategory(categoryName, subCategoryName, session) {
    categoryName = categoryName.toLowerCase()
    subCategoryName = subCategoryName.toLowerCase()
     
    try{
+        if (session.user == null) throw 'Session Expired'
         if (testString(categoryName)['error'] == true) throw testString(categoryName)['message']
                 
         if (testString(subCategoryName)['error'] == true) throw testString(subCategoryName)['message']
@@ -60,6 +61,7 @@ const createCategory = async function createCategory(categoryName, subCategoryNa
     const category = {
         category: categoryName,
         subCategory: subCategoryName,
+        createdBy: ObjectId(session.user["userID"])
     }
     
     const categoryList = await getCatOrSubCatByName(categoryName, "category");
