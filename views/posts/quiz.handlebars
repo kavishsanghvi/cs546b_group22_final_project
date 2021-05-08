@@ -71,14 +71,12 @@
                 </form>
             </div>
             {{/each}}
+            <button type="button" id="submitButton" class="btn btn-primary">Submit Quiz</button>
             <input type="hidden" value="{{quizData2}}" name="quizDataStr" id="quizDataStr" />
         </div>
         <div class="col-sm-2" style="overflow-y: scroll; overflow-x: hidden; height: 157px;">
             <div class="card" style="width: 18rem;">
-                <ul class="list-group list-group-flush">
-                    {{#each quizData.questions}}
-                    <li class="list-group-item">Question({{@index}}) </li>
-                    {{/each}}
+                <ul class="list-group list-group-flush" id="questionQuiclLink">
                 </ul>
             </div>
         </div>
