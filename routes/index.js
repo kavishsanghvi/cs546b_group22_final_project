@@ -5,6 +5,8 @@ const createCategoryRoutes = require('./createCategory');
 const path = require('path');
 const quizDataRoutes = require('./quizData');
 const createQuizRoutes = require('./createQuiz');
+const dashboardRoutes = require('./dashboard')
+const acceptedRoutes = require('./accepted')
 
 
 
@@ -14,6 +16,8 @@ const constructorMethod = (app) => {
   app.use('/createCategory', createCategoryRoutes);
   app.use('/quiz', quizDataRoutes);
   app.use('/createQuiz', createQuizRoutes);
+  app.use('/dashboard', dashboardRoutes);
+  app.use('/accepted', acceptedRoutes)
     
     
   app.get('/', (req, res) => {
