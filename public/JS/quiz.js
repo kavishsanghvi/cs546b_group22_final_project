@@ -139,7 +139,20 @@
 
 //Added by Devendra 05/05/2021 
 $("#question0").css("display", "block");
+$("#submitButton").hide();
 
+let questionCount = (JSON.parse(localStorage.getItem("quizDataStr"))).questions.length;
+for(let i=1; i<=questionCount; i++){
+    $("#questionQuiclLink").append('<li class="list-group-item changeQuestion" data-id="'+(Number(i)-1)+'" >Question('+i+') </li>');
+}
+
+$(".changeQuestion").click(function (event){
+    let questionId = $(this).data("id");
+    for(let i=0; i<questionCount; i++){
+        $("#question"+i+"").hide();
+    }
+    $("#question"+questionId+"").show();
+})
 
 $(".quizSubmit").submit(function (event) {
     let qID = $(this).attr("id");
@@ -175,10 +188,52 @@ $(".quizSubmit").submit(function (event) {
     });
 
     request.done(function (showsData) {
+        if(isLastQuiz){
+            $("#submiButton").attr("data-value", "submitQuiz");
+            $("#submitButton").show();
+        }
+
         alert(JSON.stringify(showsData));
         id1.css("display", "none");
         id2.css("display", "block");
-        if(isLastQuiz) location.reload();
+        if (showsData) {} else {}
+    });
+
+    request.fail(function (jqXHR, textStatus) {
+        console.log(textStatus)
+        $("#site-error").text("Error in loading show detail.").show();
+        //alert("Request failed: " + textStatus);
+    });
+    event.preventDefault();
+})
+
+
+$("#submitButton").click(function (event) {
+    let quizData = (JSON.parse(localStorage.getItem("quizDataStr")));
+
+    let request = $.ajax({
+        url: "./quiz-student-submit",
+        method: "POST",
+        data: {
+            "quizId" : quizData.quizId,
+            "id" : quizData._id
+        },
+        dataType: "json"
+    });
+
+
+    request.done(function (showsData) {
+        // if(isLastQuiz){
+        //     $("#submiButton").attr("data-value", "submitQuiz");
+        // }
+
+        alert(JSON.stringify(showsData));
+        // id1.css("display", "none");
+        // id2.css("display", "block");
+       // if(isLastQuiz) 
+       //location.reload();
+       //if(isLastQuiz) 
+       location.reload();
         if (showsData) {} else {}
     });
 
