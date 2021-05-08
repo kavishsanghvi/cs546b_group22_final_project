@@ -20,5 +20,6 @@ module.exports = {
     quiz: getCollectionFn('quiz'),
     studentSubmittedQuiz: getCollectionFn('studentSubmittedQuiz'),
     grades: getCollectionFn('grades'),
-    categories: getCollectionFn('categories')
+    categories: getCollectionFn('categories'),
+    studentSubmittedQuiz: getCollectionFn('studentSubmittedQuiz')
 };

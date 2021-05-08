@@ -47,11 +47,12 @@ const getCategoryByID = async function getCategoryByID(id) {
 }
 
 
-const createCategory = async function createCategory(categoryName, subCategoryName) {
+const createCategory = async function createCategory(categoryName, subCategoryName, session) {
    categoryName = categoryName.toLowerCase()
    subCategoryName = subCategoryName.toLowerCase()
     
    try{
+        if (session.user == null) throw 'Session Expired'
         if (testString(categoryName)['error'] == true) throw testString(categoryName)['message']
                 
         if (testString(subCategoryName)['error'] == true) throw testString(subCategoryName)['message']
@@ -60,6 +61,7 @@ const createCategory = async function createCategory(categoryName, subCategoryNa
     const category = {
         category: categoryName,
         subCategory: subCategoryName,
+        createdBy: ObjectId(session.user["userID"])
     }
     
     const categoryList = await getCatOrSubCatByName(categoryName, "category");
@@ -83,12 +85,29 @@ const createCategory = async function createCategory(categoryName, subCategoryNa
     
 }
 
+const getCategories = async function getCategories() {
+    const categoryCollection = await categories();
+    var categoryList = await categoryCollection.distinct('category');
+    return categoryList
+}
+
+const getSubCategories = async function getSubCategories(categoryName) {
+    const categoryCollection = await categories();
+    var subCategoryData = await categoryCollection.find({category: {$eq: categoryName}}, {subCategory: 1}).toArray()
+    var subCategoryList = []
+    
+    for (i in subCategoryData){
+        subCategoryList.push(subCategoryData[i]['subCategory'])  
+    }
+    return subCategoryList
+}
 
 module.exports = {
     getCategoryByID,
     createCategory,
     getCatOrSubCatByName,
-    
+    getCategories,
+    getSubCategories
 }
 
 

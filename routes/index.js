@@ -1,19 +1,24 @@
 const loginRoutes = require('./login');
 const jwt = require('jsonwebtoken');
 const usersRoutes = require('./users');
-const createCategoryRoutes = require('./create_category');
+const createCategoryRoutes = require('./createCategory');
 const path = require('path');
 const quizDataRoutes = require('./quizData');
+const createQuizRoutes = require('./createQuiz');
+
 
 
 const constructorMethod = (app) => {
-  app.use('/users', usersRoutes);
+  app.use('/users', verifyUserLogIn, usersRoutes);
   app.use('/login', loginRoutes);
-  app.use('/create_category', createCategoryRoutes);
-  app.use('/quizData', quizDataRoutes);
+  app.use('/createCategory', verifyUserLogIn, createCategoryRoutes);
+  app.use('/quiz', verifyUserLogIn, quizDataRoutes);
+  app.use('/createQuiz', verifyUserLogIn, createQuizRoutes);
+    
     
   app.get('/', (req, res) => {
-    res.sendFile(path.resolve('static/index.html'));
+    // res.sendFile(path.resolve('static/index.html'));
+    res.render('posts/index')
   });
   
     
@@ -34,6 +39,15 @@ const  authenticateToken = (req, res, next) => {
     req.user = user
     next()
   })
+}
+
+
+const verifyUserLogIn = (req, res, next) => {
+  if(req.session.user){
+    next();
+  }else{
+    res.redirect('../')
+  }
 }
 
 module.exports = constructorMethod;
