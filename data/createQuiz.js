@@ -63,7 +63,7 @@ const getQuizById = async function getQuizById(id) {
     return quizInfo;    
 }
 
-const create = async function create(startDate, endDate, category, subCategory, questionName, optionA, optionB, optionC, optionD, correctAnswer, timerEnabled, quizReleased, timer) {
+const create = async function create(startDate, endDate, category, subCategory, questionName, optionA, optionB, optionC, optionD, correctAnswer, timerEnabled, quizReleased, timer, userID) {
     try{
         if (testString(category)['error'] == true) throw testString(category)['message']
         if (testString(subCategory)['error'] == true) throw testString(subCategory)['message']            
@@ -78,6 +78,10 @@ const create = async function create(startDate, endDate, category, subCategory, 
             optionD = [optionD]
             correctAnswer = [correctAnswer]
         }
+        var today = new Date();
+        var date = (today.getMonth()+1) + '/' + today.getDate() + '/' +today.getFullYear();
+        if (Date.parse(startDate) < Date.parse(date)) throw 'Start Date Cannot be Smaller than the current date'
+        if(Date.parse(endDate) < Date.parse(startDate)) throw 'End Date Cannot be smaller than the start Date'
 
         
         if (testArray(questionName)['error'] == true) throw testArray(questionName)['message']
@@ -87,16 +91,22 @@ const create = async function create(startDate, endDate, category, subCategory, 
         if (testArray(optionD)['error'] == true) throw testArray(optionD)['message']
         if (testArray(correctAnswer)['error'] == true) throw testArray(correctAnswer)['message']
         
+        
         var questions = []
         for (i in questionName){
-            questions.push({
-                question: questionName[i],
-                answerChoice1: optionA[i],
-                answerChoice2: optionB[i],
-                answerChoice3: optionC[i],
-                answerChoice4: optionD[i],
-                correctAnswer: correctAnswer[i]
-            })
+            if(correctAnswer[i].toLowerCase() == optionA[i].toLowerCase() || correctAnswer[i].toLowerCase() == optionB[i].toLowerCase() || correctAnswer[i].toLowerCase() == optionC[i].toLowerCase() || correctAnswer[i].toLowerCase() == optionD[i].toLowerCase()){
+                questions.push({
+                    questionID: ObjectId(),
+                    question: questionName[i],
+                    answerChoice1: optionA[i],
+                    answerChoice2: optionB[i],
+                    answerChoice3: optionC[i],
+                    answerChoice4: optionD[i],
+                    correctAnswer: correctAnswer[i]
+                })
+            }else{
+                throw 'Invalid Correct Answer'
+            }
         }
             
         const quizData = {
@@ -108,7 +118,7 @@ const create = async function create(startDate, endDate, category, subCategory, 
             isTimerEnabled: timerEnabled,
             quizReleased: quizReleased,
             questions: questions,
-            createdBy: ObjectId('6080a6e17c378456cbcbf273')
+            createdBy: ObjectId(userID)
         }
         
         const quizCollection = await quiz();

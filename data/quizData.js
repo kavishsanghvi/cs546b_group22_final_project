@@ -3,9 +3,9 @@ const studentSubQuizObj = mongoCollections.studentSubmittedQuiz;
 const quizDataObj = mongoCollections.quiz;
 const objOfObjectID = require('mongodb').ObjectID;
 
-const getStudentDataUnderProfessor = async function getStudentDataUnderProfessor(subCategoryValue) {
+const getStudentDataUnderProfessor = async function getStudentDataUnderProfessor(session, subCategoryValue) {
     const localStudentSubQuizObj = await studentSubQuizObj();
-    const getProfessorDetails = await localStudentSubQuizObj.find({ $and: [{ createdBy: objOfObjectID("6080a6e17c378456cbcbf273"), subCategory: subCategoryValue }] }).toArray();
+    const getProfessorDetails = await localStudentSubQuizObj.find({ $and: [{ createdBy: objOfObjectID(session.userID), subCategory: subCategoryValue }] }).toArray();
 
     // if (getProfessorDetails.length === 0)
     //     return []

@@ -11,13 +11,13 @@ const acceptedRoutes = require('./accepted')
 
 
 const constructorMethod = (app) => {
-  app.use('/users', usersRoutes);
+  app.use('/users', verifyUserLogIn, usersRoutes);
   app.use('/login', loginRoutes);
-  app.use('/createCategory', createCategoryRoutes);
-  app.use('/quiz', quizDataRoutes);
-  app.use('/createQuiz', createQuizRoutes);
   app.use('/dashboard', dashboardRoutes);
   app.use('/accepted', acceptedRoutes)
+  app.use('/createCategory', verifyUserLogIn, createCategoryRoutes);
+  app.use('/quiz', verifyUserLogIn, quizDataRoutes);
+  app.use('/createQuiz', verifyUserLogIn, createQuizRoutes);
     
     
   app.get('/', (req, res) => {
@@ -43,6 +43,15 @@ const  authenticateToken = (req, res, next) => {
     req.user = user
     next()
   })
+}
+
+
+const verifyUserLogIn = (req, res, next) => {
+  if(req.session.user){
+    next();
+  }else{
+    res.redirect('../')
+  }
 }
 
 module.exports = constructorMethod;
