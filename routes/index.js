@@ -5,12 +5,16 @@ const createCategoryRoutes = require('./createCategory');
 const path = require('path');
 const quizDataRoutes = require('./quizData');
 const createQuizRoutes = require('./createQuiz');
+const dashboardRoutes = require('./dashboard')
+const acceptedRoutes = require('./accepted')
 
 
 
 const constructorMethod = (app) => {
   app.use('/users', verifyUserLogIn, usersRoutes);
   app.use('/login', loginRoutes);
+  app.use('/dashboard', dashboardRoutes);
+  app.use('/accepted', acceptedRoutes)
   app.use('/createCategory', verifyUserLogIn, createCategoryRoutes);
   app.use('/quiz', verifyUserLogIn, quizDataRoutes);
   app.use('/createQuiz', verifyUserLogIn, createQuizRoutes);
