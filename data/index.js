@@ -6,6 +6,7 @@ const quizDataIndex = require("./quizData")
 const quizData = require("./quiz");
 const dashboardData = require("./dashboard")
 const acceptedData = require("./accepted")
+const studentData = require("./student")
 
 module.exports = {
     users: usersData,
@@ -15,5 +16,6 @@ module.exports = {
     createQuiz: createQuizData,
     quiz: quizData,
     accepted : acceptedData,
-    dashboard : dashboardData
+    dashboard : dashboardData,
+    student : studentData
 }

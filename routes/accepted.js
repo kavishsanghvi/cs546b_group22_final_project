@@ -3,11 +3,13 @@ const router = express.Router();
 const data = require("../data");
 const acceptedData = data.accepted
 
-router.get('/:id', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
+    
     let userdata = await acceptedData.getuserData(req.session.user)
+    
     if (userdata == true) {
-      res.redirect("/users/category")
+      res.redirect("/student")
     }
     else {
       res.render('posts/notaccepted')

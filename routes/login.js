@@ -59,9 +59,8 @@ router.post('/', async (req, res) => {
             universityDomain: addUser.userData.email.substring(addUser.userData.email.indexOf('@') + 1)
 
         }
-        //res.redirect('users/category')
         if (req.session.user.userType === "student")
-            res.redirect('accepted/' + addUser.userData._id)
+            res.redirect('accepted/')
         else if (req.session.user.userType === "professor")
             res.redirect('professor/category')
         //res.json(addUser);
