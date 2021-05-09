@@ -3,7 +3,8 @@ const quizObj = mongoCollections.quiz;
 const usersObj = mongoCollections.users;
 const categoryObj = mongoCollections.categories;
 const objOfObjectID = require('mongodb').ObjectID;
-
+const creatingpswd = require('./bcrypt');
+const mongocall = require("mongodb");
 // const getStudentData = async function getStudentData() {
 //     const localUsersObj = await usersObj();
 //     const getAllUsersData = await localUsersObj.find({}).toArray();
@@ -150,6 +151,70 @@ const updateStudentStatus = async function updateStudentStatus(session, id) {
     }else throw `You're not authorized to perform this operation.`
 }
 
+async function createnewuser(firstName, lastName, email, userType, password, universityName){
+    const userCollections = await usersObj();
+    function ValidateEmail(mail) 
+{
+if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail))
+{
+return (true)
+}
+return (false)
+}
+    if(!email || ValidateEmail(email)== false) throw "Please provide an email address or provided email address is not valid";
+    if(!password) throw "Provide a password";
+    if(!firstName || typeof firstName != 'string') throw "Provide a first name or provided first name is not string";
+    if(!lastName || typeof lastName != 'string') throw "Provide a last name or provided last name is not string";
+    if(!universityName || typeof universityName != 'string') throw "Provide a universityName or provided universityName is not string";
+    if(!userType|| typeof userType != 'string') throw "Provide a usertype or provided usertype is not string";
+    let isActive = false;
+    if(userType.toLowerCase() == "professor") {
+        isActive = true;
+    }
+    else if(userType.toLowerCase() == "student"){
+        isActive = false;
+    }
+    // function isvalidDate(d){
+    //     return !isNaN((new Date(d)).getTime())                                                  //reference stackoverflow
+    //   }
+    //   if (!isvalidDate(dateCreated)) throw 'Not a proper date';
+      
+      password = await creatingpswd.hashing(password);
+    
+
+      let newUser = {
+        firstName:firstName,
+        lastName:lastName,
+          email:email,
+          userType:userType,
+          password:password,
+          universityName:universityName,
+          isActive: isActive,
+          dateCreated:"05/09/2021"
+      }
+      const insertInfo = await userCollections.insertOne(newUser);
+    if (insertInfo.insertedCount === 0) throw 'Could not add user';
+
+    const newId = insertInfo.insertedId;
+
+    const user = await this.getuserbyid(newId.toString());
+    return user;
+
+}
+
+async function getuserbyid(id) {
+    if (!id) throw "You must provide an id to search for";
+    if (typeof id != 'string') throw 'Id is not a String.';
+    
+    const userCollections = await usersObj();
+    const result = await userCollections.findOne({ _id: mongocall.ObjectID(id) }); 
+    if (result === null) throw `No users with that id : ${id}`;
+    result._id = result._id.toString();
+
+    return result;
+}
+
+
 module.exports = {
     // getStudentData,
     addUserData,
@@ -160,6 +225,8 @@ module.exports = {
     getProfessorData,
     getAllStudentUnderProfessorData,
     updateStudentStatus,
-    getQuiz
+    getQuiz,
+    createnewuser,
+    getuserbyid
 }
     

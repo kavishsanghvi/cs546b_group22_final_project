@@ -4,7 +4,7 @@
   <div class="row justify-content-md-center row-custom">
     <div class="col-sm-8">
       <h2>Sign Up</h2>
-      <form>
+      <form action="/sign-up" method="POST" class="userform" >
         <div class="form-group">
           <label for="firstName">First Name</label>
           <input type="text" class="form-control" id="firstName" name="firstName" aria-describedby="emailHelp" placeholder="Enter First Name">
@@ -14,9 +14,13 @@
           <input type="text" class="form-control" id="lastName" name="lastName" aria-describedby="emailHelp" placeholder="Enter Last Name">
         </div>
         <div class="form-group">
-          <label for="exampleInputEmail1">Email address</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+          <label for="emailAddress">emailaddress</label>
+          <input type="email" class="form-control" id="emailAddress" name="emailAddress" aria-describedby="emailHelp" placeholder="Enter email">
+         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" class="form-control" id="password" name="password" aria-describedby="emailHelp" placeholder="Enter password">
         </div>
         <div class="form-group">
           <label for="selectUserType">Select User Type</label>
@@ -26,19 +30,25 @@
             <option value="student">Student</option>
           </select>
         </div>
+        
         <div class="form-group">
-          <label for="exampleInputPassword1">Password</label>
-          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+          <label for="universityName">University Name</label>
+          <input type="text" class="form-control" id="universityName" name="universityName" aria-describedby="emailHelp" placeholder="Enter University Name">
         </div>
+        {{!-- <div class="form-group">
+          <label for="dateCreated">date</label>
+          <input type="date" class="form-control" id="dateCreated" name="dateCreated" aria-describedby="emailHelp" placeholder="Enter date">
+        </div> --}}
         <!-- <div class="form-check">
           <input type="checkbox" class="form-check-input" id="exampleCheck1">
           <label class="form-check-label" for="exampleCheck1">Check me out</label>
         </div> -->
         <div class="form-group">
-          Click <a href="login.html">here </a> to login
+          Click <a href="http://localhost:3000/login">here </a> to login
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
     </div>
   </div>
 </div>
+       
