@@ -6,7 +6,7 @@
         <h1>Create Quiz</h1>
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="./users/category">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="./category">Dashboard</a></li>
             <li class="breadcrumb-item"><a href="#">Create Quiz</a></li>
           </ol>
         </nav>
@@ -14,11 +14,7 @@
     
 {{#if success }}
   <p class="success text-success"> {{message}} </p>
-{{/if}}
-    
-{{#if is_error}}
-    <p class="error text-danger"> {{message}} </p>
-{{/if}}
+  {{/if}}
 
 <form method="post" action="">
   <div class="form-group col-sm-6">
@@ -34,7 +30,7 @@
     <select class="form-control" name="Categories" id="Categories">
         <option value="">Select</option>
       {{#each categoryList}}
-        <option value="{{this}}">{{this}}</option>
+      <option value="{{this}}">{{this}}</option>
       {{/each}}
     </select>
    </div>
@@ -67,24 +63,25 @@
         
     </div>
     <div id="submit">
-    <button type="submit" name="submitQuiz" id="submitQuiz" class="btn btn-primary">Submit</button>
+      <button type="submit" name="submitQuiz" id="submitQuiz" class="btn btn-primary">Submit</button>
     </div>
-</form>
+  </form>
 
         </div>
         </div>
         </div>
 
 
-<script>
-function deleteElem(){
-    var element = document.getElementById("questions");
-    var numberOfChildren = document.getElementsByName('questionName').length
-    
-    document.getElementById('question' + numberOfChildren).outerHTML = "";
-    
-    if ((numberOfChildren) == 1){
+  <script>
+    function deleteElem() {
+      var element = document.getElementById("questions");
+      var numberOfChildren = document.getElementsByName('questionName').length
+
+      document.getElementById('question' + numberOfChildren).outerHTML = "";
+
+      if ((numberOfChildren) == 1) {
         document.getElementById("deleteButton").outerHTML = "";
+      }
     }
 }
     
@@ -115,10 +112,6 @@ function add(){
     if ((numberOfChildren) >= 10){
         return   
     }
-    
-    var div = document.createElement("div");
-    div.setAttribute("class", "row question" + (numberOfChildren+1));
-    div.setAttribute("id", "question" + (numberOfChildren+1));
 
     
     
@@ -167,50 +160,68 @@ function add(){
     
     if ((numberOfChildren+1) == 1){
         var deleteButton = document.createElement('button');
-        deleteButton.setAttribute("type","button");
-        deleteButton.setAttribute("class","btn btn-danger");
-        deleteButton.setAttribute("name","deleteButton");
-        deleteButton.setAttribute("id","deleteButton");
-        deleteButton.setAttribute("value","Delete Button");
+        deleteButton.setAttribute("type", "button");
+        deleteButton.setAttribute("class", "btn btn-danger");
+        deleteButton.setAttribute("name", "deleteButton");
+        deleteButton.setAttribute("id", "deleteButton");
+        deleteButton.setAttribute("value", "Delete Button");
         deleteButton.setAttribute("align", "center");
-        deleteButton.setAttribute("value","Delete Button");
+        deleteButton.setAttribute("value", "Delete Button");
         deleteButton.setAttribute("onclick", `deleteElem()`);
         deleteButton.textContent = 'Delete Question';
         var submit = document.getElementById("submit");
-	    submit.appendChild(deleteButton);
+        submit.appendChild(deleteButton);
+      }
+
+
+
     }
 
-    
-
-}
-
-</script>
+  </script>
 
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-  $("#Categories").change(function() {
-    var categoryName = $(this).val();
-    if(categoryName != "") {
-      console.log(categoryName)
-      $.ajax({
-        url:"/createQuiz/getSubCat",
-        data:{categoryName:categoryName},
-        type:'POST',
-        success:function(response) {
-          var resp = '';
-           for (i in response){
-               resp += `<option id=${response[i]}>${response[i]}</option>`
-           }
-          $("#SubCategories").html(resp);
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $("#Categories").change(function () {
+        var categoryName = $(this).val();
+        if (categoryName != "") {
+          console.log(categoryName)
+          $.ajax({
+            url: "/professor/createQuiz/getSubCat",
+            data: { categoryName: categoryName },
+            type: 'POST',
+            success: function (response) {
+              var resp = '';
+              for (i in response) {
+                resp += `<option id=${response[i]}>${response[i]}</option>`
+              }
+              $("#SubCategories").html(resp);
+            }
+          });
+        } else {
+          console.log("failed")
+          $("#SubCategories").html("<option value=''>Select</option>");
         }
       });
-    } else {
-        console.log("failed")
-      $("#SubCategories").html("<option value=''>Select</option>");
-    }
   });
-});
 </script>  
 
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $('#startDate').datepicker({
+        format: "mm/dd/yyyy",
+        startDate: new Date(),
+        autoclose: true
+      });
+      $('#end_Date').datepicker({
+        format: "mm/dd/yyyy",
+        startDate: new Date(),
+        autoclose: true
+      });
+    });
+  </script>

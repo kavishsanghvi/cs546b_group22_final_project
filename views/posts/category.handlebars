@@ -5,10 +5,10 @@
     <div class="col-sm-10">
       <h2>Avialable Quiz</h2>
       <div class="row justify-content-md-center row-custom">
-        <a href="/createCategory" class="btn btn-primary dashboard-button">Create Category</a>
-        <a href="/createQuiz" class="btn btn-primary dashboard-button">Create Quiz</a>
-        <a href="/users" class="btn btn-primary dashboard-button">Students List</a>
-        <a href="/quiz/allquiz" class="btn btn-primary dashboard-button">All Quiz</a> 
+        <a href="/professor/createCategory" class="btn btn-primary dashboard-button">Create Category</a>
+        <a href="/professor/createQuiz" class="btn btn-primary dashboard-button">Create Quiz</a>
+        <a href="/professor/allStudents" class="btn btn-primary dashboard-button">Students List</a>
+        <a href="/professor/allquiz" class="btn btn-primary dashboard-button">All Quiz</a> 
       </div>
       {{#if categoriesResult.length }}
       {{#each categoriesResult}}
@@ -18,7 +18,7 @@
           <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
             content.</p>
         </div>
-        <a href="/users/category/{{this}}" class="btn btn-primary">View All</a>
+        <a href="/professor/category/{{this}}" class="btn btn-primary">View All</a>
       </div>
       {{/each}}
       {{/if}}
