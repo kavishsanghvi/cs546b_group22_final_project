@@ -25,7 +25,7 @@
       <li class="nav-item">
         <a class="nav-link" href="../login">Login</a>
       </li>
-       <li class="nav-item">
+      <li class="nav-item">
         <a class="nav-link" href="../dashboard">View Score</a>
       </li>
       <li class="nav-item">
@@ -38,28 +38,17 @@
 <div class="container" style="margin-top:30px">
   <div class="row justify-content-md-center row-custom">
     <div class="col-sm-10">
-      <h2>Avialable Quiz</h2>
-      {{#if categoriesResult.length }}
-      {{#each categoriesResult}}
-      <div class="card" style="width: 18rem;">
+      <h1>Avialable Quiz</h1>
+      <div class="card" style="width: 50rem;">
         <div class="card-body">
-          <h5 class="card-title">{{this}}</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-            content.</p>
+          <h2 class="card-title">Category Name</h2>
         </div>
-        {{!-- <ul class="list-group list-group-flush">
-          <li class="list-group-item"><a href="table.html">{{categoriesResult.subCategory}}</a></li>
-          <li class="list-group-item"><a href="table.html">Dapibus ac facilisis in</a></li>
-          <li class="list-group-item"><a href="table.html">Vestibulum at eros</a></li>
-        </ul> --}}
-        <!-- <div class="card-body">
-          <a href="#" class="card-link">Card link</a>
-          <a href="#" class="card-link">Another link</a>
-        </div> -->
-        <a href="/users/category/{{this}}" class="btn btn-primary">View All</a>
+        {{#each subCategoriesResult}}
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><a href="/student/category/{{this}}">{{this}}</a></li>
+        </ul>
+        {{/each}}
       </div>
-      {{/each}}
-      {{/if}}
 
       {{!-- <div class="card" style="width: 18rem;">
         <div class="card-body">

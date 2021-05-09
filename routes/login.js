@@ -59,7 +59,8 @@ router.post('/', async (req, res) => {
 
         }
       //res.redirect('users/category')
-      res.redirect('accepted/'+addUser.userData._id)
+      //res.redirect('accepted/'+addUser.userData._id)
+      res.redirect('accepted/')
         //res.json(addUser);
     } catch (e) {
         res.status(500).json({
