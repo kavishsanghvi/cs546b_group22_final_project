@@ -1,10 +1,16 @@
-<h1 align="center">Create Quiz</h1>
+{{> headers this}}
 
-<hr>
-
-
-<div class="container">
-
+<div class="container" style="margin-top:30px">
+  <div class="row justify-content-md-center row-custom">
+        <div class="col-sm-8">
+        <h1>Create Quiz</h1>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./users/category">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="#">Create Quiz</a></li>
+          </ol>
+        </nav>
+        
     
 {{#if success }}
   <p class="success text-success"> {{message}} </p>
@@ -14,29 +20,32 @@
     <p class="error text-danger"> {{message}} </p>
 {{/if}}
 
-<form method="post" action="" align="center">
-    <label for="startDate">Start Date</label>
-    <input type="text" id="startDate" name="startDate" placeholder="mm/dd/yyyy">
-    <br><br>
-    <label for="End Date">End Date</label>
-    <input type="text" id="end_Date" name="endDate" placeholder="mm/dd/yyyy">
-    <br><br>
-   
+<form method="post" action="">
+  <div class="form-group col-sm-6">
+      <label for="startDate">Start Date</label>
+      <input class="form-control" type="text" id="startDate" name="startDate" placeholder="mm/dd/yyyy">
+
+      <label for="End Date">End Date</label>
+      <input class="form-control" type="text" id="end_Date" name="endDate" placeholder="mm/dd/yyyy">
+  </div>
+
+   <div class="form-group col-sm-6">
     <label for="Categories">Select Category:</label>
-    <select name="Categories" id="Categories">
+    <select class="form-control" name="Categories" id="Categories">
         <option value="">Select</option>
       {{#each categoryList}}
         <option value="{{this}}">{{this}}</option>
       {{/each}}
     </select>
+   </div>
     
-    <br><br>
-    <label for="SubCategories">Select Sub-Category:</label>
-    <select name="SubCategories" id="SubCategories">
-      <option value="">Select</option>
-    </select>
+    <div class="form-group col-sm-6">
+      <label for="SubCategories">Select Sub-Category:</label>
+      <select class="form-control" name="SubCategories" id="SubCategories">
+        <option value="">Select</option>
+      </select>
+    </div>
     
-    <br><br>
     
 <!--
     <input type="checkbox" id="isTimerEnabled" name="isTimerEnabled" value="enabled">
@@ -46,21 +55,25 @@
     <input type="checkbox" id="quizReleased" name="quizReleased" value="enabled">
     <label for="quizReleased"> Release Quiz</label><br>
 -->
+    <div class="form-group col-sm-6">
+      <label for="timer"> Timer(in minutes)</label>
+      <input class="form-control" type="number" id="timer" name="timer" value="timer" placeholder="30">
+    </div>
     
-    <label for="timer"> Timer(in minutes)</label>
-    <input type="number" id="timer" name="timer" value="timer" placeholder="30"><br>
-    
-    <button name="addQuestion" id="addQuestion" class="btn btn-success" onclick="add()" type="button">Add Question</button>
-    <br><br>
-    <div id="questions" class="column">
+    <div class="form-group col-sm-6">
+        <button name="addQuestion" id="addQuestion" class="btn btn-success" onclick="add()" type="button">Add Question</button>
+    </div>
+    <div class="form-group col-sm-12" id="questions" class="column">
         
     </div>
-    <br><br>
     <div id="submit">
     <button type="submit" name="submitQuiz" id="submitQuiz" class="btn btn-primary">Submit</button>
     </div>
 </form>
 
+        </div>
+        </div>
+        </div>
 
 
 <script>
@@ -79,8 +92,8 @@ function createOptionLabel(labelText, labelName){
     var labelA = document.createElement("label");
 	var nodeA = document.createTextNode(labelText);
     labelA.setAttribute("for", labelName);
-    labelA.setAttribute("align", "center");
-    labelA.setAttribute("class", "col");
+    //labelA.setAttribute("align", "center");
+    labelA.setAttribute("class", "col-sm-2");
 	labelA.appendChild(nodeA);
     return labelA
 }
@@ -91,8 +104,8 @@ function createOptioninput(inputName){
     input.setAttribute("type","text");
     input.setAttribute("id",inputName);
     input.setAttribute("name",inputName);
-    input.setAttribute("align", "center");
-    input.setAttribute("class", "col");
+    //input.setAttribute("align", "center");
+    input.setAttribute("class", "form-control col-sm-4");
     return input
 }
     
@@ -120,6 +133,7 @@ function add(){
     input.setAttribute("id","questionName");
     input.setAttribute("name","questionName");
     input.setAttribute("align", "center");
+    input.setAttribute("class","form-control");
     
     var line = document.createElement("br");
     var line2 = document.createElement("br");
@@ -199,3 +213,4 @@ $(document).ready(function() {
   });
 });
 </script>  
+

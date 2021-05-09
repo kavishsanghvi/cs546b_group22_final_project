@@ -21,7 +21,7 @@ const userDataObj = data.users;
 router.get('/allquiz', async (req, res) => {
     try {
         let getQuizData = await quizData.getAllQuiz();
-        res.render('posts/allQuiz', { allQuizData: getQuizData })
+        res.render('posts/allQuiz', { allQuizData: getQuizData , userData : JSON.stringify(req.session.user)})
     } catch (e) {
         res.status(500).json({ error: e });
     }

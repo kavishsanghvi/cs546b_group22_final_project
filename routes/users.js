@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
         // let getAllUsersData = await usersData.getStudentData();
         // res.json(getAllUsersData);
         let getAllUsersData = await usersData.getAllStudentUnderProfessorData(req.session.user);
-        res.render('posts/users', { getAllStudentUnderProfessorResult: getAllUsersData })
+        res.render('posts/users', { getAllStudentUnderProfessorResult: getAllUsersData, userData : JSON.stringify(req.session.user) })
     } catch (e) {
         res.status(500).json({ error: e });
     }
@@ -52,7 +52,7 @@ router.get('/category2', async (req, res) => {
     try {
         console.log(req.session.user);
         let quiz = await quizDataStudent.getQuiz(req.session.user,"6080a7e37c378456cbcbf278");
-        res.render('posts/quiz', {title: "Quiz", quizData : quiz, quizData2 : JSON.stringify(quiz)});
+        res.render('posts/quiz', {title: "Quiz", quizData : quiz, quizData2 : JSON.stringify(quiz) , userData : JSON.stringify(req.session.user)});
     } catch (e) {
         console.log(e.err);
 
@@ -63,7 +63,7 @@ router.get('/category', async (req, res) => {
     try {
         console.log(req.session.user)
         let getAllCategoryData = await usersData.getCategoryData(req.session.user, "category");
-        res.render('posts/category', { categoriesResult: getAllCategoryData })
+        res.render('posts/category', { categoriesResult: getAllCategoryData, userData : JSON.stringify(req.session.user) })
     } catch (e) {
         res.status(500).json({ error: e });
     }
@@ -99,7 +99,7 @@ router.get('/category/:category', async (req, res) => {
     try {
         // console.log(req.params.category)
         let getSubCategoryData = await usersData.getSubCategoryOfCategory(req.session.user, req.params.category, "subCategory");
-        res.render('posts/sub-category', { subCategoriesResult: getSubCategoryData })
+        res.render('posts/sub-category', { subCategoriesResult: getSubCategoryData, userData : JSON.stringify(req.session.user) })
     } catch (e) {
         res.status(500).json({ error: e });
     }
@@ -129,7 +129,7 @@ router.get('/category/subCategory/:subCategory', async (req, res) => {
         let getStudentDetails = await usersData.getStudentRecord(req.session.user, getQuizData);
         // console.log(getQuizData)
         // console.log(getStudentDetails)
-        res.render('posts/table-list', { studentResult: getStudentDetails })
+        res.render('posts/table-list', { studentResult: getStudentDetails, userData : JSON.stringify(req.session.user) })
     } catch (e) {
         res.status(500).json({ error: e });
     }

@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
     }
     try {
         const categoryList = await categoryData.getCategories();
-        res.render('Create Quiz/createQuiz', { title: 'Create Quiz', categoryList: categoryList});
+        res.render('Create Quiz/createQuiz', { title: 'Create Quiz', categoryList: categoryList, userData : JSON.stringify(req.session.user)});
     } catch (e) {
         res.status(500).json({ error: e });
     }
@@ -53,9 +53,9 @@ router.post('/', async (req, res) => {
        
        const createQuiz = await quizData.create(req.body.startDate, req.body.endDate, req.body.Categories, req.body.SubCategories, req.body.questionName, req.body.optionA, req.body.optionB, req.body.optionC, req.body.optionD, req.body.correctAnswer, timerEnabled, quizReleased, timer, req.session.user['userID']);
        
-       res.render('Create Quiz/createQuiz', { success: 1, message: 'Quiz created Successfully ', title: 'Create Quiz', categoryList: categoryList});
+       res.render('Create Quiz/createQuiz', { success: 1, message: 'Quiz created Successfully ', title: 'Create Quiz', categoryList: categoryList, userData : JSON.stringify(req.session.user)});
   } catch (e) {
-    res.status(400).render('Create Quiz/createQuiz', {is_error: 1, message: e, title: 'Create Quiz', categoryList: categoryList});
+    res.status(400).render('Create Quiz/createQuiz', {is_error: 1, message: e, title: 'Create Quiz', categoryList: categoryList, userData : JSON.stringify(req.session.user)});
       console.log('Error', e)
   }
 });

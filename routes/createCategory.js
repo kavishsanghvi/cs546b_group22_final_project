@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
     try {
         let getAllCategoryData = await usersData.getCategoryData(req.session.user, "category");
         console.log('on create category page')
-        res.render('Create Category/createCategory', { title: 'Create category', getAllCategoryData });
+        res.render('Create Category/createCategory', { title: 'Create category', getAllCategoryData,userData : JSON.stringify(req.session.user) });
     } catch (e) {
         res.status(500).json({ error: e });
     }
@@ -22,10 +22,10 @@ router.post('/', async (req, res) => {
         const categoryInfo = await categoryData.createCategory(req.body.category_name, req.body.sub_category_name, req.session);
         message = `Category "${req.body.category_name}" and Sub Category "${req.body.sub_category_name}" was successsfully created`
         let getAllCategoryData = await usersData.getCategoryData(req.session.user, "category");
-        res.render('Create Category/createCategory', { success: 1, message: message, title: 'Create category', getAllCategoryData });
+        res.render('Create Category/createCategory', { success: 1, message: message, title: 'Create category', getAllCategoryData,userData : JSON.stringify(req.session.user) });
     } catch (e) {
         let getAllCategoryData = await usersData.getCategoryData(req.session.user, "category");
-        res.status(400).render('Create Category/createCategory', { is_error: 1, message: e, title: 'Create category', getAllCategoryData });
+        res.status(400).render('Create Category/createCategory', { is_error: 1, message: e, title: 'Create category', getAllCategoryData, userData : JSON.stringify(req.session.user) });
     }
 });
 
