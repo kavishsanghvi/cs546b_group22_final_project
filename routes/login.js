@@ -3,8 +3,6 @@ const router = express.Router();
 const data = require("../data");
 const loginData = data.login;
 
-
-
 router.get('/', async (req, res) => {
     try {
         res.render('posts/login', { title: "Fibonacci & Prime Number Checker" });
@@ -14,7 +12,6 @@ router.get('/', async (req, res) => {
         });
     }
 });
-
 
 router.post('/', async (req, res) => {
     try {
@@ -70,6 +67,5 @@ router.post('/', async (req, res) => {
         });
     }
 });
-
 
 module.exports = router;
