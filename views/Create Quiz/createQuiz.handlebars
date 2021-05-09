@@ -83,7 +83,7 @@
         document.getElementById("deleteButton").outerHTML = "";
       }
     }
-}
+
     
 function createOptionLabel(labelText, labelName){
     var labelA = document.createElement("label");
@@ -114,7 +114,11 @@ function add(){
     }
 
     
-    
+    var div = document.createElement("div");
+      div.setAttribute("class", "row question" + (numberOfChildren + 1));
+      div.setAttribute("id", "question" + (numberOfChildren + 1));
+
+
 	var label = document.createElement("label");
 	var node = document.createTextNode("Question " + (numberOfChildren+1) + ":  ");
     label.setAttribute("for", "question");
