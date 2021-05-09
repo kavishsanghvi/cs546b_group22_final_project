@@ -14,8 +14,8 @@ const studentRoutes = require('./student')
 const constructorMethod = (app) => {
   app.use('/users', verifyUserLogIn, usersRoutes);
   app.use('/login', loginRoutes);
-  app.use('/dashboard', dashboardRoutes);
-  app.use('/accepted', acceptedRoutes)
+  app.use('/dashboard', verifyUserLogIn, dashboardRoutes);
+  app.use('/accepted', verifyUserLogIn, acceptedRoutes)
   // app.use('/createCategory', verifyUserLogIn, createCategoryRoutes);
   app.use('/student', verifyUserLogIn, studentRoutes);
   // app.use('/createCategory', verifyUserLogIn, createCategoryRoutes);
@@ -25,7 +25,7 @@ const constructorMethod = (app) => {
 
   app.get('/', (req, res) => {
     // res.sendFile(path.resolve('static/index.html'));
-    res.render('posts/index')
+    res.render('posts/index',{userData : JSON.stringify(req.session.user)})
   });
 
 
