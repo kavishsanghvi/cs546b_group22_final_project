@@ -3,7 +3,7 @@ $(".verifyClass").click(function () {
     // console.log($(this).data("id"));
     if (dataValue) {
         var request = $.ajax({
-            url: "/users/verifyStudent/",
+            url: "/professor/verifyStudent/",
             method: "POST",
             data: { dataid: dataValue },
             dataType: "json"
@@ -114,7 +114,7 @@ $('#todoArea').on('click', '.disableToggleClass', function () {
     let dataValue = $(this).data("value");
     if (dataValue) {
         var request = $.ajax({
-            url: "/quiz/allquiz/toggleTimer",
+            url: "/professor/allquiz/toggleTimer",
             method: "POST",
             data: { dataid: dataIDValue, dataVal: "Timer" },
             dataType: "json"
@@ -144,7 +144,7 @@ $('#todoArea').on('click', '.enableToggleClass', function () {
     let dataValue = $(this).data("value");
     if (!dataValue) {
         var request = $.ajax({
-            url: "/quiz/allquiz/toggleTimer",
+            url: "/professor/allquiz/toggleTimer",
             method: "POST",
             data: { dataid: dataIDValue, dataVal: "Timer" },
             dataType: "json"
@@ -174,7 +174,7 @@ $('#todoArea').on('click', '.quizReleaseToggleClass', function () {
     console.log($("button.enableToggleClass[data-id='" + dataIDValue + "']").length)
     if (!dataValue) {
         var request = $.ajax({
-            url: "/quiz/allquiz/toggleTimer",
+            url: "/professor/allquiz/toggleTimer",
             method: "POST",
             data: { dataid: dataIDValue, dataVal: "Release" },
             dataType: "json"

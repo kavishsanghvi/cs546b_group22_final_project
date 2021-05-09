@@ -182,7 +182,7 @@
         if (categoryName != "") {
           console.log(categoryName)
           $.ajax({
-            url: "/createQuiz/getSubCat",
+            url: "/professor/createQuiz/getSubCat",
             data: { categoryName: categoryName },
             type: 'POST',
             success: function (response) {
