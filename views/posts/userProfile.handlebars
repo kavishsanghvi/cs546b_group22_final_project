@@ -1,0 +1,45 @@
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2" id="collapsibleNavbar">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="../">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../login">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="./logout">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<main>
+
+ <div> 
+  {{!-- <h1>Account Successfully created</h1>  --}}
+   
+  <dl class="dltag"> 
+    <dt>firstName</dt> 
+    <dd>{{keyobject.firstName}}</dd> 
+    <dt>lastName</dt> 
+    <dd>
+{{keyobject.lastName}}
+    </dd> 
+    <dt>Email Address</dt> 
+    <dd>{{keyobject.email}}</dd> 
+    <dt>Usertype</dt> 
+    <dd>{{keyobject.userType}}</dd> 
+    <dt>Date Created</dt> 
+    
+    <dd>{{keyobject.dateCreated}}</dd> 
+  </dl> 
+    <dt>University Name</dt> 
+    <dd>{{keyobject.universityName}}</dd> 
+</div> 
+
+</main>
