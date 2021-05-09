@@ -45,9 +45,9 @@ router.post('/',async (req, res)=>{
              flag = true 
              throw 'Enter password please';
          }
-         if(!req.body.dateCreated) {flag=true
-             throw 'Enter a proper date';
-         }
+        //  if(!req.body.dateCreated) {flag=true
+        //      throw 'Enter a proper date';
+        //  }
          if(!req.body.universityName){
              flag = true;
              throw 'Enter University name';
@@ -61,12 +61,12 @@ router.post('/',async (req, res)=>{
             userType:req.body.selectUserType,
             password: req.body.password,
             universityName:req.body.universityName,
-            dateCreated:req.body.dateCreated
+            
          }
          const bloguserdata = user;
-         const {firstName, lastName, email, userType, password, universityName, dateCreated} = bloguserdata;
+         const {firstName, lastName, email, userType, password, universityName} = bloguserdata;
          console.log(user)
-         const newUser = await users.createnewuser(firstName, lastName, email, userType, password, universityName,  dateCreated);
+         const newUser = await users.createnewuser(firstName, lastName, email, userType, password, universityName);
          console.log(newUser)
          if(newUser == null){
              flag = true
@@ -76,7 +76,7 @@ router.post('/',async (req, res)=>{
              flag = true;
          }
 
-         res.status(200).render('posts/userdata', {keyobject: newUser});
+         res.status(200).render('posts/SuccessMessage', {keyobject: newUser});
          
        } catch (e) {
            console.log(e)
@@ -85,14 +85,14 @@ router.post('/',async (req, res)=>{
        }
     });
     
-    router.get('user/:id', async (req, res) => {
-        try {
-          let user = await users.getuserbyid(req.params.id);
-          res.status(200).json(user);
-        } catch (e) {
-          res.status(404).json({ error: 'User not found' });
-        }
-      });
+    // router.get('user/:id', async (req, res) => {
+    //     try {
+    //       let user = await users.getuserbyid(req.params.id);
+    //       res.status(200).json(user);
+    //     } catch (e) {
+    //       res.status(404).json({ error: 'User not found' });
+    //     }
+    //   });
 
 
 module.exports = router;

@@ -3,7 +3,7 @@ const quizObj = mongoCollections.quiz;
 const usersObj = mongoCollections.users;
 const categoryObj = mongoCollections.categories;
 const objOfObjectID = require('mongodb').ObjectID;
-const creatingpswd = require('../bcrypt');
+const creatingpswd = require('./bcrypt');
 const mongocall = require("mongodb");
 // const getStudentData = async function getStudentData() {
 //     const localUsersObj = await usersObj();
@@ -149,7 +149,7 @@ const updateStudentStatus = async function updateStudentStatus(session, id) {
     }
 }
 
-async function createnewuser(firstName, lastName, email, userType, password, universityName,  dateCreated){
+async function createnewuser(firstName, lastName, email, userType, password, universityName){
     const userCollections = await usersObj();
     function ValidateEmail(mail) 
 {
@@ -165,13 +165,20 @@ return (false)
     if(!lastName || typeof lastName != 'string') throw "Provide a last name or provided last name is not string";
     if(!universityName || typeof universityName != 'string') throw "Provide a universityName or provided universityName is not string";
     if(!userType|| typeof userType != 'string') throw "Provide a usertype or provided usertype is not string";
-    function isvalidDate(d){
-        return !isNaN((new Date(d)).getTime())                                                  //reference stackoverflow
-      }
-      if (!isvalidDate(dateCreated)) throw 'Not a proper date';
+    let isActive = false;
+    if(userType.toLowerCase() == "professor") {
+        isActive = true;
+    }
+    else if(userType.toLowerCase() == "student"){
+        isActive = false;
+    }
+    // function isvalidDate(d){
+    //     return !isNaN((new Date(d)).getTime())                                                  //reference stackoverflow
+    //   }
+    //   if (!isvalidDate(dateCreated)) throw 'Not a proper date';
       
       password = await creatingpswd.hashing(password);
-
+    
 
       let newUser = {
         firstName:firstName,
@@ -180,7 +187,8 @@ return (false)
           userType:userType,
           password:password,
           universityName:universityName,
-          dateCreated:dateCreated
+          isActive: isActive,
+          dateCreated:"05/09/2021"
       }
       const insertInfo = await userCollections.insertOne(newUser);
     if (insertInfo.insertedCount === 0) throw 'Could not add user';
@@ -191,6 +199,7 @@ return (false)
     return user;
 
 }
+
 async function getuserbyid(id) {
     if (!id) throw "You must provide an id to search for";
     if (typeof id != 'string') throw 'Id is not a String.';
@@ -202,54 +211,6 @@ async function getuserbyid(id) {
 
     return result;
 }
-async function removeUser(id) {
-    if (!id) throw "You must provide an id to search for";
-    const userCollections = await usersObj();
-    const deletionInfo = await userCollections.removeOne({ _id: mongocall.ObjectID(id) });
-    if (deletionInfo.deletedCount === 0) {
-      throw `Could not delete user with id of ${id}`;
-    }
-   const able = {'reviwedId': id.toString(), "deleted" : true}
-   return able + '.'
-  }
-  async function  getAllusers() {
-    const userCollection = await users();
-    const userList = await userCollection.find({},{ projection: { _id: 1, title: 1 }}).toArray();
-    return userList;
-  } 
-  async function updateuser(id, updateduser){
-    if(!updateduser.email || ValidateEmail(updateduser.email)== false) throw "Please provide an email address or provided email address is not valid";
-    if(!updateduser.password) throw "Provide a password";
-    if(!updateduser.firstName || typeof updateduser.firstName != 'string') throw "Provide a first name or provided first name is not string";
-    if(!updateduser.lastName || typeof updateduser.lastName != 'string') throw "Provide a last name or provided last name is not string";
-    if(!updateduser.universityName || typeof updateduser.universityName != 'string') throw "Provide a universityName or provided universityName is not string";
-    if(!updateduser.userType|| typeof updateduser.userType != 'string') throw "Provide a usertype or provided usertype is not string";
-    function isvalidDate(d){
-        return !isNaN((new Date(d)).getTime())                                                  //reference stackoverflow
-      }
-      if (!isvalidDate(updateduser.dateCreated)) throw 'Not a proper date';
-
-      const user = await this.get(id);
-      let userUpdateInfo = {
-        email:updateduser.email,
-        password:updateduser.password,
-        firstName:updateduser.firstName,
-        lastName:updateduser.lastName,
-        universityName:updateduser.universityName,
-        userType:updateduser.userType,
-        isActive,
-        dateCreated:updateduser.dateCreated
-      }
-      const userCollection = await users();
-      const updateInfo = await userCollection.updateOne(
-        { _id: mongocall.ObjectID(id) },
-        { $set: userUpdateInfo }
-      );
-      if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
-        throw 'Update failed';
-  
-      return await this.get(id);
-  }
 
 
 module.exports = {
@@ -264,9 +225,6 @@ module.exports = {
     updateStudentStatus,
     getQuiz,
     createnewuser,
-    getuserbyid,
-    getAllusers,
-    removeUser,
-    updateuser
+    getuserbyid
 }
     

@@ -1,4 +1,4 @@
-const data = require('./data/users');
+const data = require('./users');
 const bcrypt = require('bcrypt');
 const saltRounds = 16;
 async function hashing(pswd){

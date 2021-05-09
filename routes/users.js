@@ -123,83 +123,14 @@ router.get('/category/subCategory/:subCategory', async (req, res) => {
     }
 });
 
-router.get('/sign-up',async (req, res)=>{
-    res.render("posts/sign-up");
-})
-
-router.post('/sign-up',async (req, res)=>{
+router.get('/userProfile', async (req, res) => {
     try {
-        // res.render("posts/sign-up")
-        console.log("post reached")
-        let flag = false;
-        //  if(!req.body.firstName) {
-        //     flag = true;
-        //      throw 'Please provide Firstname';
-            
-        //  }
-    
-        //  if(!req.body.lastName) {
-        //     flag = true;
-        //      throw 'Please provide lastname';
-            
-        //  }
-        //  if(!req.body.emailaddress){
-        //     flag = true;
-        //     throw 'Invalid Emailaddress';  
-        //  }
-    
-        //  if(!req.body.selectUserType){
-        //     flag = true; 
-        //     throw 'Invalid type';
-        //  }
-        //  if(!req.body.password){ 
-        //      flag = true 
-        //      throw 'Enter password please';
-        //  }
-        //  if(!req.body.datecreated) {flag=true
-        //      throw 'Enter a proper date';
-        //  }
-        //  if(!req.body.universityName){
-        //      flag = true;
-        //      throw 'Enter University name';
-        //  }
-         console.log("no error here")
-         let user ={
-            email:req.body.emailaddress,
-            password:req.body.password,
-            firstName:req.body.firstName,
-            lastName:req.body.lastName,
-            universityName:req.body.universityName,
-            userType:req.body.selectUserType,
-            isActive,
-            dateCreated:req.body.datecreated
-         }
-         
-         const newUser = await users.createnewuser(user);
-         if(newUser == null){
-             flag = true
-         
-         }
-         if(!newUser){
-             flag = true;
-         }
-         res.status(200).json(newUser);
-       
-         
-         
-       } catch (e) {
-         res.json({errors : "No inputs provided" , hasErrors:true});
-         res.status(400);
-       }
-    });
-    
-    router.get('user/:id', async (req, res) => {
-        try {
-          let user = await users.getuserbyid(req.params.id);
-          res.status(200).json(user);
-        } catch (e) {
-          res.status(404).json({ error: 'User not found' });
-        }
-      });
+        console.log(req.session.user.userID)
+      let user = await usersData.getuserbyid(req.session.user.userID);
+      res.status(200).render('posts/userProfile', {keyobject: user});
+    } catch (e) {
+      res.status(404).json({ error: 'User not found' });
+    }
+  });
 
 module.exports = router;
