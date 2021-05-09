@@ -77,7 +77,73 @@ const updateStudentQuiz = async function updateStudentQuiz(userID, quizDataByStu
     }
 }
 
+
+const submitStudentQuiz = async function submitStudentQuiz(userID, quizDataByStudent){
+    console.log(quizDataByStudent);
+    let quizId = quizDataByStudent.quizId;
+    let loggedInUser = ObjectId(userID);
+    let id = ObjectId(quizDataByStudent.id);
+
+
+
+    let studentSubmittedQuiz = await studentSubmittedQuizObj();
+    let submitQuiz = await studentSubmittedQuiz.updateOne({_id : id, quizId : ObjectId(quizId), userid : ObjectId(userID)},
+    { $set: { "endDate":await utils.dateCreation()} }, { multi: false });
+    
+    if(submitQuiz.modifiedCount >= 1 &&  submitQuiz.matchedCount >=1){
+        let stdData = {quizId,loggedInUser,studentQuizSubmittedID : id}
+        let calculateScoreRes = await calculateScore(stdData,"Individual");
+        if(calculateScoreRes && calculateScoreRes.status){
+            let updateScore = await studentSubmittedQuiz.updateOne({_id : id, quizId : ObjectId(quizId), userid : ObjectId(userID)},
+            { $set: { totalScore : calculateScoreRes.score} }, { multi: false });
+            if(updateScore.modifiedCount >= 1 &&  updateScore.matchedCount >=1){
+                return {message:"Quiz Submitted", statusCode:200}
+            }else if(updateScore.modifiedCount ===0 &&  updateScore.matchedCount >=1){
+                throw {message:"Modified content not found, we are unable to update book!!", statusCode:400}
+            }else{
+                throw {message:"Something went wrong!!", statusCode:500}
+            }
+        }else{
+            throw {message:"Something went wrong!!", statusCode:500}
+        }
+    }else if(submitQuiz.modifiedCount ===0 &&  submitQuiz.matchedCount >=1){
+        throw {message:"Modified content not found, we are unable to update book!!", statusCode:400}
+    }else{
+        throw {message:"Something went wrong!!", statusCode:500}
+    }
+}
+
+const calculateScore = async (studentData,type)=>{
+    let userId = studentData.loggedInUser;
+    let studentQuizObjData = await studentSubmittedQuizObj();
+    const getStudentQuiz = await studentQuizObjData.find({_id : ObjectId(studentData.studentQuizSubmittedID), quizId : ObjectId(studentData.quizId),userid : ObjectId(userId) }).toArray();
+    if(getStudentQuiz && getStudentQuiz.length>0){
+        let quizObjData = await quizObj();
+        const getQuizData = await quizObjData.find({_id : ObjectId(studentData.quizId)}).toArray();
+        if(getQuizData && getQuizData.length>0){
+            let studentQuizQuestions = getQuizData[0].questions;
+            let professorQuizQuestions = getStudentQuiz[0].questions;
+            let score = 0;
+            studentQuizQuestions.forEach((element, index, array) => { 
+                professorQuizQuestions.find((elementQdata, index) => { 
+                    if( element.correctAnswer == elementQdata.Userchoice  && JSON.stringify(element.questionID) == JSON.stringify(elementQdata.questionID)){
+                        score = score+1;
+                    }
+                })
+            })
+            return {status : true, score};
+            
+        }else{
+            throw {message:"Modified content not found, we are unable to update book!!", statusCode:400}
+        }
+    }else{
+        throw {message:"Modified content not found, we are unable to update book!!", statusCode:400}
+    }
+}
+
+    
 module.exports = {
     getQuiz,
-    updateStudentQuiz
+    updateStudentQuiz,
+    submitStudentQuiz
 }
