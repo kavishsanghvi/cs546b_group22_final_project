@@ -12,7 +12,7 @@ router.get('/allStudents', async (req, res) => {
         // let getAllUsersData = await usersData.getStudentData();
         // res.json(getAllUsersData);
         let getAllUsersData = await usersData.getAllStudentUnderProfessorData(req.session.user);
-        res.render('posts/users', { getAllStudentUnderProfessorResult: getAllUsersData })
+        res.render('posts/users', { getAllStudentUnderProfessorResult: getAllUsersData, userData : JSON.stringify(req.session.user) })
     } catch (e) {
         res.status(500).json({ error: e });
     }
@@ -22,7 +22,7 @@ router.get('/category', async (req, res) => {
     try {
         console.log(req.session.user)
         let getAllCategoryData = await usersData.getCategoryData(req.session.user, "category");
-        res.render('posts/category', { categoriesResult: getAllCategoryData })
+        res.render('posts/category', { categoriesResult: getAllCategoryData, userData : JSON.stringify(req.session.user) })
     } catch (e) {
         res.status(500).json({ error: e });
     }
@@ -32,7 +32,7 @@ router.get('/category/:category', async (req, res) => {
     try {
         // console.log(req.params.category)
         let getSubCategoryData = await usersData.getSubCategoryOfCategory(req.session.user, req.params.category, "subCategory");
-        res.render('posts/sub-category', { subCategoriesResult: getSubCategoryData })
+        res.render('posts/sub-category', { subCategoriesResult: getSubCategoryData, userData : JSON.stringify(req.session.user) })
     } catch (e) {
         res.status(500).json({ error: e });
     }
@@ -46,7 +46,7 @@ router.get('/category/subCategory/:subCategory', async (req, res) => {
         let getStudentDetails = await usersData.getStudentRecord(req.session.user, getQuizData);
         // console.log(getQuizData)
         // console.log(getStudentDetails)
-        res.render('posts/quizReport', { studentResult: getStudentDetails })
+        res.render('posts/quizReport', { studentResult: getStudentDetails, userData : JSON.stringify(req.session.user) })
     } catch (e) {
         res.status(500).json({ error: e });
     }
@@ -71,7 +71,7 @@ router.post('/verifyStudent/', async (req, res) => {
 router.get('/allquiz', async (req, res) => {
     try {
         let getQuizData = await quizData.getAllQuiz(req.session.user);
-        res.render('posts/allQuiz', { allQuizData: getQuizData })
+        res.render('posts/allQuiz', { allQuizData: getQuizData, userData : JSON.stringify(req.session.user) })
     } catch (e) {
         res.status(500).json({ error: e });
     }
@@ -112,7 +112,7 @@ router.get('/createQuiz', async (req, res) => {
     }
     try {
         const categoryList = await categoryData.getCategories();
-        res.render('Create Quiz/createQuiz', { title: 'Create Quiz', categoryList: categoryList });
+        res.render('Create Quiz/createQuiz', { title: 'Create Quiz', categoryList: categoryList, userData : JSON.stringify(req.session.user) });
     } catch (e) {
         res.status(500).json({ error: e });
     }
@@ -124,7 +124,7 @@ router.post('/createQuiz/getSubCat', async (req, res) => {
         const subCategoryList = await categoryData.getSubCategories(req.body.categoryName);
         res.json(subCategoryList)
     } catch (e) {
-        res.status(400).render('Create Quiz/createQuiz', { is_error: 1, message: e, title: 'Create category' });
+        res.status(400).render('Create Quiz/createQuiz', { is_error: 1, message: e, title: 'Create category', userData : JSON.stringify(req.session.user) });
         console.log('Error', e)
     }
 });
@@ -152,7 +152,7 @@ router.post('/createQuiz', async (req, res) => {
         const createQuiz = await createQuizData.create(req.body.startDate, req.body.endDate, req.body.Categories, req.body.SubCategories, req.body.questionName, req.body.optionA, req.body.optionB, req.body.optionC, req.body.optionD, req.body.correctAnswer, timerEnabled, quizReleased, timer, req.session.user['userID']);
         res.render('Create Quiz/createQuiz', { success: 1, message: 'Quiz created Successfully ', title: 'Create Quiz', categoryList: categoryList });
     } catch (e) {
-        res.status(400).render('Create Quiz/createQuiz', { is_error: 1, message: e, title: 'Create Quiz', categoryList: categoryList });
+        res.status(400).render('Create Quiz/createQuiz', { is_error: 1, message: e, title: 'Create Quiz', categoryList: categoryList, userData : JSON.stringify(req.session.user) });
         console.log('Error', e)
     }
 });
@@ -161,7 +161,7 @@ router.get('/createCategory', async (req, res) => {
     try {
         let getAllCategoryData = await usersData.getCategoryData(req.session.user, "category");
         console.log('on create category page')
-        res.render('Create Category/createCategory', { title: 'Create category', getAllCategoryData });
+        res.render('Create Category/createCategory', { title: 'Create category', getAllCategoryData, userData : JSON.stringify(req.session.user) });
     } catch (e) {
         res.status(500).json({ error: e });
     }
@@ -174,10 +174,10 @@ router.post('/createCategory', async (req, res) => {
         const categoryInfo = await categoryData.createCategory(req.body.category_name, req.body.sub_category_name, req.session);
         message = `Category "${req.body.category_name}" and Sub Category "${req.body.sub_category_name}" was successsfully created`
         let getAllCategoryData = await usersData.getCategoryData(req.session.user, "category");
-        res.render('Create Category/createCategory', { success: 1, message: message, title: 'Create category', getAllCategoryData });
+        res.render('Create Category/createCategory', { success: 1, message: message, title: 'Create category', getAllCategoryData, userData : JSON.stringify(req.session.user) });
     } catch (e) {
         let getAllCategoryData = await usersData.getCategoryData(req.session.user, "category");
-        res.status(400).render('Create Category/createCategory', { is_error: 1, message: e, title: 'Create category', getAllCategoryData });
+        res.status(400).render('Create Category/createCategory', { is_error: 1, message: e, title: 'Create category', getAllCategoryData, userData : JSON.stringify(req.session.user) });
     }
 });
 
