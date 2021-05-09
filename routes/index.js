@@ -7,14 +7,15 @@ const quizDataRoutes = require('./quizData');
 const createQuizRoutes = require('./createQuiz');
 const dashboardRoutes = require('./dashboard')
 const acceptedRoutes = require('./accepted')
-
+const studentRoutes = require('./student')
 
 
 const constructorMethod = (app) => {
   app.use('/users', verifyUserLogIn, usersRoutes);
   app.use('/login', loginRoutes);
   app.use('/dashboard', dashboardRoutes);
-  app.use('/accepted', acceptedRoutes)
+  app.use('/accepted', acceptedRoutes);
+  app.use('/student', verifyUserLogIn, studentRoutes);  
   app.use('/createCategory', verifyUserLogIn, createCategoryRoutes);
   app.use('/quiz', verifyUserLogIn, quizDataRoutes);
   app.use('/createQuiz', verifyUserLogIn, createQuizRoutes);
