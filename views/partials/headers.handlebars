@@ -15,15 +15,14 @@
             <li class="nav-item loggedInProfessor">
                 <a class="nav-link" href="./category">Dashboard</a>
             </li>
+            <li class="nav-item loggedInStudent">
+                <a class="nav-link" href="./student">Dashboard</a>
+            </li>
 
             <li class="nav-item loggedInStudent">
-                <a class="nav-link" href="./logout">Student1</a>
+                <a class="nav-link" href="./dashboard">View Score</a>
             </li>
-            <li class="nav-item loggedInStudent">
-                <a class="nav-link" href="./logout">Student2</a>
-            </li>
-            <li class="nav-item loggedInStudent">
-                <a class="nav-link" href="./logout">Student3</a>
+            
             </li>
             <li class="nav-item loggedIn">
                 <a class="nav-link" href="../users/logout">Logout</a>
@@ -39,7 +38,7 @@
                 $(".loggedIn").show();
                 $(".loggedOut").hide();
                 $("#welcomName").find('a').html("Hi, "+loggedInUser.firstName);
-                if(loggedInUser.userType = "professor"){
+                if(loggedInUser.userType == "professor"){
                     $(".loggedInStudent").hide();
                     $(".loggedInProfessor").show();
                 }else{
