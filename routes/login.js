@@ -7,7 +7,7 @@ const loginData = data.login;
 
 router.get('/', async (req, res) => {
     try {
-        res.render('posts/login', {title: "Fibonacci & Prime Number Checker"});
+        res.render('posts/login', { title: "Fibonacci & Prime Number Checker" });
     } catch (e) {
         res.status(500).json({
             error: e
@@ -21,27 +21,27 @@ router.post('/', async (req, res) => {
 
         if (!req.body.email || req.body.email.trim() == "") {
             res.status(400);
-            res.render('posts/login', {error: "Please pass the search value!", title:"Shows Found", searchStr:req.body.searchTerm, notFound:false})
+            res.render('posts/login', { error: "Please pass the search value!", title: "Shows Found", searchStr: req.body.searchTerm, notFound: false })
             return;
         }
 
 
         if (typeof req.body.email !== "string") {
             res.status(400);
-            res.render('posts/login', {error: "search value must be string only", title:"Shows Found", searchStr:req.body.searchTerm, notFound:false})
+            res.render('posts/login', { error: "search value must be string only", title: "Shows Found", searchStr: req.body.searchTerm, notFound: false })
             return;
         }
 
         if (!req.body.password || req.body.password.trim() == "") {
             res.status(400);
-            res.render('posts/login', {error: "Please pass the search value!", title:"Shows Found", searchStr:req.body.searchTerm, notFound:false})
+            res.render('posts/login', { error: "Please pass the search value!", title: "Shows Found", searchStr: req.body.searchTerm, notFound: false })
             return;
         }
 
 
         if (typeof req.body.password !== "string") {
             res.status(400);
-            res.render('posts/login', {error: "search value must be string only", title:"Shows Found", searchStr:req.body.searchTerm, notFound:false})
+            res.render('posts/login', { error: "search value must be string only", title: "Shows Found", searchStr: req.body.searchTerm, notFound: false })
             return;
         }
 
@@ -55,10 +55,14 @@ router.post('/', async (req, res) => {
             isActive: addUser.userData.isActive,
             universityName: addUser.userData.universityName,
             userType: addUser.userData.userType,
-            userID:addUser.userData._id
+            userID: addUser.userData._id,
+            universityDomain: addUser.userData.email.substring(addUser.userData.email.indexOf('@') + 1)
 
         }
-        res.redirect('users/category')
+        if (req.session.user.userType === "student")
+            res.redirect('accepted/')
+        else if (req.session.user.userType === "professor")
+            res.redirect('professor/category')
         //res.json(addUser);
     } catch (e) {
         res.status(500).json({

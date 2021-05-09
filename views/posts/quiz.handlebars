@@ -1,23 +1,4 @@
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2" id="collapsibleNavbar">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="../">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="../login">Login</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="./logout">Logout</a>
-            </li>
-        </ul>
-    </div>
-</nav>
+{{> headers this}}
 
 <div class="container" style="margin-top:30px">
     <div class="row justify-content-md-center row-custom">
@@ -32,7 +13,9 @@
             <h2>
                 {{quizData.category}} : {{quizData.subCategory}}
                 <p class="timer" id="app"></p>
+                <button type="button" id="submitButton" class="btn btn-primary">Submit Quiz</button>
             </h2>
+            <div id="alertWarning"></div>
             {{#each quizData.questions}}
             <div class="question" id="question{{@index}}">
                 <form class="quizSubmit" id="{{@index}}" data-id="{{this.questionID}}">
@@ -75,10 +58,7 @@
         </div>
         <div class="col-sm-2" style="overflow-y: scroll; overflow-x: hidden; height: 157px;">
             <div class="card" style="width: 18rem;">
-                <ul class="list-group list-group-flush">
-                    {{#each quizData.questions}}
-                    <li class="list-group-item">Question({{@index}}) </li>
-                    {{/each}}
+                <ul class="list-group list-group-flush" id="questionQuiclLink">
                 </ul>
             </div>
         </div>
