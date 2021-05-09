@@ -133,19 +133,21 @@ const fetchStudentData = async function fetchStudentData(id) {
 }
 
 const updateStudentStatus = async function updateStudentStatus(session, id) {
-    let getStudentData = await fetchStudentData(id);
-    let result = { status: false, message: "" }
-    // if (Object.keys(getStudentData).length > 0) {
-    if (getStudentData.isActive == false) {
-        let localUsersObj = await usersObj();
-        const updateisActiveIntoDB = await localUsersObj.updateOne({ _id: objOfObjectID(id) }, { $set: { "isActive": true } });
-        if (updateisActiveIntoDB.modifiedCount === 0)
+    if(session.userType === "professor"){
+        let getStudentData = await fetchStudentData(id);
+        let result = { status: false, message: "" }
+        // if (Object.keys(getStudentData).length > 0) {
+        if (getStudentData.isActive == false) {
+            let localUsersObj = await usersObj();
+            const updateisActiveIntoDB = await localUsersObj.updateOne({ _id: objOfObjectID(id) }, { $set: { "isActive": true } });
+            if (updateisActiveIntoDB.modifiedCount === 0)
+                return { status: false, message: "Not Verified!!" }
+            if (updateisActiveIntoDB.modifiedCount === 1)
+                return { status: true, message: "Verified Successfully!!" }
+        } else {
             return { status: false, message: "Not Verified!!" }
-        if (updateisActiveIntoDB.modifiedCount === 1)
-            return { status: true, message: "Verified Successfully!!" }
-    } else {
-        return { status: false, message: "Not Verified!!" }
-    }
+        }
+    }else throw `You're not authorized to perform this operation.`
 }
 
 module.exports = {

@@ -3,7 +3,7 @@ $(".verifyClass").click(function () {
     // console.log($(this).data("id"));
     if (dataValue) {
         var request = $.ajax({
-            url: "/users/verifyStudent/",
+            url: "/professor/verifyStudent/",
             method: "POST",
             data: { dataid: dataValue },
             dataType: "json"
@@ -108,12 +108,13 @@ $(".verifyClass").click(function () {
 //     }
 // });
 
-$(document).on('click', '.disableToggleClass', function () {
+$('#todoArea').on('click', '.disableToggleClass', function () {
+    console.log("Disable")
     let dataIDValue = $(this).data("id");
     let dataValue = $(this).data("value");
     if (dataValue) {
         var request = $.ajax({
-            url: "/quiz/allquiz/toggleTimer",
+            url: "/professor/allquiz/toggleTimer",
             method: "POST",
             data: { dataid: dataIDValue, dataVal: "Timer" },
             dataType: "json"
@@ -137,12 +138,13 @@ $(document).on('click', '.disableToggleClass', function () {
     }
 });
 
-$(document).on('click', '.enableToggleClass', function () {
+$('#todoArea').on('click', '.enableToggleClass', function () {
+    console.log("Enable")
     let dataIDValue = $(this).data("id");
     let dataValue = $(this).data("value");
     if (!dataValue) {
         var request = $.ajax({
-            url: "/quiz/allquiz/toggleTimer",
+            url: "/professor/allquiz/toggleTimer",
             method: "POST",
             data: { dataid: dataIDValue, dataVal: "Timer" },
             dataType: "json"
@@ -166,13 +168,13 @@ $(document).on('click', '.enableToggleClass', function () {
     }
 });
 
-$(document).on('click', '.quizReleaseToggleClass', function () {
+$('#todoArea').on('click', '.quizReleaseToggleClass', function () {
     let dataIDValue = $(this).data("id");
     let dataValue = $(this).data("value");
     console.log($("button.enableToggleClass[data-id='" + dataIDValue + "']").length)
     if (!dataValue) {
         var request = $.ajax({
-            url: "/quiz/allquiz/toggleTimer",
+            url: "/professor/allquiz/toggleTimer",
             method: "POST",
             data: { dataid: dataIDValue, dataVal: "Release" },
             dataType: "json"

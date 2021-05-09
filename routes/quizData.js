@@ -18,37 +18,38 @@ const userDataObj = data.users;
 //     }
 // });
 
-router.get('/allquiz', async (req, res) => {
-    try {
-        let getQuizData = await quizData.getAllQuiz();
-        res.render('posts/allQuiz', { allQuizData: getQuizData })
-    } catch (e) {
-        res.status(500).json({ error: e });
-    }
-});
+// router.get('/allquiz', async (req, res) => {
+//     try {
+//         let getQuizData = await quizData.getAllQuiz(req.session.user);
+//         res.render('posts/allQuiz', { allQuizData: getQuizData })
+//     } catch (e) {
+//         res.status(500).json({ error: e });
+//     }
+// });
 
-router.post('/allquiz/toggleTimer', async (req, res) => {
-    try {
-        let tagName = "";
-        // console.log(req.body.dataid);
-        // console.log(req.body.dataVal);
-        if (req.body.dataVal == "Timer") {
-            tagName = "isTimerEnabled"
-        } else if (req.body.dataVal == "Release") {
-            tagName = "quizReleased"
-        } else
-            return "Please provide a valid name."
-        const updatedData = await quizData.updateTimer(req.body.dataid, tagName);
-        res.json(updatedData);
-        // res.render('posts/users', { layout: null, ...updatedData })
-        // let getAllReviewOfABook = await reviewsData.getAllReviews(req.params.id);
+// router.post('/allquiz/toggleTimer', async (req, res) => {
+//     try {
+//         let tagName = "";
+//         // console.log(req.body.dataid);
+//         // console.log(req.body.dataVal);
+//         if (req.body.dataVal == "Timer") {
+//             tagName = "isTimerEnabled"
+//         } else if (req.body.dataVal == "Release") {
+//             tagName = "quizReleased"
+//         } else
+//             return "Please provide a valid name."
 
-        // const newBook = await booksData.updateBook(req.params.id, booksPostData);
-        // let getSubCategoryData = await usersData.getCategoryData("subCategory");
-        // res.render('posts/sub-category', { subCategoriesResult: getSubCategoryData })
-    } catch (e) {
-        res.status(500).json({ error: e });
-    }
-});
+//         const updatedData = await quizData.updateTimer(req.session.user, req.body.dataid, tagName);
+//         res.json(updatedData);
+//         // res.render('posts/users', { layout: null, ...updatedData })
+//         // let getAllReviewOfABook = await reviewsData.getAllReviews(req.params.id);
+
+//         // const newBook = await booksData.updateBook(req.params.id, booksPostData);
+//         // let getSubCategoryData = await usersData.getCategoryData("subCategory");
+//         // res.render('posts/sub-category', { subCategoriesResult: getSubCategoryData })
+//     } catch (e) {
+//         res.status(500).json({ error: e });
+//     }
+// });
 
 module.exports = router;
