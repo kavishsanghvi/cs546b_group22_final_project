@@ -108,7 +108,8 @@ $(".verifyClass").click(function () {
 //     }
 // });
 
-$(document).on('click', '.disableToggleClass', function () {
+$('#todoArea').on('click', '.disableToggleClass', function () {
+    console.log("Disable")
     let dataIDValue = $(this).data("id");
     let dataValue = $(this).data("value");
     if (dataValue) {
@@ -137,7 +138,8 @@ $(document).on('click', '.disableToggleClass', function () {
     }
 });
 
-$(document).on('click', '.enableToggleClass', function () {
+$('#todoArea').on('click', '.enableToggleClass', function () {
+    console.log("Enable")
     let dataIDValue = $(this).data("id");
     let dataValue = $(this).data("value");
     if (!dataValue) {
@@ -166,7 +168,7 @@ $(document).on('click', '.enableToggleClass', function () {
     }
 });
 
-$(document).on('click', '.quizReleaseToggleClass', function () {
+$('#todoArea').on('click', '.quizReleaseToggleClass', function () {
     let dataIDValue = $(this).data("id");
     let dataValue = $(this).data("value");
     console.log($("button.enableToggleClass[data-id='" + dataIDValue + "']").length)

@@ -20,7 +20,7 @@ const userDataObj = data.users;
 
 router.get('/allquiz', async (req, res) => {
     try {
-        let getQuizData = await quizData.getAllQuiz();
+        let getQuizData = await quizData.getAllQuiz(req.session.user);
         res.render('posts/allQuiz', { allQuizData: getQuizData })
     } catch (e) {
         res.status(500).json({ error: e });
@@ -38,7 +38,8 @@ router.post('/allquiz/toggleTimer', async (req, res) => {
             tagName = "quizReleased"
         } else
             return "Please provide a valid name."
-        const updatedData = await quizData.updateTimer(req.body.dataid, tagName);
+
+        const updatedData = await quizData.updateTimer(req.session.user, req.body.dataid, tagName);
         res.json(updatedData);
         // res.render('posts/users', { layout: null, ...updatedData })
         // let getAllReviewOfABook = await reviewsData.getAllReviews(req.params.id);
