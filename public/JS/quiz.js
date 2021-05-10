@@ -39,7 +39,7 @@
     let timerInterval = null;
     let remainingPathColor = COLOR_CODES.info.color;
 
-    document.getElementById("app").innerHTML = `
+    let rr = `
         <div class="base-timer">
         <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
             <g class="base-timer__circle">
@@ -62,6 +62,11 @@
     )}</span>
         </div>`;
 
+        document.getElementById("app").innerHTML = `
+        <span id="base-timer-label" class="base-timer__label">${formatTime(
+        timeLeft
+    )}</span>`;
+    
     startTimer();
 
     function onTimesUp() {
@@ -76,13 +81,22 @@
             document.getElementById("base-timer-label").innerHTML = formatTime(
                 timeLeft
             );
-            setCircleDasharray();
-            setRemainingPathColor(timeLeft);
+            // setCircleDasharray();
+            // setRemainingPathColor(timeLeft);
             //console.log(timeLeft);
-            localStorage.setItem('timer', Number(timeLeft) / 60);
+            //localStorage.setItem('timer', Number(timeLeft) / 60);
             //console.log( Number(localStorage.getItem('timer'))/60);
+            //alert(timeLeft);
             if (timeLeft === 0) {
                 onTimesUp();
+            }
+            if (timeLeft === 3500) {
+                $("#alertWarning").html("5 Minute remaining").fadeOut(1000);
+            }
+
+            if (timeLeft === 3300) {
+                $("#alertWarning").html("timeOut").fadeOut(1000);
+                $("#submitButton").trigger("click");
             }
         }, 1000);
     }
@@ -98,7 +112,7 @@
         return `${minutes}:${seconds}`;
     }
 
-    function setRemainingPathColor(timeLeft) {
+    function setRemainingPathColor2(timeLeft) {
         const {
             alert,
             warning,
@@ -126,7 +140,7 @@
         return rawTimeFraction - (1 / TIME_LIMIT) * (1 - rawTimeFraction);
     }
 
-    function setCircleDasharray() {
+    function setCircleDasharray2() {
         const circleDasharray = `${(
             calculateTimeFraction() * FULL_DASH_ARRAY
         ).toFixed(0)} 283`;
@@ -169,10 +183,10 @@ $(".quizSubmit").submit(function (event) {
     let questionId = $(this).data("id");
     let radioValue = $("input[name='" + radioName + "']:checked").val();
     if (radioValue) {
-        alert("Your are a - " + radioValue);
+        //alert("Your are a - " + radioValue);
     }
     if (questionId) {
-        alert(questionId);
+        //alert(questionId);
     }
 
     var request = $.ajax({
@@ -193,10 +207,10 @@ $(".quizSubmit").submit(function (event) {
             $("#submitButton").show();
         }
 
-        alert(JSON.stringify(showsData));
         id1.css("display", "none");
         id2.css("display", "block");
         if (showsData) {} else {}
+        //alert(JSON.stringify(showsData));
     });
 
     request.fail(function (jqXHR, textStatus) {
@@ -227,7 +241,7 @@ $("#submitButton").click(function (event) {
         //     $("#submiButton").attr("data-value", "submitQuiz");
         // }
 
-        alert(JSON.stringify(showsData));
+        //alert(JSON.stringify(showsData));
         // id1.css("display", "none");
         // id2.css("display", "block");
        // if(isLastQuiz) 
@@ -244,3 +258,4 @@ $("#submitButton").click(function (event) {
     });
     event.preventDefault();
 })
+
