@@ -16,8 +16,11 @@
         </div>
         {{#each subCategoriesResult}}
         <ul class="list-group list-group-flush">
-          <li class="list-group-item"><a href="/student/category/subCategory/{{this}}">{{this}}</a></li>
+          <li class="list-group-item">{{this}}</li>
+         <button type="submit" class="btn btn-primary quizReleaseToggleClass" data-id="{{_id}}"
+              data-value="{{testReleased}}" id="quizReleaseToggleID">Take Test</button>
         </ul>
+        
         {{/each}}
       </div>
 
