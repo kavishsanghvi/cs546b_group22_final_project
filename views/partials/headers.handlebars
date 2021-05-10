@@ -5,64 +5,111 @@
     </button>
 
     <div class="navbar-collapse collapse w-100 order-3 dual-collapse2" id="collapsibleNavbar">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item" id="welcomName">
-                <a class="nav-link" href="#"></a>
-            </li>
-            <li class="nav-item loggedOut">
-                <a class="nav-link" href="../">Home</a>
-            </li>
-            <li class="nav-item loggedOut">
-                <a class="nav-link" href="../login">Login</a>
-            </li>
-            <li class="nav-item loggedOut">
-                <a class="nav-link" href="../sign-up">Signup</a>
-            </li>
-
-            
-            <li class="nav-item loggedInProfessor">
-                <a class="nav-link" href="./category">Dashboard</a>
-            </li>
-            <li class="nav-item loggedInStudent">
-                <a class="nav-link" href="./student">Dashboard</a>
-            </li>
-
-            <li class="nav-item loggedInStudent">
-                <a class="nav-link" href="./student/my-score">View Score</a>
-            </li>
-            
-            </li>
-            <li class="nav-item loggedIn">
-                <a class="nav-link" href="../users/logout">Logout</a>
-            </li>
+        <ul class="navbar-nav ml-auto" id="menu-list">
         </ul>
         <input type="hidden" id="loggedInUser" value="{{userData}}"> 
     </div>
 </nav>
 <script>
+    let len = (((window.location.pathname).split("/")).filter(item => item)).length;
     if($("#loggedInUser").val()){
         let loggedInUser = (JSON.parse($("#loggedInUser").val()));
             if(loggedInUser){
                 $(".loggedIn").show();
                 $(".loggedOut").hide();
-                $("#welcomName").find('a').html("Hi, "+loggedInUser.firstName);
                 if(loggedInUser.userType == "professor"){
-                    $(".loggedInStudent").hide();
-                    $(".loggedInProfessor").show();
+                    let path;
+                    let logoutPath;
+                    if(len==0){
+                        path = "./professor/";
+                        logoutPath = "../dashboard/logout";
+                    } 
+
+                    if(len==1){
+                        path = "./";
+                        logoutPath = "../dashboard/logout";
+                    } 
+                    
+                    if(len==2){
+                        path = "./";
+                        logoutPath = "../../dashboard/logout";
+                    } 
+
+                    if(len==3){
+                        path = "./";
+                        logoutPath = "../../../dashboard/logout";
+                    } 
+
+                    let menu = `<li class="nav-item" id="welcomName">
+                                    <a class="nav-link" href="#">${"Hi, "+loggedInUser.firstName}</a>
+                                </li>
+                                <li class="nav-item loggedInProfessor">
+                                    <a class="nav-link" href="${path+"category"}">Dashboard</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="${logoutPath}">Logout</a>
+                                </li>
+                                `;
+                    $("#menu-list").html(menu);
                 }else{
-                    $(".loggedInStudent").show();
-                    $(".loggedInProfessor").hide();
+                    let path;
+                    let logoutPath;
+                    if(len==0){
+                        path = "./student";
+                        logoutPath = "../dashboard/logout";
+                    } 
+
+                    if(len==1){
+                        path = "./";
+                        logoutPath = "../dashboard/logout";
+                    }
+
+                    if(len==2){
+                        path = "./";
+                        logoutPath = "../dashboard/logout";
+                    } 
+
+                    if(len==3){
+                        path = "../";
+                        logoutPath = "../../dashboard/logout";
+                    } 
+
+                   let menu = `<li class="nav-item" id="welcomName">
+                                    <a class="nav-link" href="#">${"Hi, "+loggedInUser.firstName}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="${path}">Dashboard</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="${path+"my-score"}">View Score</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="${logoutPath}">Logout</a>
+                                </li>`;
+                    $("#menu-list").html(menu);
                 }
             }else{
-                $(".loggedIn").hide();
-                $(".loggedOut").show();
-                $(".loggedInStudent").hide();
-                $(".loggedInProfessor").hide();
+                let menu = `<li class="nav-item">
+                                <a class="nav-link" href="../">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="./login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="./signup">Signup</a>
+                            </li>`;
+                $("#menu-list").html(menu);
             }
     }else{
-        $(".loggedIn").hide();
-        $(".loggedOut").show();
-        $(".loggedInStudent").hide();
-        $(".loggedInProfessor").hide();
+        let menu = `<li class="nav-item">
+                        <a class="nav-link" href="../">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./sign-up">Signup</a>
+                    </li>`;
+        $("#menu-list").html(menu);
     }
 </script>

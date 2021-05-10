@@ -50,7 +50,7 @@ router.post('/quiz-student-update', async (req, res) => {
     try {
         let questionId = req.body.questionId
         let selectedAns = req.body.selectedAns
-        let userID = req.session.userID ? req.session.userID : "6081d5fc3dcd1dbfb511bc78";
+        let userID = req.session.user.userID;
         let quiz = await quizDataStudent.updateStudentQuiz(userID, req.body);
         res.json(quiz);
     } catch (e) {
@@ -62,7 +62,7 @@ router.post('/quiz-student-submit', async (req, res) => {
     try {
         let quizId = req.body.quizId
         let id = req.body.id
-        let userID = req.session.userID ? req.session.userID : "6081d5fc3dcd1dbfb511bc78";
+        let userID = req.session.user.userID;
         let quiz = await quizDataStudent.submitStudentQuiz(userID, req.body);
         res.json(quiz);
     } catch (e) {

@@ -15,7 +15,7 @@ const studentRoutes = require('./student')
 
 const constructorMethod = (app) => {
   // app.use('/users', verifyUserLogIn, usersRoutes);
-  app.use('/login', loginRoutes);
+  app.use('/login',verifyUserLogIn, loginRoutes);
   app.use('/dashboard', verifyUserLogIn, dashboardRoutes);
   app.use('/accepted', verifyUserLogIn, acceptedRoutes)
   // app.use('/createCategory', verifyUserLogIn, createCategoryRoutes);
@@ -24,7 +24,7 @@ const constructorMethod = (app) => {
   // app.use('/quiz', verifyUserLogIn, quizDataRoutes);
   // app.use('/createQuiz', verifyUserLogIn, createQuizRoutes);
   app.use('/professor', verifyUserLogIn, professorRoutes);
-  app.use('/sign-up', signUpRoutes);
+  app.use('/sign-up',verifyUserLogIn, signUpRoutes);
 
   app.get('/', (req, res) => {
     // res.sendFile(path.resolve('static/index.html'));
@@ -51,11 +51,45 @@ const authenticateToken = (req, res, next) => {
 }
 
 const verifyUserLogIn = (req, res, next) => {
-  if (req.session.user) {
-    next();
-  } else {
+
+  try{
+    if (typeof(req.session.user) !=="undefined") {
+     
+      if(req.session && req.session.user){
+        if(((req.baseUrl).replace(/\//gi, "") == "accepted")){
+          next();
+          return
+        }
+
+        if((req.baseUrl).replace(/\//gi, "") == "login" || (req.baseUrl).replace(/\//gi, "") == "sign-up"){
+          if(req.session.user.userType == "professor") res.redirect('./professor/category');
+          console.log(req.session.user.userType);
+          if(req.session.user.userType == "student") res.redirect('./student');
+        }
+
+
+        if((req.baseUrl).replace(/\//gi, "") == "dashboard") next();
+        if(typeof(req.session) !=="undefined" && req.session.user.userType &&  (req.baseUrl).replace(/\//gi, "") == req.session.user.userType) next();
+        else res.redirect('../'); 
+      }else{
+        if(((req.baseUrl).replace(/\//gi, "") == "login" || (req.baseUrl).replace(/\//gi, "") == "sign-up")){
+          next();
+        }else{
+          res.redirect('../')
+        }
+      }
+    }else{
+      if(((req.baseUrl).replace(/\//gi, "") == "login" || (req.baseUrl).replace(/\//gi, "") == "sign-up")){
+        next();
+      }else{
+        res.redirect('../');
+      }
+    }
+  }catch(e){
+    console.log(e);
     res.redirect('../')
   }
+ 
 }
 
 module.exports = constructorMethod;
