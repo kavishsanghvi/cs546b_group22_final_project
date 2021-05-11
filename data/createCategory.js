@@ -62,6 +62,7 @@ const createCategory = async function createCategory(categoryName, subCategoryNa
             category: categoryName,
             subCategory: subCategoryName,
             universityDomain: session.user.universityDomain,
+            professorName: `${session.user.firstName} ${session.user.lastName}`,
             createdBy: ObjectId(session.user["userID"])
         }
 

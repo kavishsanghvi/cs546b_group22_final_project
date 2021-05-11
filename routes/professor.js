@@ -14,7 +14,8 @@ router.get('/allStudents', async (req, res) => {
         let getAllUsersData = await usersData.getAllStudentUnderProfessorData(req.session.user);
         res.render('posts/users', { getAllStudentUnderProfessorResult: getAllUsersData, userData : JSON.stringify(req.session.user) })
     } catch (e) {
-        res.status(500).json({ error: e });
+        res.status(404).render('posts/users', { getAllStudentUnderProfessorResult: [], userData : JSON.stringify(req.session.user) })
+        // res.status(500).json({ error: e });
     }
 });
 

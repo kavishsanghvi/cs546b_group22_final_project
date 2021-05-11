@@ -21,7 +21,7 @@ const addUserData = async function addUserData(userInfo) {
     return JSON.parse(JSON.stringify(addUser.ops[0]));
 }
 
-const getQuiz = async function getQuiz(){
+const getQuiz = async function getQuiz() {
     let quizObjData = await quizObj();
     const getAllUsersData = await quizObjData.find({}).toArray();
     return getAllUsersData[0];
@@ -88,18 +88,21 @@ const getAllStudentUnderProfessorData = async function getAllStudentUnderProfess
     // let localUsersObj = await usersObj();
     let returnDataFromProfessor = await getProfessorData(session);
     const getStudentsUnderProfessorRecord = []
-    for (let i = 0; i < Object.keys(returnDataFromProfessor.enrolledStudents).length; i++) {
-        let keyName = Object.keys(returnDataFromProfessor.enrolledStudents)[i];
-        for (let j = 0; j < returnDataFromProfessor.enrolledStudents[keyName].length; j++) {
-            getStudentsUnderProfessorRecord.push(returnDataFromProfessor.enrolledStudents[keyName][j])
+    if (returnDataFromProfessor.enrolledStudents) {
+        for (let i = 0; i < Object.keys(returnDataFromProfessor.enrolledStudents).length; i++) {
+            let keyName = Object.keys(returnDataFromProfessor.enrolledStudents)[i];
+            for (let j = 0; j < returnDataFromProfessor.enrolledStudents[keyName].length; j++) {
+                getStudentsUnderProfessorRecord.push(returnDataFromProfessor.enrolledStudents[keyName][j])
+            }
+            // console.log(returnDataFromProfessor.enrolledStudents[i]);
         }
-        // console.log(returnDataFromProfessor.enrolledStudents[i]);
-    }
-    let returnStudentData = await getOneStudentRecord(session, getStudentsUnderProfessorRecord);
-    // const getAllCategoryData = await localCategoryObj.find({}).toArray();
-    // let getInActiveUserData = await localUsersObj.find({isActive: false}).toArray();
-    // console.log(a)
-    return returnStudentData
+        let returnStudentData = await getOneStudentRecord(session, getStudentsUnderProfessorRecord);
+        // const getAllCategoryData = await localCategoryObj.find({}).toArray();
+        // let getInActiveUserData = await localUsersObj.find({isActive: false}).toArray();
+        // console.log(a)
+        return returnStudentData
+    } else
+        throw { "result": false, "message": "No students enrolled yet!!", error: "No students enrolled yet!!" };
 }
 
 const getOneStudentRecord = async function getOneStudentRecord(session, studentUserIDs) {
@@ -110,23 +113,23 @@ const getOneStudentRecord = async function getOneStudentRecord(session, studentU
     return getStudentRecord;
 }
 
-const getIsActiveFalseUserData = async function getIsActiveFalseUserData() {
-    // let localUsersObj = await usersObj();
-    // let returnDataFromProfessor = await getProfessorData();
-    // const getStudentsUnderProfessorRecord = []
-    // for(let i = 0; i<Object.keys(returnDataFromProfessor.enrolledStudents).length; i++){
-    //     let keyName = Object.keys(returnDataFromProfessor.enrolledStudents)[i];
-    //     for(let j = 0; j<returnDataFromProfessor.enrolledStudents[keyName].length; j++){
-    //         getStudentsUnderProfessorRecord.push(returnDataFromProfessor.enrolledStudents[keyName][j])
-    //     }
-    //     // console.log(returnDataFromProfessor.enrolledStudents[i]);
-    // }
+// const getIsActiveFalseUserData = async function getIsActiveFalseUserData() {
+// let localUsersObj = await usersObj();
+// let returnDataFromProfessor = await getProfessorData();
+// const getStudentsUnderProfessorRecord = []
+// for(let i = 0; i<Object.keys(returnDataFromProfessor.enrolledStudents).length; i++){
+//     let keyName = Object.keys(returnDataFromProfessor.enrolledStudents)[i];
+//     for(let j = 0; j<returnDataFromProfessor.enrolledStudents[keyName].length; j++){
+//         getStudentsUnderProfessorRecord.push(returnDataFromProfessor.enrolledStudents[keyName][j])
+//     }
+//     // console.log(returnDataFromProfessor.enrolledStudents[i]);
+// }
 
-    // // const getAllCategoryData = await localCategoryObj.find({}).toArray();
-    // // let getInActiveUserData = await localUsersObj.find({isActive: false}).toArray();
-    // // console.log(a)
-    // return getStudentsUnderProfessorRecord
-}
+// // const getAllCategoryData = await localCategoryObj.find({}).toArray();
+// // let getInActiveUserData = await localUsersObj.find({isActive: false}).toArray();
+// // console.log(a)
+// return getStudentsUnderProfessorRecord
+// }
 
 const fetchStudentData = async function fetchStudentData(id) {
     let localUsersObj = await usersObj();
@@ -134,7 +137,7 @@ const fetchStudentData = async function fetchStudentData(id) {
 }
 
 const updateStudentStatus = async function updateStudentStatus(session, id) {
-    if(session.userType === "professor"){
+    if (session.userType === "professor") {
         let getStudentData = await fetchStudentData(id);
         let result = { status: false, message: "" }
         // if (Object.keys(getStudentData).length > 0) {
@@ -148,51 +151,49 @@ const updateStudentStatus = async function updateStudentStatus(session, id) {
         } else {
             return { status: false, message: "Not Verified!!" }
         }
-    }else throw `You're not authorized to perform this operation.`
+    } else throw `You're not authorized to perform this operation.`
 }
 
-async function createnewuser(firstName, lastName, email, userType, password, universityName){
+async function createnewuser(firstName, lastName, email, userType, password, universityName) {
     const userCollections = await usersObj();
-    function ValidateEmail(mail) 
-{
-if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail))
-{
-return (true)
-}
-return (false)
-}
-    if(!email || ValidateEmail(email)== false) throw "Please provide an email address or provided email address is not valid";
-    if(!password) throw "Provide a password";
-    if(!firstName || typeof firstName != 'string') throw "Provide a first name or provided first name is not string";
-    if(!lastName || typeof lastName != 'string') throw "Provide a last name or provided last name is not string";
-    if(!universityName || typeof universityName != 'string') throw "Provide a universityName or provided universityName is not string";
-    if(!userType|| typeof userType != 'string') throw "Provide a usertype or provided usertype is not string";
+    function ValidateEmail(mail) {
+        if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail)) {
+            return (true)
+        }
+        return (false)
+    }
+    if (!email || ValidateEmail(email) == false) throw "Please provide an email address or provided email address is not valid";
+    if (!password) throw "Provide a password";
+    if (!firstName || typeof firstName != 'string') throw "Provide a first name or provided first name is not string";
+    if (!lastName || typeof lastName != 'string') throw "Provide a last name or provided last name is not string";
+    if (!universityName || typeof universityName != 'string') throw "Provide a universityName or provided universityName is not string";
+    if (!userType || typeof userType != 'string') throw "Provide a usertype or provided usertype is not string";
     let isActive = false;
-    if(userType.toLowerCase() == "professor") {
+    if (userType.toLowerCase() == "professor") {
         isActive = true;
     }
-    else if(userType.toLowerCase() == "student"){
+    else if (userType.toLowerCase() == "student") {
         isActive = false;
     }
     // function isvalidDate(d){
     //     return !isNaN((new Date(d)).getTime())                                                  //reference stackoverflow
     //   }
     //   if (!isvalidDate(dateCreated)) throw 'Not a proper date';
-      
-      password = await creatingpswd.hashing(password);
-    
 
-      let newUser = {
-        firstName:firstName,
-        lastName:lastName,
-          email:email,
-          userType:userType,
-          password:password,
-          universityName:universityName,
-          isActive: isActive,
-          dateCreated:"05/09/2021"
-      }
-      const insertInfo = await userCollections.insertOne(newUser);
+    password = await creatingpswd.hashing(password);
+
+
+    let newUser = {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        userType: userType,
+        password: password,
+        universityName: universityName,
+        isActive: isActive,
+        dateCreated: "05/09/2021"
+    }
+    const insertInfo = await userCollections.insertOne(newUser);
     if (insertInfo.insertedCount === 0) throw 'Could not add user';
 
     const newId = insertInfo.insertedId;
@@ -205,15 +206,81 @@ return (false)
 async function getuserbyid(id) {
     if (!id) throw "You must provide an id to search for";
     if (typeof id != 'string') throw 'Id is not a String.';
-    
+
     const userCollections = await usersObj();
-    const result = await userCollections.findOne({ _id: mongocall.ObjectID(id) }); 
+    const result = await userCollections.findOne({ _id: mongocall.ObjectID(id) });
     if (result === null) throw `No users with that id : ${id}`;
     result._id = result._id.toString();
 
     return result;
 }
 
+const enrollNow = async function enrollNow(session, professorID, categoryName) {
+    let localUsersObj = await usersObj();
+
+    if (session.userID) {
+        let getStudentAllTags = await fetchStudentData(session.userID);
+        if (session.userType === "student") {
+            if (getStudentAllTags.enrolledIn) {
+                let studentCategoryCount = getStudentAllTags.enrolledIn.filter(value => {
+                    if ((value.professorID.toString() === professorID && value.categoryName === categoryName)) {
+                        return true
+                    } else {
+                        return false
+                    }
+                });
+                if (studentCategoryCount.length > 0) {
+                    return { status: false, statusCode: 404, message: `You've been already added into the category.` }
+                }
+            }
+            var updateEnrolledInForStudentIntoDB = await localUsersObj.updateOne({ _id: objOfObjectID(session.userID) }, {
+                $push: { enrolledIn: { professorID: objOfObjectID(professorID), categoryName: categoryName } }
+            });
+        }
+    }
+    var categoryName = `enrolledStudents.${categoryName}`;
+
+    if (professorID) {
+        let getProfessorAllTags = await fetchStudentData(professorID);
+        if (getProfessorAllTags.userType === "professor") {
+            if (!getProfessorAllTags.enrolledStudents || getProfessorAllTags.enrolledStudents) {
+                try {
+                    const updateEnrolledStudentsForProfessorIntoDB = await localUsersObj.updateOne({ _id: objOfObjectID(professorID) }, { $push: { [categoryName]: objOfObjectID(session.userID) } })
+                } catch (e) {
+                    console.log(e)
+                }
+            }
+        }
+    }
+    if (updateEnrolledInForStudentIntoDB.modifiedCount === 0)
+        return { status: false, statusCode: 404, message: "Something went wrong!!" }
+    if (updateEnrolledInForStudentIntoDB.modifiedCount === 1)
+        return { status: true, statusCode: 200, message: "You have been added into the category successfully. Professor will approve your enrollment." }
+}
+
+const getAllCategoryData = async function getAllCategoryData(session, reqType) {
+    const localCategoryObj = await categoryObj();
+    let allCategoryData = await localCategoryObj.aggregate([
+        {
+            "$group": {
+                "_id": { "category": '$category', "createdBy": '$createdBy', "universityDomain": '$universityDomain', 'professorName': '$professorName' }
+            }
+        }
+    ]).toArray();
+
+    let universityCategories = []
+    allCategoryData.forEach(async (element) => {
+
+        console.log(element._id.category)
+        if (element._id.universityDomain) {
+            if (element._id.universityDomain === session.universityDomain) {
+                universityCategories.push(element._id)
+            }
+        }
+    });
+
+    return universityCategories
+}
 
 module.exports = {
     // getStudentData,
@@ -227,6 +294,7 @@ module.exports = {
     updateStudentStatus,
     getQuiz,
     createnewuser,
-    getuserbyid
+    getuserbyid,
+    getAllCategoryData,
+    enrollNow
 }
-    
