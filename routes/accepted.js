@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
     let userdata = await acceptedData.getuserData(req.session.user)
     
     if (userdata == true) {
-      res.redirect("/student")
+      res.redirect("/student/")
     }
     else {
       res.render('posts/notaccepted')
