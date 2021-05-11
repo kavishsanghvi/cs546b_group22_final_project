@@ -75,7 +75,7 @@ router.get('/enroll-now', async (req, res) => {
     try {
         console.log(req.session.user);
         let getAllCategoryData = await usersObj.getAllCategoryData(req.session.user, "category");
-        res.render('posts/enrollNow', { getAllCategoryData });
+        res.render('posts/enrollNow', { getAllCategoryData, userData: JSON.stringify(req.session.user) });
     } catch (e) {
         console.log(e.err);
     }
