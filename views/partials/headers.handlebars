@@ -53,11 +53,12 @@
                                 `;
                     $("#menu-list").html(menu);
                 }else{
+
                     let len = (((window.location.pathname).split("/")).filter(item => item)).length;
                     let path;
                     let logoutPath;
                     if(len==0){
-                        path = "./student";
+                        path = "./student/";
                         logoutPath = "../dashboard/logout";
                     } 
 
@@ -76,7 +77,9 @@
                         logoutPath = "../../dashboard/logout";
                     } 
 
-                   let menu = `<li class="nav-item" id="welcomName">
+                    let menu;
+                    if(loggedInUser.isActive === true){
+                        menu = `<li class="nav-item" id="welcomName">
                                     <a class="nav-link" href="#">${"Hi, "+loggedInUser.firstName}</a>
                                 </li>
                                 <li class="nav-item">
@@ -88,6 +91,11 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="${logoutPath}">Logout</a>
                                 </li>`;
+                    }else if(loggedInUser.isActive === false){
+                        menu = `<li class="nav-item">
+                                    <a class="nav-link" href="${logoutPath}">Logout</a>
+                                </li>`;
+                    }
                     $("#menu-list").html(menu);
                 }
             }else{

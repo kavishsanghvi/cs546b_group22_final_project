@@ -61,11 +61,16 @@ const verifyUserLogIn = (req, res, next) => {
           return
         }
 
+
         if((req.baseUrl).replace(/\//gi, "") == "login" || (req.baseUrl).replace(/\//gi, "") == "sign-up"){
           if(req.session.user.userType == "professor") res.redirect('./professor/category');
           console.log(req.session.user.userType);
           if(req.session.user.userType == "student") res.redirect('./student');
         }
+
+        // if(req.session.user.isActive == false && req.session.user.userType == "student"){
+        //    res.redirect("./student/enrollNow");
+        // }
 
 
         if((req.baseUrl).replace(/\//gi, "") == "dashboard") next();
