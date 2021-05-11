@@ -39,11 +39,11 @@ router.get('/category/:category', async (req, res) => {
 router.get('/start-quiz', async (req, res) => {
     try {
         console.log(req.session.user);
-        let quiz = await quizDataStudent.getQuiz(req.session.user, "6080a7e37c378456cbcbf278");
+        let quiz = await quizDataStudent.getQuiz(req.session.user, "609841c8a3e28f392ccc5ab4");
         res.render('posts/quiz', { title: "Quiz", quizData: quiz, quizData2: JSON.stringify(quiz), userData: JSON.stringify(req.session.user) });
     } catch (e) {
+        res.render('posts/401', { title: "Error", userData: JSON.stringify(req.session.user) });
         console.log(e.err);
-
     }
 })
 

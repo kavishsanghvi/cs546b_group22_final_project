@@ -6,7 +6,7 @@ const studentSubmittedQuizObj = mongoCollections.studentSubmittedQuiz;
 
 
 const getQuiz = async function getQuiz(loggedInUser, quizID){
-    console.log(loggedInUser.userID);
+    console.log(loggedInUser);
     let userId = loggedInUser.userID;
     let studentQuizObjData = await studentSubmittedQuizObj();
     const isAlreadyTaken = await studentQuizObjData.find({quizId : ObjectId(quizID),userid : ObjectId(userId) }).toArray();
@@ -56,12 +56,6 @@ const updateStudentQuiz = async function updateStudentQuiz(userID, quizDataByStu
     let quizId = ObjectId(quizDataByStudent.quizId);
     let loggedInUser = ObjectId(userID);
     let id = ObjectId(quizDataByStudent.id);
-
-
-    // db.getCollection('studentSubmittedQuiz').updateOne(
-    //     { "questions.questionID" : ObjectId("608f63e22bda4d194de03d72"), quizId : ObjectId("6080a7e37c378456cbcbf278"), userid : ObjectId("6081d5fc3dcd1dbfb511bc78")},
-    //     { $set: { "questions.$.selecte" : "Collection, you know, like my Star Wars action figures "} }
-    //  )
 
 
     let studentSubmittedQuiz = await studentSubmittedQuizObj();

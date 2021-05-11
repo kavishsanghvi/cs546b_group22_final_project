@@ -39,35 +39,11 @@
     let timerInterval = null;
     let remainingPathColor = COLOR_CODES.info.color;
 
-    let rr = `
-        <div class="base-timer">
-        <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <g class="base-timer__circle">
-            <circle class="base-timer__path-elapsed" cx="50" cy="50" r="45"></circle>
-            <path
-                id="base-timer-path-remaining"
-                stroke-dasharray="283"
-                class="base-timer__path-remaining ${remainingPathColor}"
-                d="
-                M 50, 50
-                m -45, 0
-                a 45,45 0 1,0 90,0
-                a 45,45 0 1,0 -90,0
-                "
-            ></path>
-            </g>
-        </svg>
-        <span id="base-timer-label" class="base-timer__label">${formatTime(
-        timeLeft
-    )}</span>
-        </div>`;
-
+    if(quizData.isTimerEnabled && quizData.isTimerEnabled==true){
         document.getElementById("app").innerHTML = `
-        <span id="base-timer-label" class="base-timer__label">${formatTime(
-        timeLeft
-    )}</span>`;
-    
-    startTimer();
+        <span id="base-timer-label" class="base-timer__label">${formatTime(timeLeft)}</span>`;
+        startTimer();
+    }
 
     function onTimesUp() {
         clearInterval(timerInterval);
@@ -91,11 +67,11 @@
                 onTimesUp();
             }
             if (timeLeft === 3500) {
-                $("#alertWarning").html("5 Minute remaining").fadeOut(5000);
+                $("#alertWarning").html("5 Minute remaining.").css('color','red').fadeOut(10000);
             }
 
             if (timeLeft === 3300) {
-                $("#alertWarning").html("timeOut").fadeOut(5000);
+                $("#alertWarning").html("Time up your quiz will auto submit.").css('color','red').fadeOut(5000);
                 $("#submitButton").trigger("click");
             }
         }, 1000);
@@ -112,42 +88,13 @@
         return `${minutes}:${seconds}`;
     }
 
-    // function setRemainingPathColor2(timeLeft) {
-    //     const {
-    //         alert,
-    //         warning,
-    //         info
-    //     } = COLOR_CODES;
-    //     if (timeLeft <= alert.threshold) {
-    //         document
-    //             .getElementById("base-timer-path-remaining")
-    //             .classList.remove(warning.color);
-    //         document
-    //             .getElementById("base-timer-path-remaining")
-    //             .classList.add(alert.color);
-    //     } else if (timeLeft <= warning.threshold) {
-    //         document
-    //             .getElementById("base-timer-path-remaining")
-    //             .classList.remove(info.color);
-    //         document
-    //             .getElementById("base-timer-path-remaining")
-    //             .classList.add(warning.color);
-    //     }
-    // }
+    
 
     function calculateTimeFraction() {
         const rawTimeFraction = timeLeft / TIME_LIMIT;
         return rawTimeFraction - (1 / TIME_LIMIT) * (1 - rawTimeFraction);
     }
 
-    // function setCircleDasharray2() {
-    //     const circleDasharray = `${(
-    //         calculateTimeFraction() * FULL_DASH_ARRAY
-    //     ).toFixed(0)} 283`;
-    //     document
-    //         .getElementById("base-timer-path-remaining")
-    //         .setAttribute("stroke-dasharray", circleDasharray);
-    // }
 
 
 
