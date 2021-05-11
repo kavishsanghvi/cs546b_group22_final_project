@@ -4,6 +4,7 @@ const data = require("../data");
 const studentData = data.student;
 const dashbaordData = data.dashboard;
 const quizDataStudent = data.quiz;
+const usersObj = data.users
 
 router.get('/', async (req, res) => {
     try {
@@ -69,5 +70,26 @@ router.post('/quiz-student-submit', async (req, res) => {
         console.log(e.err);
     }
 });
+
+router.get('/enroll-now', async (req, res) => {
+    try {
+        console.log(req.session.user);
+        let getAllCategoryData = await usersObj.getAllCategoryData(req.session.user, "category");
+        res.render('posts/enrollNow', { getAllCategoryData });
+    } catch (e) {
+        console.log(e.err);
+    }
+})
+
+router.post('/enroll-now', async (req, res) => {
+    try {
+        console.log(req.session.user);
+        let getAllCategoryData = await usersObj.enrollNow(req.session.user, req.body.dataid, req.body.dataValue);
+        console.log("ok")
+        // res.render('posts/enrollNow', { getAllCategoryData });
+    } catch (e) {
+        console.log(e.err);
+    }
+})
 
 module.exports = router;
