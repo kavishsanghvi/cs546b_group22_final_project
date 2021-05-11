@@ -53,7 +53,7 @@ const updateStudentQuiz = async function updateStudentQuiz(userID, quizDataByStu
     console.log(quizDataByStudent);
     let questionId = ObjectId(quizDataByStudent.questionId);
     let selectedAns = quizDataByStudent.selectedAns;
-    let quizId = quizDataByStudent.quizId;
+    let quizId = ObjectId(quizDataByStudent.quizId);
     let loggedInUser = ObjectId(userID);
     let id = ObjectId(quizDataByStudent.id);
 
@@ -65,7 +65,7 @@ const updateStudentQuiz = async function updateStudentQuiz(userID, quizDataByStu
 
 
     let studentSubmittedQuiz = await studentSubmittedQuizObj();
-    let updatequestion = await studentSubmittedQuiz.updateOne({_id : id, "questions.questionID" : ObjectId(questionId), quizId : ObjectId(quizId), userid : ObjectId(userID)},
+    let updatequestion = await studentSubmittedQuiz.updateOne({_id : id, "questions.questionID" : questionId, quizId : quizId, userid : ObjectId(userID)},
     { $set: { "questions.$.Userchoice" : selectedAns, "lastUpdate":await utils.dateCreation()} }, { multi: false });
     
     if(updatequestion.modifiedCount >= 1 &&  updatequestion.matchedCount >=1){
