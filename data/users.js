@@ -88,18 +88,21 @@ const getAllStudentUnderProfessorData = async function getAllStudentUnderProfess
     // let localUsersObj = await usersObj();
     let returnDataFromProfessor = await getProfessorData(session);
     const getStudentsUnderProfessorRecord = []
-    for (let i = 0; i < Object.keys(returnDataFromProfessor.enrolledStudents).length; i++) {
-        let keyName = Object.keys(returnDataFromProfessor.enrolledStudents)[i];
-        for (let j = 0; j < returnDataFromProfessor.enrolledStudents[keyName].length; j++) {
-            getStudentsUnderProfessorRecord.push(returnDataFromProfessor.enrolledStudents[keyName][j])
+    if (returnDataFromProfessor.enrolledStudents) {
+        for (let i = 0; i < Object.keys(returnDataFromProfessor.enrolledStudents).length; i++) {
+            let keyName = Object.keys(returnDataFromProfessor.enrolledStudents)[i];
+            for (let j = 0; j < returnDataFromProfessor.enrolledStudents[keyName].length; j++) {
+                getStudentsUnderProfessorRecord.push(returnDataFromProfessor.enrolledStudents[keyName][j])
+            }
+            // console.log(returnDataFromProfessor.enrolledStudents[i]);
         }
-        // console.log(returnDataFromProfessor.enrolledStudents[i]);
-    }
-    let returnStudentData = await getOneStudentRecord(session, getStudentsUnderProfessorRecord);
-    // const getAllCategoryData = await localCategoryObj.find({}).toArray();
-    // let getInActiveUserData = await localUsersObj.find({isActive: false}).toArray();
-    // console.log(a)
-    return returnStudentData
+        let returnStudentData = await getOneStudentRecord(session, getStudentsUnderProfessorRecord);
+        // const getAllCategoryData = await localCategoryObj.find({}).toArray();
+        // let getInActiveUserData = await localUsersObj.find({isActive: false}).toArray();
+        // console.log(a)
+        return returnStudentData
+    } else
+        throw { "result": false, "message": "No students enrolled yet!!", error: "No students enrolled yet!!" };
 }
 
 const getOneStudentRecord = async function getOneStudentRecord(session, studentUserIDs) {
@@ -214,58 +217,45 @@ async function getuserbyid(id) {
 
 const enrollNow = async function enrollNow(session, professorID, categoryName) {
     let localUsersObj = await usersObj();
-    console.log(session.userID)
-    console.log(professorID)
-    console.log(categoryName)
-
-    let getStudentAllTags = await fetchStudentData(session.userID);
 
     if (session.userID) {
         let getStudentAllTags = await fetchStudentData(session.userID);
-        if (!getStudentAllTags.enrolledIn || getStudentAllTags.enrolledIn) {
-            let studentCategoryCount = getStudentAllTags.enrolledIn.filter(value => 
-                {
-                    if((value.professorID.toString() ===  professorID && value.categoryName === categoryName)){
+        if (session.userType === "student") {
+            if (getStudentAllTags.enrolledIn) {
+                let studentCategoryCount = getStudentAllTags.enrolledIn.filter(value => {
+                    if ((value.professorID.toString() === professorID && value.categoryName === categoryName)) {
                         return true
-                    }else{
+                    } else {
                         return false
                     }
                 });
-                if(studentCategoryCount.length > 0){
-                    return `You've been already added into the category.`
+                if (studentCategoryCount.length > 0) {
+                    return { status: false, statusCode: 404, message: `You've been already added into the category.` }
                 }
-            // console.log(abc)
-
-
-            // getStudentAllTags.enrolledIn.forEach( element => {
-            //     console.log(element.professorID)
-            //     console.log(element.categoryName)
-            //     if(element.professorID.toString() ===  professorID && element.categoryName === categoryName){
-            //         return `You've been already added into the category.`
-            //     }
-            // });
-            const updateEnrolledInForStudentIntoDB = await localUsersObj.updateOne({ _id: objOfObjectID(session.userID) }, {
+            }
+            var updateEnrolledInForStudentIntoDB = await localUsersObj.updateOne({ _id: objOfObjectID(session.userID) }, {
                 $push: { enrolledIn: { professorID: objOfObjectID(professorID), categoryName: categoryName } }
             });
         }
     }
-    var categoryName = `enrollStudetns.${categoryName}`;
-    // const tt = `enrollStudetns.${categoryName}`;
+    var categoryName = `enrolledStudents.${categoryName}`;
+
     if (professorID) {
         let getProfessorAllTags = await fetchStudentData(professorID);
         if (getProfessorAllTags.userType === "professor") {
             if (!getProfessorAllTags.enrolledStudents || getProfessorAllTags.enrolledStudents) {
                 try {
                     const updateEnrolledStudentsForProfessorIntoDB = await localUsersObj.updateOne({ _id: objOfObjectID(professorID) }, { $push: { [categoryName]: objOfObjectID(session.userID) } })
-
-                    // console.log(updateEnrolledStudentsForProfessorIntoDB)
                 } catch (e) {
                     console.log(e)
                 }
             }
         }
     }
-    // return await localUsersObj.findOne({ professorID: objOfObjectID(professorID), categoryName: categoryName })
+    if (updateEnrolledInForStudentIntoDB.modifiedCount === 0)
+        return { status: false, statusCode: 404, message: "Something went wrong!!" }
+    if (updateEnrolledInForStudentIntoDB.modifiedCount === 1)
+        return { status: true, statusCode: 200, message: "You have been added into the category successfully. Professor will approve your enrollment." }
 }
 
 const getAllCategoryData = async function getAllCategoryData(session, reqType) {

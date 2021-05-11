@@ -13,11 +13,6 @@ $('#studentSelectCategory').on('click', '.submitStudentCategoryData', function (
         request.done(function (msg) {
             console.log(msg)
             if (msg) {
-                // if ($("button.disableToggleClass[data-id='" + dataIDValue + "']").length > 0)
-                //     $("button.disableToggleClass[data-id='" + dataIDValue + "']").hide();
-                // else if ($("button.enableToggleClass[data-id='" + dataIDValue + "']").length > 0)
-                //     $("button.enableToggleClass[data-id='" + dataIDValue + "']").hide();
-                // $("button.quizReleaseToggleClass[data-id='" + dataIDValue + "'][data-value='" + dataValue + "']").hide();
                 alert(msg.message)
             } else {
                 alert(msg.message)

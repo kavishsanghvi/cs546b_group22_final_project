@@ -200,5 +200,3 @@ $('#todoArea').on('click', '.quizReleaseToggleClass', function () {
         });
     }
 });
-
-
