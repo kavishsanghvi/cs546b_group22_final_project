@@ -11,13 +11,14 @@
     </div>
 </nav>
 <script>
-    let len = (((window.location.pathname).split("/")).filter(item => item)).length;
+    
     if($("#loggedInUser").val()){
         let loggedInUser = (JSON.parse($("#loggedInUser").val()));
             if(loggedInUser){
                 $(".loggedIn").show();
                 $(".loggedOut").hide();
                 if(loggedInUser.userType == "professor"){
+                    let len = (((window.location.pathname).split("/")).filter(item => item)).length;
                     let path;
                     let logoutPath;
                     if(len==0){
@@ -52,6 +53,7 @@
                                 `;
                     $("#menu-list").html(menu);
                 }else{
+                    let len = (((window.location.pathname).split("/")).filter(item => item)).length;
                     let path;
                     let logoutPath;
                     if(len==0){
