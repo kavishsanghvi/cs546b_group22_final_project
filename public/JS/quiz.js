@@ -3,7 +3,7 @@
     var quizData = JSON.parse(quizDataStr);
     localStorage.setItem("quizDataStr", quizDataStr);
 
-    // Credit: Mateusz Rybczonec
+
     const FULL_DASH_ARRAY = 283;
     const WARNING_THRESHOLD = 10;
     const ALERT_THRESHOLD = 5;
@@ -91,11 +91,11 @@
                 onTimesUp();
             }
             if (timeLeft === 3500) {
-                $("#alertWarning").html("5 Minute remaining").fadeOut(1000);
+                $("#alertWarning").html("5 Minute remaining").fadeOut(5000);
             }
 
             if (timeLeft === 3300) {
-                $("#alertWarning").html("timeOut").fadeOut(1000);
+                $("#alertWarning").html("timeOut").fadeOut(5000);
                 $("#submitButton").trigger("click");
             }
         }, 1000);
@@ -112,42 +112,42 @@
         return `${minutes}:${seconds}`;
     }
 
-    function setRemainingPathColor2(timeLeft) {
-        const {
-            alert,
-            warning,
-            info
-        } = COLOR_CODES;
-        if (timeLeft <= alert.threshold) {
-            document
-                .getElementById("base-timer-path-remaining")
-                .classList.remove(warning.color);
-            document
-                .getElementById("base-timer-path-remaining")
-                .classList.add(alert.color);
-        } else if (timeLeft <= warning.threshold) {
-            document
-                .getElementById("base-timer-path-remaining")
-                .classList.remove(info.color);
-            document
-                .getElementById("base-timer-path-remaining")
-                .classList.add(warning.color);
-        }
-    }
+    // function setRemainingPathColor2(timeLeft) {
+    //     const {
+    //         alert,
+    //         warning,
+    //         info
+    //     } = COLOR_CODES;
+    //     if (timeLeft <= alert.threshold) {
+    //         document
+    //             .getElementById("base-timer-path-remaining")
+    //             .classList.remove(warning.color);
+    //         document
+    //             .getElementById("base-timer-path-remaining")
+    //             .classList.add(alert.color);
+    //     } else if (timeLeft <= warning.threshold) {
+    //         document
+    //             .getElementById("base-timer-path-remaining")
+    //             .classList.remove(info.color);
+    //         document
+    //             .getElementById("base-timer-path-remaining")
+    //             .classList.add(warning.color);
+    //     }
+    // }
 
     function calculateTimeFraction() {
         const rawTimeFraction = timeLeft / TIME_LIMIT;
         return rawTimeFraction - (1 / TIME_LIMIT) * (1 - rawTimeFraction);
     }
 
-    function setCircleDasharray2() {
-        const circleDasharray = `${(
-            calculateTimeFraction() * FULL_DASH_ARRAY
-        ).toFixed(0)} 283`;
-        document
-            .getElementById("base-timer-path-remaining")
-            .setAttribute("stroke-dasharray", circleDasharray);
-    }
+    // function setCircleDasharray2() {
+    //     const circleDasharray = `${(
+    //         calculateTimeFraction() * FULL_DASH_ARRAY
+    //     ).toFixed(0)} 283`;
+    //     document
+    //         .getElementById("base-timer-path-remaining")
+    //         .setAttribute("stroke-dasharray", circleDasharray);
+    // }
 
 
 

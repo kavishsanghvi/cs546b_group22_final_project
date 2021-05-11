@@ -5,6 +5,9 @@ const static = express.static(__dirname + '/public');
 const path = require('path');
 const exphbs = require('express-handlebars');
 const session = require('express-session');
+const process = require('process');
+//const fs = require('fs');
+
 
 app.use(session({
     name: 'AuthCookie',
@@ -22,6 +25,19 @@ app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
 configRoutes(app);
+
+const unhandledRejections = new Map();
+process.on('unhandledRejection', async (reason, promise) => {
+    console.log(reason);
+    //console.log(promise);
+    //unhandledRejections.set(promise, reason);
+   // fs.appendFile('mynewfile1.txt', 'Hello content!');
+});
+process.on('rejectionHandled', (promise) => {
+     //unhandledRejections.delete(promise);
+    console.log(reason);
+    //console.log(promise);
+});
 
 app.listen(3000, () => {
     console.log("Server is started now!");
