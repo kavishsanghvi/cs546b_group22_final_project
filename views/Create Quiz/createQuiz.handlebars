@@ -2,48 +2,52 @@
 
 <div class="container" style="margin-top:30px">
   <div class="row justify-content-md-center row-custom">
-        <div class="col-sm-8">
-        <h1>Create Quiz</h1>
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="./category">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="#">Create Quiz</a></li>
-          </ol>
-        </nav>
-        
-    
-{{#if success }}
-  <p class="success text-success"> {{message}} </p>
-  {{/if}}
+    <div class="col-sm-8">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="./category">Dashboard</a></li>
+          <li class="breadcrumb-item"><a href="#">Create Quiz</a></li>
+        </ol>
+      </nav>
 
-<form method="post" action="">
-  <div class="form-group col-sm-6">
-      <label for="startDate">Start Date</label>
-      <input class="form-control" type="text" id="startDate" name="startDate" placeholder="mm/dd/yyyy">
+      {{#if success }}
+      <p class="success text-success"> {{message}} </p>
+      {{/if}}
 
-      <label for="End Date">End Date</label>
-      <input class="form-control" type="text" id="end_Date" name="endDate" placeholder="mm/dd/yyyy">
-  </div>
+      {{#if is_error}}
+      <p class="error text-danger"> {{message}} </p>
+      {{/if}}
 
-   <div class="form-group col-sm-6">
-    <label for="Categories">Select Category:</label>
-    <select class="form-control" name="Categories" id="Categories">
-        <option value="">Select</option>
-      {{#each categoryList}}
-      <option value="{{this}}">{{this}}</option>
-      {{/each}}
-    </select>
-   </div>
-    
-    <div class="form-group col-sm-6">
-      <label for="SubCategories">Select Sub-Category:</label>
-      <select class="form-control" name="SubCategories" id="SubCategories">
-        <option value="">Select</option>
-      </select>
-    </div>
-    
-    
-<!--
+      <form method="post" action="">
+        <div class="form-group col-sm-6">
+          <label for="startDate">Start Date</label>
+          <input class="form-control" type="text" id="startDate" name="startDate" placeholder="mm/dd/yyyy"
+            onkeydown="return false"  autocomplete="off">
+
+          <label for="End Date">End Date</label>
+          <input class="form-control" type="text" id="end_Date" name="endDate" placeholder="mm/dd/yyyy"
+            onkeydown="return false"  autocomplete="off">
+        </div>
+
+        <div class="form-group col-sm-6">
+          <label for="Categories">Select Category:</label>
+          <select class="form-control" name="Categories" id="Categories">
+            <option value="">Select</option>
+            {{#each categoryList}}
+            <option value="{{this}}">{{this}}</option>
+            {{/each}}
+          </select>
+        </div>
+
+        <div class="form-group col-sm-6">
+          <label for="SubCategories">Select Sub-Category:</label>
+          <select class="form-control" name="SubCategories" id="SubCategories">
+            <option value="">Select</option>
+          </select>
+        </div>
+
+
+        <!--
     <input type="checkbox" id="isTimerEnabled" name="isTimerEnabled" value="enabled">
     <label for="isTimerEnabled"> Enable Timer</label><br>
 
@@ -51,90 +55,93 @@
     <input type="checkbox" id="quizReleased" name="quizReleased" value="enabled">
     <label for="quizReleased"> Release Quiz</label><br>
 -->
-    <div class="form-group col-sm-6">
-      <label for="timer"> Timer(in minutes)</label>
-      <input class="form-control" type="number" id="timer" name="timer" value="timer" placeholder="30">
-    </div>
-    
-    <div class="form-group col-sm-6">
-        <button name="addQuestion" id="addQuestion" class="btn btn-success" onclick="add()" type="button">Add Question</button>
-    </div>
-    <div class="form-group col-sm-12" id="questions" class="column">
-        
-    </div>
-    <div id="submit">
-      <button type="submit" name="submitQuiz" id="submitQuiz" class="btn btn-primary">Submit</button>
-    </div>
-  </form>
-
-        </div>
-        </div>
+        <div class="form-group col-sm-6">
+          <label for="timer"> Timer(in minutes)</label>
+          <input class="form-control" type="number" id="timer" name="timer" value="timer" placeholder="30" autocomplete="off">
         </div>
 
+        <div class="form-group col-sm-6">
+          <button name="addQuestion" id="addQuestion" class="btn btn-success" onclick="add()" type="button">Add
+            Question</button>
+        </div>
+        <div class="form-group col-sm-12" id="questions" class="column">
 
-  <script>
-    function deleteElem() {
-      var element = document.getElementById("questions");
-      var numberOfChildren = document.getElementsByName('questionName').length
+        </div>
+        <div id="submit">
+          <button type="submit" name="submitQuiz" id="submitQuiz" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
 
-      document.getElementById('question' + numberOfChildren).outerHTML = "";
+    </div>
+  </div>
+</div>
 
-      if ((numberOfChildren) == 1) {
-        document.getElementById("deleteButton").outerHTML = "";
-      }
+
+<script>
+  function deleteElem() {
+    var element = document.getElementById("questions");
+    var numberOfChildren = document.getElementsByName('questionName').length
+
+    document.getElementById('question' + numberOfChildren).outerHTML = "";
+
+    if ((numberOfChildren) == 1) {
+      document.getElementById("deleteButton").outerHTML = "";
     }
+  }
 
-    
-function createOptionLabel(labelText, labelName){
+
+  function createOptionLabel(labelText, labelName) {
     var labelA = document.createElement("label");
-	var nodeA = document.createTextNode(labelText);
+    var nodeA = document.createTextNode(labelText);
     labelA.setAttribute("for", labelName);
     //labelA.setAttribute("align", "center");
     labelA.setAttribute("class", "col-sm-2");
-	labelA.appendChild(nodeA);
+    labelA.appendChild(nodeA);
     return labelA
-}
-    
+  }
 
-function createOptioninput(inputName){
+
+  function createOptioninput(inputName) {
     var input = document.createElement("input");
-    input.setAttribute("type","text");
-    input.setAttribute("id",inputName);
-    input.setAttribute("name",inputName);
+    input.setAttribute("type", "text");
+    input.setAttribute("id", inputName);
+    input.setAttribute("name", inputName);
     //input.setAttribute("align", "center");
     input.setAttribute("class", "form-control col-sm-4");
+    input.setAttribute("autocomplete", "off");
     return input
-}
-    
-function add(){
+  }
+
+  function add() {
     var element = document.getElementById("questions");
     var numberOfChildren = document.getElementsByName('questionName').length
-    if ((numberOfChildren) >= 10){
-        return   
+    if ((numberOfChildren) >= 10) {
+      return
     }
 
-    
+
     var div = document.createElement("div");
-      div.setAttribute("class", "row question" + (numberOfChildren + 1));
-      div.setAttribute("id", "question" + (numberOfChildren + 1));
+    div.setAttribute("class", "row question" + (numberOfChildren + 1));
+    div.setAttribute("id", "question" + (numberOfChildren + 1));
 
 
-	var label = document.createElement("label");
-	var node = document.createTextNode("Question " + (numberOfChildren+1) + ":  ");
+    var label = document.createElement("label");
+    var node = document.createTextNode("Question " + (numberOfChildren + 1) + ":  ");
     label.setAttribute("for", "question");
     label.setAttribute("align", "center");
-	label.appendChild(node);
-    
+    label.appendChild(node);
+
     var input = document.createElement("input");
-    input.setAttribute("type","text");
-    input.setAttribute("id","questionName");
-    input.setAttribute("name","questionName");
+    input.setAttribute("type", "text");
+    input.setAttribute("id", "questionName");
+    input.setAttribute("name", "questionName");
     input.setAttribute("align", "center");
-    input.setAttribute("class","form-control");
-    
+    input.setAttribute("class", "form-control");
+    input.setAttribute("autocomplete", "off");
+
     var line = document.createElement("br");
     var line2 = document.createElement("br");
-    
+
     var labelA = createOptionLabel("Option 1", "option1")
     var optionA = createOptioninput("optionA")
     var labelB = createOptionLabel("Option 2", "option2")
@@ -145,10 +152,10 @@ function add(){
     var optionD = createOptioninput("optionD")
     var correctAnswerLabel = createOptionLabel("Correct Answer", "Correct Answer")
     var correctAnswer = createOptioninput("correctAnswer")
-    
-    
-    
-	div.appendChild(label);
+
+
+
+    div.appendChild(label);
     div.appendChild(input);
     div.appendChild(labelA);
     div.appendChild(optionA);
@@ -159,73 +166,73 @@ function add(){
     div.appendChild(labelD);
     div.appendChild(optionD);
     div.appendChild(correctAnswerLabel);
-    div.appendChild(correctAnswer); 
+    div.appendChild(correctAnswer);
     element.appendChild(div)
-    
-    if ((numberOfChildren+1) == 1){
-        var deleteButton = document.createElement('button');
-        deleteButton.setAttribute("type", "button");
-        deleteButton.setAttribute("class", "btn btn-danger");
-        deleteButton.setAttribute("name", "deleteButton");
-        deleteButton.setAttribute("id", "deleteButton");
-        deleteButton.setAttribute("value", "Delete Button");
-        deleteButton.setAttribute("align", "center");
-        deleteButton.setAttribute("value", "Delete Button");
-        deleteButton.setAttribute("onclick", `deleteElem()`);
-        deleteButton.textContent = 'Delete Question';
-        var submit = document.getElementById("submit");
-        submit.appendChild(deleteButton);
-      }
 
-
-
+    if ((numberOfChildren + 1) == 1) {
+      var deleteButton = document.createElement('button');
+      deleteButton.setAttribute("type", "button");
+      deleteButton.setAttribute("class", "btn btn-danger");
+      deleteButton.setAttribute("name", "deleteButton");
+      deleteButton.setAttribute("id", "deleteButton");
+      deleteButton.setAttribute("value", "Delete Button");
+      deleteButton.setAttribute("align", "center");
+      deleteButton.setAttribute("value", "Delete Button");
+      deleteButton.setAttribute("onclick", `deleteElem()`);
+      deleteButton.textContent = 'Delete Question';
+      var submit = document.getElementById("submit");
+      submit.appendChild(deleteButton);
     }
 
-  </script>
 
 
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script type="text/javascript">
-    $(document).ready(function () {
-      $("#Categories").change(function () {
-        var categoryName = $(this).val();
-        if (categoryName != "") {
-          console.log(categoryName)
-          $.ajax({
-            url: "/professor/createQuiz/getSubCat",
-            data: { categoryName: categoryName },
-            type: 'POST',
-            success: function (response) {
-              var resp = '';
-              for (i in response) {
-                resp += `<option id=${response[i]}>${response[i]}</option>`
-              }
-              $("#SubCategories").html(resp);
+  }
+
+</script>
+
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("#Categories").change(function () {
+      var categoryName = $(this).val();
+      if (categoryName != "") {
+        console.log(categoryName)
+        $.ajax({
+          url: "/professor/createQuiz/getSubCat",
+          data: { categoryName: categoryName },
+          type: 'POST',
+          success: function (response) {
+            var resp = '';
+            for (i in response) {
+              resp += `<option id=${response[i]}>${response[i]}</option>`
             }
-          });
-        } else {
-          console.log("failed")
-          $("#SubCategories").html("<option value=''>Select</option>");
-        }
-      });
-  });
-</script>  
-
-  <link rel="stylesheet" type="text/css"
-    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
-  <script type="text/javascript"
-    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
-  <script type="text/javascript">
-    $(document).ready(function () {
-      $('#startDate').datepicker({
-        format: "mm/dd/yyyy",
-        startDate: new Date(),
-        autoclose: true
-      });
-      $('#end_Date').datepicker({
-        format: "mm/dd/yyyy",
-        startDate: new Date(),
-        autoclose: true
-      });
+            $("#SubCategories").html(resp);
+          }
+        });
+      } else {
+        console.log("failed")
+        $("#SubCategories").html("<option value=''>Select</option>");
+      }
     });
-  </script>
+  });
+</script>
+
+<link rel="stylesheet" type="text/css"
+  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('#startDate').datepicker({
+      format: "mm/dd/yyyy",
+      startDate: new Date(),
+      autoclose: true
+    });
+    $('#end_Date').datepicker({
+      format: "mm/dd/yyyy",
+      startDate: new Date(),
+      autoclose: true
+    });
+  });
+</script>
