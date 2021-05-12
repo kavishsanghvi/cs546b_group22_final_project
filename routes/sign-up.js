@@ -23,23 +23,23 @@ router.post('/',async (req, res)=>{
         let flag = false;
          if(!req.body.firstName) {
             flag = true;
-             throw 'Please provide Firstname';
+             throw 'Please provide first name';
             
          }
     
          if(!req.body.lastName) {
             flag = true;
-             throw 'Please provide lastname';
+             throw 'Please provide last name';
             
          }
          if(!req.body.emailAddress){
             flag = true;
-            throw 'Invalid Emailaddress';  
+            throw 'Invalid email address';  
          }
     
          if(!req.body.selectUserType){
             flag = true; 
-            throw 'Invalid type';
+            throw 'Please select user type';
          }
          if(!req.body.password){ 
              flag = true 
@@ -50,7 +50,7 @@ router.post('/',async (req, res)=>{
         //  }
          if(!req.body.universityName){
              flag = true;
-             throw 'Enter University name';
+             throw 'Please select university.';
          }
          console.log(req.body.emailaddress+req.body.password)
          let user ={
@@ -80,7 +80,7 @@ router.post('/',async (req, res)=>{
          
        } catch (e) {
            console.log(e)
-         res.json({errors : "No inputs provided" , hasErrors:true});
+         res.json({errors : e , hasErrors:true, statusCode: 400});
          res.status(400);
        }
     });
