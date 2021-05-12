@@ -8,7 +8,6 @@ const session = require('express-session');
 const process = require('process');
 //const fs = require('fs');
 
-
 app.use(session({
     name: 'AuthCookie',
     secret: '%rt8322f8AAAi5n-sdkjhfrtyyyyyyy',

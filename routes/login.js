@@ -17,28 +17,24 @@ router.post('/', async (req, res) => {
     try {
 
         if (!req.body.email || req.body.email.trim() == "") {
-            res.status(400);
-            res.render('posts/login', { error: "Please pass the email", title: "Quizmania  - Login", notFound: false })
+            res.status(400).render('posts/login', { error: "Please pass the email", title: "Quizmania  - Login", notFound: false })
             return;
         }
 
 
         if (typeof req.body.email !== "string") {
-            res.status(400);
-            res.render('posts/login', { error: "search value must be string only", title: "Quizmania  - Login", notFound: false })
+            res.status(400).render('posts/login', { error: "search value must be string only", title: "Quizmania  - Login", notFound: false })
             return;
         }
 
         if (!req.body.password || req.body.password.trim() == "") {
-            res.status(400);
-            res.render('posts/login', { error: "Please pass the search value!", title: "Quizmania  - Login",  notFound: false })
+            res.status(400).render('posts/login', { error: "Please pass the search value!", title: "Quizmania  - Login",  notFound: false })
             return;
         }
 
 
         if (typeof req.body.password !== "string") {
-            res.status(400);
-            res.render('posts/login', { error: "search value must be string only", title: "Quizmania  - Login",  notFound: false })
+            res.status(400).render('posts/login', { error: "search value must be string only", title: "Quizmania  - Login",  notFound: false })
             return;
         }
 
@@ -61,14 +57,14 @@ router.post('/', async (req, res) => {
             else if (req.session.user.userType === "professor")
                 res.redirect('professor/category')
         }else{
-            res.render('posts/login', { error: "Incorrect email or password!", title: "Quizmania  - Login",  notFound: false });
+            res.status(404).render('posts/login', { error: "Incorrect email or password!", title: "Quizmania  - Login",  notFound: false });
         }
         
     } catch (e) {
         // res.status(500).json({
         //     error: e
         // });
-        res.render('posts/login', { error: e.message, title: "Quizmania  - Login",  notFound: false })
+        res.status(e.statusCode?e.statusCode:500).render('posts/login', { error: e.error, title: "Quizmania  - Login",  notFound: false })
     }
 });
 
