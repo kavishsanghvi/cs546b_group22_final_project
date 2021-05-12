@@ -97,12 +97,12 @@ const create = async function create(startDate, endDate, category, subCategory, 
             if(correctAnswer[i].toLowerCase() == optionA[i].toLowerCase() || correctAnswer[i].toLowerCase() == optionB[i].toLowerCase() || correctAnswer[i].toLowerCase() == optionC[i].toLowerCase() || correctAnswer[i].toLowerCase() == optionD[i].toLowerCase()){
                 questions.push({
                     questionID: ObjectId(),
-                    question: questionName[i],
-                    answerChoice1: optionA[i],
-                    answerChoice2: optionB[i],
-                    answerChoice3: optionC[i],
-                    answerChoice4: optionD[i],
-                    correctAnswer: correctAnswer[i]
+                    question: questionName[i].trim(),
+                    answerChoice1: optionA[i].trim(),
+                    answerChoice2: optionB[i].trim(),
+                    answerChoice3: optionC[i].trim(),
+                    answerChoice4: optionD[i].trim(),
+                    correctAnswer: correctAnswer[i].trim()
                 })
             }else{
                 throw 'Invalid Correct Answer'

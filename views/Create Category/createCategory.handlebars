@@ -21,7 +21,7 @@
                 <div class="form-group">
                     <label for="category_name">Category Name: </label>
                     <input list="category_name_list" class="form-control" name="category_name" id="category_name"
-                        placeholder="Search/Enter Category">
+                        placeholder="Enter Category" autocomplete="off">
                     <datalist id="category_name_list">
                         {{#each getAllCategoryData}}
                         <option value="{{this}}">
@@ -31,7 +31,7 @@
                 <div class="form-group">
                     <label for="sub_category_name">Sub Category Name</label>
                     <input type="text" id="sub_category_name" name="sub_category_name" class="form-control"
-                        placeholder="Enter Sub Category">
+                        placeholder="Enter Sub Category" autocomplete="off">
                 </div>
                 <button type="submit" name="submitCategoryData" id="submitCategoryData"
                     class="btn btn-primary">Submit</button>

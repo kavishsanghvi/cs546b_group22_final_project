@@ -24,6 +24,7 @@
                         {{!-- <input list="category_name_list" class="form-control" name="category_name"
                             id="category_name" placeholder="Search/Enter Category"> --}}
                         <select id="category_name_list">
+                            <option disabled>Select category</option>
                             {{#each getAllCategoryData}}
                             <option data-id="{{this.createdBy}}" data-value="{{this.category}}"> {{this.category}} - By - {{this.professorName}}
                             </option>

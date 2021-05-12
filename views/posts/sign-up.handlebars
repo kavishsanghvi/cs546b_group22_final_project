@@ -8,25 +8,25 @@
       <form action="/sign-up" method="POST" class="userform" >
         <div class="form-group">
           <label for="firstName">First Name</label>
-          <input type="text" class="form-control" id="firstName" name="firstName" aria-describedby="emailHelp" placeholder="Enter First Name">
+          <input type="text" class="form-control" id="firstName" name="firstName" aria-describedby="emailHelp" placeholder="Enter First Name"  autocomplete="off">
         </div>
         <div class="form-group">
           <label for="lastName">Last Name</label>
-          <input type="text" class="form-control" id="lastName" name="lastName" aria-describedby="emailHelp" placeholder="Enter Last Name">
+          <input type="text" class="form-control" id="lastName" name="lastName" aria-describedby="emailHelp" placeholder="Enter Last Name"  autocomplete="off">
         </div>
         <div class="form-group">
           <label for="emailAddress">emailaddress</label>
-          <input type="email" class="form-control" id="emailAddress" name="emailAddress" aria-describedby="emailHelp" placeholder="Enter email">
+          <input type="email" class="form-control" id="emailAddress" name="emailAddress" aria-describedby="emailHelp" placeholder="Enter email"  autocomplete="off">
          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" class="form-control" id="password" name="password" aria-describedby="emailHelp" placeholder="Enter password">
+          <input type="password" class="form-control" id="password" name="password" aria-describedby="emailHelp" placeholder="Enter password"  autocomplete="off">
         </div>
         <div class="form-group">
           <label for="selectUserType">Select User Type</label>
           <select class="form-control" id="selectUserType" name="selectUserType">
-            <option value="">Select</option>
+            <option value="" disabled>Select User Type</option>
             <option value="professor">Professor</option>
             <option value="student">Student</option>
           </select>
@@ -34,7 +34,15 @@
         
         <div class="form-group">
           <label for="universityName">University Name</label>
-          <input type="text" class="form-control" id="universityName" name="universityName" aria-describedby="emailHelp" placeholder="Enter University Name">
+          {{!-- <input type="text" class="form-control" id="universityName" name="universityName" aria-describedby="emailHelp" placeholder="Enter University Name"> --}}
+          <select class="form-control" id="universityName" name="universityName" aria-describedby="emailHelp">
+            <option value="" disabled> Select University</option>
+            <option>Stevens Institute of Technology</option>
+            <option>Pace University</option>
+            <option>Northeastern University</option>
+            <option>San Jose State University</option>
+            <option>Purdue University</option>
+          </select>
         </div>
         {{!-- <div class="form-group">
           <label for="dateCreated">date</label>
