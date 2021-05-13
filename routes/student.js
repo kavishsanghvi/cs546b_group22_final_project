@@ -9,8 +9,6 @@ const usersObj = data.users
 
 router.get('/', async (req, res) => {
     try {
-        console.log(req.session.user)
-        console.log("hello")
         let getAllCategoryData = await studentData.getCategoryData(req.session.user);
         res.render('posts/student', { categoriesResult: getAllCategoryData, userData: JSON.stringify(req.session.user) })
     } catch (e) {
@@ -44,6 +42,7 @@ router.get('/start-quiz/:qid', async (req, res) => {
 
 
         let quiz = await quizDataStudent.getQuiz(req.session.user, (Buffer.from(req.params.qid,'base64')).toString());
+
         res.render('posts/quiz', { title: "Quiz", quizData: quiz, quizData2: JSON.stringify(quiz), userData: JSON.stringify(req.session.user) });
     } catch (e) {
         res.render('posts/401', { title: "Error", userData: JSON.stringify(req.session.user) });

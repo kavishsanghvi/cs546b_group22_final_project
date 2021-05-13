@@ -4,8 +4,6 @@ const router = express.Router();
 const data = require("../data");
 const loginData = data.login;
 
-
-
 router.get('/', async (req, res) => {
     try {
         res.render('posts/sign-up', {title: "Sign-up"});
@@ -16,83 +14,62 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/',async (req, res)=>{
+router.post('/', async (req, res) => {
+
     try {
-        // res.render("posts/sign-up")
-        console.log("post reached")
         let flag = false;
-         if(!req.body.firstName) {
+        if (!req.body.firstName) {
             flag = true;
-             throw 'Please provide first name';
-            
-         }
-    
-         if(!req.body.lastName) {
+            throw { "result": false, statusCode: 400, "message": "", error: "Please provide first name." };
+        }
+
+        if (!req.body.lastName) {
             flag = true;
-             throw 'Please provide last name';
-            
-         }
-         if(!req.body.emailAddress){
+            throw { "result": false, statusCode: 400, "message": "", error: "Please provide last name." }
+        }
+
+        if (!req.body.emailAddress) {
             flag = true;
-            throw 'Invalid email address';  
-         }
-    
-         if(!req.body.selectUserType){
-            flag = true; 
-            throw 'Please select user type';
-         }
-         if(!req.body.password){ 
-             flag = true 
-             throw 'Enter password please';
-         }
-        //  if(!req.body.dateCreated) {flag=true
-        //      throw 'Enter a proper date';
-        //  }
-         if(!req.body.universityName){
-             flag = true;
-             throw 'Please select university.';
-         }
-         console.log(req.body.emailaddress+req.body.password)
-         let user ={
-            
-            firstName:req.body.firstName,
-            lastName:req.body.lastName,
+            throw { "result": false, statusCode: 400, "message": "", error: "Please provide valid email address." }
+        }
+
+        if (!req.body.selectUserType) {
+            flag = true;
+            throw { "result": false, statusCode: 400, "message": "", error: "Please select user type." }
+        }
+
+        if (!req.body.password) {
+            flag = true
+            throw { "result": false, statusCode: 400, "message": "", error: "Please enter password." }
+        }
+
+        if (!req.body.universityName) {
+            flag = true;
+            throw { "result": false, statusCode: 400, "message": "", error: "Please select university." }
+        }
+        let user = {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
             email: req.body.emailAddress,
-            userType:req.body.selectUserType,
+            userType: req.body.selectUserType,
             password: req.body.password,
-            universityName:req.body.universityName,
-            
-         }
-         const bloguserdata = user;
-         const {firstName, lastName, email, userType, password, universityName} = bloguserdata;
-         console.log(user)
-         const newUser = await users.createnewuser(firstName, lastName, email, userType, password, universityName);
-         console.log(newUser)
-         if(newUser == null){
-             flag = true
-         
-         }
-         if(!newUser){
-             flag = true;
-         }
+            universityName: req.body.universityName,
+        }
 
-         res.status(200).render('posts/SuccessMessage', {keyobject: newUser});
-         
-       } catch (e) {
-           console.log(e)
-         res.json({errors : e , hasErrors:true, statusCode: 400});
-         res.status(400);
-       }
-    });
-    
-    // router.get('user/:id', async (req, res) => {
-    //     try {
-    //       let user = await users.getuserbyid(req.params.id);
-    //       res.status(200).json(user);
-    //     } catch (e) {
-    //       res.status(404).json({ error: 'User not found' });
-    //     }
-    //   });
+        const bloguserdata = user;
+        const { firstName, lastName, email, userType, password, universityName } = bloguserdata;
+        const newUser = await users.createnewuser(firstName, lastName, email, userType, password, universityName);
 
+        if (newUser == null) {
+            flag = true
+        }
+        if (!newUser) {
+            flag = true;
+        }
+        res.status(newUser.statusCode?newUser.statusCode:200).render('posts/SuccessMessage', { keyobject: newUser.data, message: newUser.message, error: newUser.error })
+    } catch (e) {
+        res.status(e.statusCode ? e.statusCode : 400).render('posts/sign-up', { message: e.message, error: e.error })
+    }
+});
 
 module.exports = router;

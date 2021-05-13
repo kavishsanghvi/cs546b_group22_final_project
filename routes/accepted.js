@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
       res.redirect("/student/")
     }
     else {
-      res.render('posts/notaccepted')
+      res.render('posts/notaccepted', {userData : JSON.stringify(req.session.user)})
     }
   } catch (e) {
     res.status(404).json({ error: 'user not found' });

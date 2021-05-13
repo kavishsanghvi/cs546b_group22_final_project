@@ -6,7 +6,8 @@ const path = require('path');
 const exphbs = require('express-handlebars');
 const session = require('express-session');
 const process = require('process');
-//const fs = require('fs');
+const schedule = require('node-schedule');
+const dataObj = require('./data')
 
 app.use(session({
     name: 'AuthCookie',
@@ -37,6 +38,11 @@ process.on('rejectionHandled', (promise) => {
     console.log(reason);
     //console.log(promise);
 });
+
+schedule.scheduleJob('30 * * * * *', function(){
+    dataObj.retriveQuizData.updateReleaseAndEndTags();
+    // console.log('The answer to life, the universe, and everything!');
+  });
 
 app.listen(3000, () => {
     console.log("Server is started now!");
