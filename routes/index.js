@@ -73,7 +73,7 @@ const verifyUserLogIn = (req, res, next) => {
         // }
 
 
-        if((req.baseUrl).replace(/\//gi, "") == "dashboard"){ next(); return;} 
+        if((req.baseUrl).replace(/\//gi, "") == "dashboard"){ next(); if((req.originalUrl).replace(/\//gi, "") != "dashboardlogout"){ return } } 
         if(typeof(req.session) !=="undefined" && req.session.user.userType &&  (req.baseUrl).replace(/\//gi, "") == req.session.user.userType) next();
         else res.redirect('../'); 
       }else{

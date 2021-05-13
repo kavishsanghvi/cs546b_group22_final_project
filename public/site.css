@@ -46,7 +46,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    font-size: 25px;
   }
 
   .base-timer__label2 {
@@ -119,3 +119,15 @@ tr:nth-child(even) {
 .error-template {padding: 40px 15px;text-align: center;}
 .error-actions {margin-top:15px;margin-bottom:15px;}
 .error-actions .btn { margin-right:10px; }
+
+.questionSideSec{
+  overflow-y: auto; overflow-x: hidden; height: 250px; cursor: pointer;
+}
+.quizAnsSubmit{
+  float: right;
+  padding: 20px;
+}
+
+.timer{
+  margin-top: 30px;
+}
