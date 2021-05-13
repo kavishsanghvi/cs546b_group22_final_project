@@ -72,7 +72,7 @@ const updateStudentQuiz = async function updateStudentQuiz(userID, quizDataByStu
 }
 
 
-const submitStudentQuiz = async function submitStudentQuiz(userID, quizDataByStudent){
+const submitStudentQuiz = async (userID, quizDataByStudent) =>{
     console.log(quizDataByStudent);
     let quizId = quizDataByStudent.quizId;
     let loggedInUser = ObjectId(userID);
@@ -135,9 +135,29 @@ const calculateScore = async (studentData,type)=>{
     }
 }
 
+const autoCalculateScore = async () => {
+    let quizSubmitObj = await studentSubmittedQuizObj();
+    let studentsList = quizSubmitObj.find({endDate : ""});
+    studentsList.forEach(async (std) => {
+        
+        let startDate = new Date(std.startDate);
+        let currentDate = await utils.dateCreation();
+        let diffMs =  new Date(currentDate) - startDate;
+        let diffDays = Math.floor(diffMs / 86400000); // days
+        let diffHrs = Math.floor((diffMs % 86400000) / 3600000);
+        let diffMinss = Math.round(((diffMs % 86400000) % 3600000) / 60000);
+        let totalMin = diffDays*24*60 + diffHrs*60 + diffMinss
+        if(totalMin>std.timer){
+            await submitStudentQuiz(String(std.userid),{quizId:String(std.quizId),id : String(std._id)})        
+        }
+    });
+
+}
+
     
 module.exports = {
     getQuiz,
     updateStudentQuiz,
-    submitStudentQuiz
+    submitStudentQuiz,
+    autoCalculateScore
 }
