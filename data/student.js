@@ -14,8 +14,11 @@ const getCategoryData = async function getCategoryData(session) {
     if(getAllData.enrolledIn){
         getStudentCategories = getAllData.enrolledIn
     }
-    console.log(getAllData.enrolledIn)
-    return getStudentCategories
+    getStudentCategories1=[]
+    for(let i=0;i<getStudentCategories.length;i++){
+        getStudentCategories1[i]= (getStudentCategories[i].categoryName)
+    }
+    return getStudentCategories1
     }
 }
 catch (e) {
@@ -24,57 +27,39 @@ catch (e) {
 }
 
 const getSubCategoryOfCategory = async function getSubCategoryOfCategory(session, mainCategory) {
-    try{
-    if(session.userID){
-        let given=[]
-        let notgiven=[]
-    let parsedId = ObjectId(session.userID)
-    const quizCollection = await quizObj();
-    const submitedCollection = await submitedObj();
-    subcategory = []
-    const submited = await submitedCollection.find({ userid: parsedId }).toArray();
-    const quizData = await quizCollection.find({ category: mainCategory }).toArray();
-     for(let i=0;i<quizData.length;i++){
-         if(quizData[i].quizReleased == true && quizData[i].quizEnded == false){
-           subcategory.push(quizData[i].subCategory)
-         }
-     }
-     for(let j=0;j<submited.length;j++){         
-         for(let k=0;k<subcategory.length;k++){
-             if(submited[j].subCategory == subcategory[k]){
-                 given.push(subcategory[k])
-             }
-         }
-     }
-
-    function arr_diff (a1, a2) {
-
-        var a = [], diff = [];
-    
-        for (var i = 0; i < a1.length; i++) {
-            a[a1[i]] = true;
-        }
-    
-        for (var i = 0; i < a2.length; i++) {
-            if (a[a2[i]]) {
-                delete a[a2[i]];
-            } else {
-                a[a2[i]] = true;
+    try {
+        if (session.userID) {
+            let given = []
+            let notgiven = []
+            let parsedId = ObjectId(session.userID)
+            const quizCollection = await quizObj();
+            const submitedCollection = await submitedObj();
+            subcategory = []
+            const submited = await submitedCollection.find({ userid: parsedId }).toArray();
+            const quizData = await quizCollection.find({ category: mainCategory }).toArray();
+            for (let i = 0; i < quizData.length; i++) {
+                if (quizData[i].quizReleased == true && quizData[i].quizEnded == false) {
+                    subcategory.push({ subCategory: quizData[i].subCategory, quizID: quizData[i]._id.toString() })
+                }
             }
+            for (let j = 0; j < submited.length; j++) {
+                for (let k = 0; k < subcategory.length; k++) {
+                    if (submited[j].subCategory == subcategory[k].subCategory) {
+                        given.push({ subCategory: subcategory[k].subCategory, quizID: subcategory[k].quizID })
+                    }
+                }
+            }
+
+            notgiven = subcategory.filter(({ quizID: valueOne }) => !given.some(({ quizID: valueTwo }) => valueTwo === valueOne));
+
+            if(notgiven.length === 0)
+                return { data: notgiven, "result": true, statusCode: 200, "message": "No quizzes have been added by the professor yet!!", error: "" }
+            else if (notgiven.length > 0)
+                return { data: notgiven, "result": true, statusCode: 200, "message": "", error: "" }
         }
-    
-        for (var k in a) {
-            diff.push(k);
-        }
-        return diff;
     }
-    
-    notgiven = (arr_diff(given.sort(), subcategory.sort()));
-     return notgiven
-        }
-    }
-    catch (e){
-        return e
+    catch (e) {
+        return { "result": false, status: false, statusCode: 401, "message": "", error: "You're not authorized to perform this operation." }
     }
 }
 
