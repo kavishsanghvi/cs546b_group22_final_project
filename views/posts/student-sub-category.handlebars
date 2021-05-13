@@ -15,50 +15,14 @@
         </div>
         {{#each subCategoriesResult}}
         <ul class="list-group list-group-flush">
-          <li class="list-group-item">{{this}}</li>
-         <button type="submit" class="btn btn-primary startQuiz" data-id="609b4f5dcf19f32ee811f030"
-              data-value="{{testReleased}}" id="quizReleaseToggleID">Take Test</button>
+          <li class="list-group-item">{{this.subCategory}}</li>
+          <button type="submit" class="btn btn-primary startQuiz" data-id="{{this.quizID}}" id="takeAQuizID">Take A Test</button>
+
         </ul>
         
         {{/each}}
       </div>
-
-      {{!-- <div class="card" style="width: 18rem;">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-            content.</p>
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item"><a href="table.html">Cras justo odio</a></li>
-          <li class="list-group-item"><a href="table.html">Dapibus ac facilisis in</a></li>
-          <li class="list-group-item"><a href="table.html">Vestibulum at eros</a></li>
-        </ul>
-        <!-- <div class="card-body">
-          <a href="#" class="card-link">Card link</a>
-          <a href="#" class="card-link">Another link</a>
-        </div> -->
-        <a href="#" class="btn btn-primary">View All</a>
-      </div>
-      <div class="card" style="width: 18rem;">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-            content.</p>
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item"><a href="table.html">Cras justo odio</a></li>
-          <li class="list-group-item"><a href="table.html">Dapibus ac facilisis in</a></li>
-          <li class="list-group-item"><a href="table.html">Vestibulum at eros</a></li>
-        </ul>
-        <!-- <div class="card-body">
-          <a href="#" class="card-link">Card link</a>
-          <a href="#" class="card-link">Another link</a>
-        </div> -->
-        <a href="#" class="btn btn-primary">View All</a>
-      </div> --}}
-
-
+    {{> error-section this}}
     </div>
   </div>
 </div>
