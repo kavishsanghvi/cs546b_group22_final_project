@@ -5,6 +5,7 @@ const categoryObj = mongoCollections.categories;
 const objOfObjectID = require('mongodb').ObjectID;
 const creatingpswd = require('./bcrypt');
 const mongocall = require("mongodb");
+const utilsObj = require('./utils')
 
 const addUserData = async function addUserData(userInfo) {
     let localUsersObj = await usersObj();
@@ -121,12 +122,12 @@ async function createnewuser(firstName, lastName, email, userType, password, uni
         }
         return (false)
     }
-    if (!email || ValidateEmail(email) == false) throw "Please provide an email address or provided email address is not valid";
-    if (!password) throw "Provide a password";
-    if (!firstName || typeof firstName != 'string') throw "Provide a first name or provided first name is not string";
-    if (!lastName || typeof lastName != 'string') throw "Provide a last name or provided last name is not string";
-    if (!universityName || typeof universityName != 'string') throw "Provide a universityName or provided universityName is not string";
-    if (!userType || typeof userType != 'string') throw "Provide a usertype or provided usertype is not string";
+    if (!email || ValidateEmail(email) == false) throw { "result": false, statusCode: 400, "message": "", error: "Please provide valid email address." }
+    if (!password) throw { "result": false, statusCode: 400, "message": "", error: "Please enter password." }
+    if (!firstName || typeof firstName != 'string') throw { "result": false, statusCode: 400, "message": "", error: "Provide a first name or provided first name is not string." }
+    if (!lastName || typeof lastName != 'string') throw { "result": false, statusCode: 400, "message": "", error: "Provide a last name or provided last name is not string" }
+    if (!universityName || typeof universityName != 'string') throw { "result": false, statusCode: 400, "message": "", error: "Provide a universityName or provided universityName is not string." }
+    if (!userType || typeof userType != 'string') throw { "result": false, statusCode: 400, "message": "", error: "Provide a usertype or provided usertype is not string." }
     let isActive = false;
     if (userType.toLowerCase() == "professor") {
         isActive = true;
@@ -134,14 +135,13 @@ async function createnewuser(firstName, lastName, email, userType, password, uni
     else if (userType.toLowerCase() == "student") {
         isActive = false;
     }
-    // function isvalidDate(d){
-    //     return !isNaN((new Date(d)).getTime())                                                  //reference stackoverflow
-    //   }
-    //   if (!isvalidDate(dateCreated)) throw 'Not a proper date';
-
+    email = email.toLowerCase()
+    if (ValidateEmail(email) == true) {
+        const userCollections = await usersObj();
+        const verifyUserEmail = await userCollections.find({ email: email }).toArray();
+        if (verifyUserEmail.length > 0) throw { "result": false, statusCode: 400, "message": "", error: "Email address is already in use." }
+    }
     password = await creatingpswd.hashing(password);
-
-
     let newUser = {
         firstName: firstName,
         lastName: lastName,
@@ -150,16 +150,13 @@ async function createnewuser(firstName, lastName, email, userType, password, uni
         password: password,
         universityName: universityName,
         isActive: isActive,
-        dateCreated: "05/09/2021"
+        dateCreated: await utilsObj.dateCreationOnly("startDate")
     }
     const insertInfo = await userCollections.insertOne(newUser);
-    if (insertInfo.insertedCount === 0) throw 'Could not add user';
-
+    if (insertInfo.insertedCount === 0) throw { "result": false, statusCode: 500, "message": "", error: "Something went wrong." };
     const newId = insertInfo.insertedId;
-
     const user = await this.getuserbyid(newId.toString());
-    return user;
-
+    return { data: user, "result": true, statusCode: 200, "message": "", error: "" }
 }
 
 async function getuserbyid(id) {
