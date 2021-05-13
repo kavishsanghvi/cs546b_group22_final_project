@@ -63,7 +63,7 @@ const getQuizById = async function getQuizById(id) {
     return quizInfo;    
 }
 
-const create = async function create(startDate, endDate, category, subCategory, questionName, optionA, optionB, optionC, optionD, correctAnswer, timerEnabled, quizReleased, timer, userID) {
+const create = async function create(startDate, endDate, category, subCategory, questionName, optionA, optionB, optionC, optionD, correctAnswer, timerEnabled, quizReleased, quizEnded, timer, userID) {
     try{
         if (testString(category)['error'] == true) throw testString(category)['message']
         if (testString(subCategory)['error'] == true) throw testString(subCategory)['message']            
@@ -117,6 +117,7 @@ const create = async function create(startDate, endDate, category, subCategory, 
             timer: timer,
             isTimerEnabled: timerEnabled,
             quizReleased: quizReleased,
+            quizEnded: quizEnded,
             questions: questions,
             createdBy: ObjectId(userID)
         }

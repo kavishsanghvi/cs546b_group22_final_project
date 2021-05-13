@@ -5,14 +5,6 @@ const categoryObj = mongoCollections.categories;
 const objOfObjectID = require('mongodb').ObjectID;
 const creatingpswd = require('./bcrypt');
 const mongocall = require("mongodb");
-// const getStudentData = async function getStudentData() {
-//     const localUsersObj = await usersObj();
-//     const getAllUsersData = await localUsersObj.find({}).toArray();
-//     if (getAllUsersData.length === 0)
-//         return []
-//     if (getAllUsersData.length > 0)
-//         return JSON.parse(JSON.stringify(getAllUsersData));
-// }
 
 const addUserData = async function addUserData(userInfo) {
     let localUsersObj = await usersObj();
@@ -40,52 +32,33 @@ const getProfessorData = async function getProfessorData(session) {
 
 const getStudentRecord = async function getStudentRecord(session, studentUserIDs) {
     const localUsersObj = await usersObj();
-    // console.log("Inside User Data")
-    // console.log(studentUserIDs.length)
     const getStudentRecord = []
-    //Working Line
-    // const getStudentRecord = await localUsersObj.findOne({ _id: objOfObjectID(studentUserID) });
-    // Working above
-
     for (let i = 0; i < studentUserIDs.length; i++) {
-        // const a = studentUserIDs[i]
-        // const b = await localUsersObj.findOne({ _id: objOfObjectID(studentUserIDs[i].userid) })
-
-        // console.log(studentUserIDs[i].concat(await localUsersObj.findOne({ _id: objOfObjectID(studentUserIDs[i].userid) })))
         getStudentRecord.push(Object.assign(studentUserIDs[i], await localUsersObj.findOne({ _id: objOfObjectID(studentUserIDs[i].userid) })));
-        // getStudentRecord.push(await localUsersObj.findOne({ _id: objOfObjectID(studentUserIDs[i].userid) }));
-        // console.log(employee)
     }
-
-
-    // const getProfessorDetails = await localUsersObj.findOne({ userid: "606a4b854e01be2ba0a16ea0" });
-
-    // if (getProfessorDetails.length === 0)
-    //     return []
-    // if (getProfessorDetails.length > 0)
-    // return JSON.parse(JSON.stringify(getStudentRecord));
     return getStudentRecord;
 }
 
 const getCategoryData = async function getCategoryData(session, reqType) {
     const localCategoryObj = await categoryObj();
-    console.log(objOfObjectID(session.userID))
-    // const getAllCategoryData = await localCategoryObj.find({}).toArray();
     let getProfessorCategories = await localCategoryObj.distinct(reqType, { createdBy: objOfObjectID(session.userID) })
-    // console.log(a)
-    return getProfessorCategories
+
+    if (getProfessorCategories.length === 0)
+        return { data: getProfessorCategories, "result": true, statusCode: 200, "message": "No categories added yet. Please add a category first.", error: "" }
+    if (getProfessorCategories.length > 0)
+        return { data: getProfessorCategories, "result": true, statusCode: 200, "message": "", error: "" }
 }
 
 const getSubCategoryOfCategory = async function getSubCategoryOfCategory(session, mainCategory, subCategory) {
     const localCategoryObj = await categoryObj();
-    // const getAllCategoryData = await localCategoryObj.find({}).toArray();
     let getProfessorCategories = await localCategoryObj.distinct(subCategory, { createdBy: objOfObjectID(session.userID), category: mainCategory })
-    // console.log(a)
-    return getProfessorCategories
+    if (getProfessorCategories.length === 0)
+        return { data: getProfessorCategories, "result": true, statusCode: 200, "message": "No sub categories added yet. Please add a category first.", error: "" }
+    if (getProfessorCategories.length > 0)
+        return { data: getProfessorCategories, "result": true, statusCode: 200, "message": "", error: "" }
 }
 
 const getAllStudentUnderProfessorData = async function getAllStudentUnderProfessorData(session) {
-    // let localUsersObj = await usersObj();
     let returnDataFromProfessor = await getProfessorData(session);
     const getStudentsUnderProfessorRecord = []
     if (returnDataFromProfessor.enrolledStudents) {
@@ -94,15 +67,16 @@ const getAllStudentUnderProfessorData = async function getAllStudentUnderProfess
             for (let j = 0; j < returnDataFromProfessor.enrolledStudents[keyName].length; j++) {
                 getStudentsUnderProfessorRecord.push(returnDataFromProfessor.enrolledStudents[keyName][j])
             }
-            // console.log(returnDataFromProfessor.enrolledStudents[i]);
         }
         let returnStudentData = await getOneStudentRecord(session, getStudentsUnderProfessorRecord);
-        // const getAllCategoryData = await localCategoryObj.find({}).toArray();
-        // let getInActiveUserData = await localUsersObj.find({isActive: false}).toArray();
-        // console.log(a)
-        return returnStudentData
+        // To check the new return below line is working:
+        // return returnStudentData
+        if (returnStudentData.length === 0)
+            return { data: returnStudentData, "result": true, statusCode: 200, "message": "No Record Found!!", error: "" }
+        if (returnStudentData.length > 0)
+            return { data: returnStudentData, "result": true, statusCode: 200, "message": "", error: "" }
     } else
-        throw { "result": false, "message": "No students enrolled yet!!", error: "No students enrolled yet!!" };
+        throw { "result": false, statusCode: 404, "message": "", error: "No students enrolled yet!!" };
 }
 
 const getOneStudentRecord = async function getOneStudentRecord(session, studentUserIDs) {
@@ -113,24 +87,6 @@ const getOneStudentRecord = async function getOneStudentRecord(session, studentU
     return getStudentRecord;
 }
 
-// const getIsActiveFalseUserData = async function getIsActiveFalseUserData() {
-// let localUsersObj = await usersObj();
-// let returnDataFromProfessor = await getProfessorData();
-// const getStudentsUnderProfessorRecord = []
-// for(let i = 0; i<Object.keys(returnDataFromProfessor.enrolledStudents).length; i++){
-//     let keyName = Object.keys(returnDataFromProfessor.enrolledStudents)[i];
-//     for(let j = 0; j<returnDataFromProfessor.enrolledStudents[keyName].length; j++){
-//         getStudentsUnderProfessorRecord.push(returnDataFromProfessor.enrolledStudents[keyName][j])
-//     }
-//     // console.log(returnDataFromProfessor.enrolledStudents[i]);
-// }
-
-// // const getAllCategoryData = await localCategoryObj.find({}).toArray();
-// // let getInActiveUserData = await localUsersObj.find({isActive: false}).toArray();
-// // console.log(a)
-// return getStudentsUnderProfessorRecord
-// }
-
 const fetchStudentData = async function fetchStudentData(id) {
     let localUsersObj = await usersObj();
     return await localUsersObj.findOne({ _id: objOfObjectID(id) })
@@ -140,18 +96,21 @@ const updateStudentStatus = async function updateStudentStatus(session, id) {
     if (session.userType === "professor") {
         let getStudentData = await fetchStudentData(id);
         let result = { status: false, message: "" }
-        // if (Object.keys(getStudentData).length > 0) {
         if (getStudentData.isActive == false) {
             let localUsersObj = await usersObj();
             const updateisActiveIntoDB = await localUsersObj.updateOne({ _id: objOfObjectID(id) }, { $set: { "isActive": true } });
             if (updateisActiveIntoDB.modifiedCount === 0)
-                return { status: false, message: "Not Verified!!" }
+                return { data: updateisActiveIntoDB, "result": false, status: false, statusCode: 400, "message": "Something went wrong!!", error: "" }
+            // { status: false, message: "Not Verified!!" }
             if (updateisActiveIntoDB.modifiedCount === 1)
-                return { status: true, message: "Verified Successfully!!" }
+                return { data: updateisActiveIntoDB, "result": true, status: true, statusCode: 200, "message": "Student verified successfully!!", error: "" }
+            // { status: true, message: "Verified Successfully!!" }
         } else {
-            return { status: false, message: "Not Verified!!" }
+            return { "result": false, status: false, statusCode: 400, "message": "Something went wrong!!", error: "" }
+            // { status: false, message: "Not Verified!!" }
         }
-    } else throw `You're not authorized to perform this operation.`
+    } else throw { "result": false, status: false, statusCode: 401, "message": "", error: "You're not authorized to perform this operation." }
+    // `You're not authorized to perform this operation.`
 }
 
 async function createnewuser(firstName, lastName, email, userType, password, universityName) {
@@ -283,12 +242,10 @@ const getAllCategoryData = async function getAllCategoryData(session, reqType) {
 }
 
 module.exports = {
-    // getStudentData,
     addUserData,
     getStudentRecord,
     getCategoryData,
     getSubCategoryOfCategory,
-    // getIsActiveFalseUserData,
     getProfessorData,
     getAllStudentUnderProfessorData,
     updateStudentStatus,
