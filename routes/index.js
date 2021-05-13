@@ -26,7 +26,7 @@ const constructorMethod = (app) => {
   app.use('/professor', verifyUserLogIn, professorRoutes);
   app.use('/sign-up',verifyUserLogIn, signUpRoutes);
 
-  app.get('/', (req, res) => {
+  app.get('/', verifyUserLogIn, (req, res) => {
     // res.sendFile(path.resolve('static/index.html'));
     res.render('posts/index', { userData: JSON.stringify(req.session.user) })
   });
@@ -62,7 +62,7 @@ const verifyUserLogIn = (req, res, next) => {
         }
 
 
-        if((req.baseUrl).replace(/\//gi, "") == "login" || (req.baseUrl).replace(/\//gi, "") == "sign-up"){
+        if((req.baseUrl).replace(/\//gi, "") == "" || (req.baseUrl).replace(/\//gi, "") == "login" || (req.baseUrl).replace(/\//gi, "") == "sign-up"){
           if(req.session.user.userType == "professor") res.redirect('./professor/category');
           console.log(req.session.user.userType);
           if(req.session.user.userType == "student") res.redirect('./student');
@@ -77,15 +77,17 @@ const verifyUserLogIn = (req, res, next) => {
         if(typeof(req.session) !=="undefined" && req.session.user.userType &&  (req.baseUrl).replace(/\//gi, "") == req.session.user.userType) next();
         else res.redirect('../'); 
       }else{
-        if(((req.baseUrl).replace(/\//gi, "") == "login" || (req.baseUrl).replace(/\//gi, "") == "sign-up")){
+        if(((req.baseUrl).replace(/\//gi, "") == "login" || (req.baseUrl).replace(/\//gi, "") == "sign-up" || (req.baseUrl).replace(/\//gi, "") == "")){
           next();
+          return;
         }else{
           res.redirect('../')
         }
       }
     }else{
-      if(((req.baseUrl).replace(/\//gi, "") == "login" || (req.baseUrl).replace(/\//gi, "") == "sign-up")){
+      if(((req.baseUrl).replace(/\//gi, "") == "login" || (req.baseUrl).replace(/\//gi, "") == "sign-up") || (req.baseUrl).replace(/\//gi, "") == ""){
         next();
+        return;
       }else{
         res.redirect('../');
       }

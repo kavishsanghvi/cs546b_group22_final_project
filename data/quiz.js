@@ -1,3 +1,4 @@
+const arrayShuffle = require('array-shuffle');
 const mongoCollections = require('../config/mongoCollections');
 const utils = require("./utils");
 const ObjectId = require('mongodb').ObjectId;
@@ -20,11 +21,30 @@ const getQuiz = async function getQuiz(loggedInUser, quizID){
         delete quizData.questions;
         
         let questionsWOAns = [];
-        questions.forEach(element => {
+        const randomArray = await arrayShuffle([1,2,3,4]);
+        questions.forEach((element) => {
+            let el = element;
             delete element.correctAnswer;
+            // element.answerChoice1 = el['answerChoice'+randomArray[0]]
+            // element.answerChoice2 = el['answerChoice'+randomArray[1]]
+            // element.answerChoice3 = el['answerChoice'+randomArray[2]]
+            // element.answerChoice4 = el['answerChoice'+randomArray[3]]
+
             questionsWOAns.push(element);
         });
-        quizData.questions = questionsWOAns;
+
+        // for (const element of questions) {
+        //     let el = element;
+        //     await delete element.correctAnswer;
+        //     element.answerChoice1 = el['answerChoice'+randomArray[0]]
+        //     element.answerChoice2 = el['answerChoice'+randomArray[1]]
+        //     element.answerChoice3 = el['answerChoice'+randomArray[2]]
+        //     element.answerChoice4 = el['answerChoice'+randomArray[3]]
+
+        //     await questionsWOAns.push(element);
+        //   }
+
+        quizData.questions = await arrayShuffle(questionsWOAns);
         quizData.endDate = "";
         const addQuizInStudentRes = await addQuizInStudent(quizData,userId);
         if(addQuizInStudentRes && addQuizInStudentRes === true)
@@ -42,6 +62,8 @@ const addQuizInStudent = async function addQuizInStudent(quizData, userID){
     delete quizData._id;
     quizData.startDate = await utils.dateCreation();
     let quizObjData = await studentSubmittedQuizObj();
+    let questionCount = quizData.questions.length;
+    quizData.totalQuizScore = questionCount;
 
     let addQuizInStudentRes = await quizObjData.insertOne(quizData);
     if (addQuizInStudentRes.insertedCount === 0) throw 'Could not add data in student quiz';
@@ -72,7 +94,7 @@ const updateStudentQuiz = async function updateStudentQuiz(userID, quizDataByStu
 }
 
 
-const submitStudentQuiz = async function submitStudentQuiz(userID, quizDataByStudent){
+const submitStudentQuiz = async (userID, quizDataByStudent) =>{
     console.log(quizDataByStudent);
     let quizId = quizDataByStudent.quizId;
     let loggedInUser = ObjectId(userID);
@@ -93,7 +115,7 @@ const submitStudentQuiz = async function submitStudentQuiz(userID, quizDataByStu
             if(updateScore.modifiedCount >= 1 &&  updateScore.matchedCount >=1){
                 return {message:"Quiz Submitted", statusCode:200}
             }else if(updateScore.modifiedCount ===0 &&  updateScore.matchedCount >=1){
-                throw {message:"Modified content not found, we are unable to update book!!", statusCode:400}
+                throw {message:"Modified content not found, we are unable to update record!!", statusCode:400}
             }else{
                 throw {message:"Something went wrong!!", statusCode:500}
             }
@@ -135,9 +157,29 @@ const calculateScore = async (studentData,type)=>{
     }
 }
 
+const autoCalculateScore = async () => {
+    let quizSubmitObj = await studentSubmittedQuizObj();
+    let studentsList = quizSubmitObj.find({endDate : ""});
+    studentsList.forEach(async (std) => {
+        
+        let startDate = new Date(std.startDate);
+        let currentDate = await utils.dateCreation();
+        let diffMs =  new Date(currentDate) - startDate;
+        let diffDays = Math.floor(diffMs / 86400000); // days
+        let diffHrs = Math.floor((diffMs % 86400000) / 3600000);
+        let diffMinss = Math.round(((diffMs % 86400000) % 3600000) / 60000);
+        let totalMin = diffDays*24*60 + diffHrs*60 + diffMinss
+        if(totalMin>std.timer){
+            await submitStudentQuiz(String(std.userid),{quizId:String(std.quizId),id : String(std._id)})        
+        }
+    });
+
+}
+
     
 module.exports = {
     getQuiz,
     updateStudentQuiz,
-    submitStudentQuiz
+    submitStudentQuiz,
+    autoCalculateScore
 }

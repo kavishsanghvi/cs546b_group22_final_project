@@ -24,6 +24,7 @@
 
 
     //Devendra
+    let isAutoSubmit = false;
     let QUIZ_TIME;
     if (localStorage.getItem('timer') && !isNaN(localStorage.getItem('timer')) && (localStorage.getItem('timer') !== "")) {
         QUIZ_TIME = localStorage.getItem('timer');
@@ -63,14 +64,15 @@
             //localStorage.setItem('timer', Number(timeLeft) / 60);
             //console.log( Number(localStorage.getItem('timer'))/60);
             //alert(timeLeft);
-            if (timeLeft === 0) {
-                onTimesUp();
-            }
-            if (timeLeft === 3500) {
-                $("#alertWarning").html("5 Minute remaining.").css('color','red').fadeOut(10000);
+
+            if (timeLeft === 300) {
+                $("#alertWarning").html("5 Minute remaining.").css('color','green').fadeOut(10000);
             }
 
-            if (timeLeft === 3300) {
+            
+            if (timeLeft === 0) {
+                onTimesUp();
+                isAutoSubmit = true;
                 $("#alertWarning").html("Time up your quiz will auto submit.").css('color','red').fadeOut(5000);
                 $("#submitButton").trigger("click");
             }
@@ -102,6 +104,7 @@
 $("#question0").css("display", "block");
 $("#submitButton").hide();
 
+
 let questionCount = (JSON.parse(localStorage.getItem("quizDataStr"))).questions.length;
 for(let i=1; i<=questionCount; i++){
     $("#questionQuiclLink").append('<li class="list-group-item changeQuestion" data-id="'+(Number(i)-1)+'" >Question('+i+') </li>');
@@ -113,14 +116,12 @@ $(".changeQuestion").click(function (event){
         $("#question"+i+"").hide();
     }
     $("#question"+questionId+"").show();
+    $('.container').bind("cut copy paste contextmenu",function(e) {
+        e.preventDefault();
+    });
 })
 
 $(".quizSubmit").submit(function (event) {
-    // let rr = confirm("Please press ok if you are submitting quiz.");
-    // if(rr == false){
-    //     event.preventDefault();
-    //     return;
-    // } 
 
     let qID = $(this).attr("id");
     let id1 = $("#question" + qID);
@@ -162,6 +163,10 @@ $(".quizSubmit").submit(function (event) {
 
         id1.css("display", "none");
         id2.css("display", "block");
+        $('.container').bind("cut copy paste contextmenu",function(e) {
+            e.preventDefault();
+        });
+        
         if (showsData) {} else {}
         //alert(JSON.stringify(showsData));
     });
@@ -176,11 +181,15 @@ $(".quizSubmit").submit(function (event) {
 
 
 $("#submitButton").click(function (event) {
-    let rr = confirm("Please press ok if you are submitting quiz.");
-    if(rr == false){
+    if(!isAutoSubmit){
+        let rr = confirm("Please press ok if you are submitting quiz.");
+        if(rr == false){
+            event.preventDefault();
+            return;
+        } 
         event.preventDefault();
-        return;
-    } 
+    }
+
     let quizData = (JSON.parse(localStorage.getItem("quizDataStr")));
 
     let request = $.ajax({
@@ -205,7 +214,27 @@ $("#submitButton").click(function (event) {
        // if(isLastQuiz) 
        //location.reload();
        //if(isLastQuiz) 
-       location.reload();
+       //location.reload();
+       let html = `<div class="col-sm-8">
+                    <div class="error-template">
+                            <h1>
+                                congratulations !!</h1>
+                            <h2>
+                                Your quiz has been submitted, your score will be available shortly. </h2>
+                            <div class="error-details">
+                                You will be redirect on dashboard in 3-4 sec..
+                            </div>
+                        </div>
+                </div>`;
+        
+        $(".showSuccessContent").html(html);
+
+        window.setTimeout(function(){
+
+            // Move to a new location or you can do something else
+            window.location.href = "../";
+    
+        }, 5000);
         if (showsData) {} else {}
     });
 
@@ -217,3 +246,10 @@ $("#submitButton").click(function (event) {
     event.preventDefault();
 })
 
+
+$(document).ready(function(){
+    $('.container').bind("cut copy paste contextmenu",function(e) {
+        e.preventDefault();
+    });
+});
+    
