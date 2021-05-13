@@ -10,6 +10,7 @@
         <a href="/professor/allStudents" class="btn btn-primary dashboard-button">Students List</a>
         <a href="/professor/allquiz" class="btn btn-primary dashboard-button">All Quiz</a> 
       </div>
+      {{> error-section this}}
       {{#if categoriesResult.length }}
       {{#each categoriesResult}}
       <div class="card" style="width: 18rem;">
