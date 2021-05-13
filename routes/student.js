@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const data = require("../data");
+const buffer = require('Buffer');
 const studentData = data.student;
 const dashbaordData = data.dashboard;
 const quizDataStudent = data.quiz;
@@ -34,10 +35,14 @@ router.get('/category/:category', async (req, res) => {
     }
 });
 
-router.get('/start-quiz', async (req, res) => {
+router.get('/start-quiz/:qid', async (req, res) => {
     try {
-        console.log(req.session.user);
-        let quiz = await quizDataStudent.getQuiz(req.session.user, "609b4f5dcf19f32ee811f030");
+        //console.log(Buffer.from(req.params.qid, 'base64').toString());
+        console.log((Buffer.from(req.params.qid,'base64')).toString());
+
+
+        let quiz = await quizDataStudent.getQuiz(req.session.user, (Buffer.from(req.params.qid,'base64')).toString());
+
         res.render('posts/quiz', { title: "Quiz", quizData: quiz, quizData2: JSON.stringify(quiz), userData: JSON.stringify(req.session.user) });
     } catch (e) {
         res.render('posts/401', { title: "Error", userData: JSON.stringify(req.session.user) });
