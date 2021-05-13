@@ -16,7 +16,7 @@
         {{#each subCategoriesResult}}
         <ul class="list-group list-group-flush">
           <li class="list-group-item">{{this}}</li>
-         <button type="submit" class="btn btn-primary quizReleaseToggleClass" data-id="{{_id}}"
+         <button type="submit" class="btn btn-primary startQuiz" data-id="609b4f5dcf19f32ee811f030"
               data-value="{{testReleased}}" id="quizReleaseToggleID">Take Test</button>
         </ul>
         
@@ -62,3 +62,14 @@
     </div>
   </div>
 </div>
+<script>
+ 
+
+  $(".startQuiz").click(function (event){
+      let qid = $(this).data("id");
+      let encod = window.btoa(qid);
+      window.location.replace("../start-quiz/"+encod);
+      event.preventDefault();
+  })
+
+</script>

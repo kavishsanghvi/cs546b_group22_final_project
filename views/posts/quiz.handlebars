@@ -13,7 +13,9 @@
             <h2>
                 {{quizData.category}} : {{quizData.subCategory}}
                 <p class="timer" id="app"></p>
+                <div class="quizAnsSubmit">
                 <button type="button" id="submitButton" class="btn btn-primary">Submit Quiz</button>
+                </div>
             </h2>
             <div id="alertWarning"></div>
             {{#each quizData.questions}}
@@ -23,41 +25,44 @@
                         <p>Question : {{this.question}}</p>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="answerChoice{{@index}}" id="exampleRadios1"
+                        <input class="form-check-input" type="radio" name="answerChoice{{@index}}" id="answerChoice1{{@index}}"
                             value="{{this.answerChoice1}}">
-                        <label class="form-check-label" for="exampleRadios1">
+                        <label class="form-check-label" for="answerChoice1{{@index}}">
                             A : {{this.answerChoice1}}
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="answerChoice{{@index}}" id="exampleRadios2"
+                        <input class="form-check-input" type="radio" name="answerChoice{{@index}}" id="answerChoice2{{@index}}"
                             value="{{this.answerChoice2}}">
-                        <label class="form-check-label" for="exampleRadios2">
+                        <label class="form-check-label" for="answerChoice2{{@index}}">
                             B : {{this.answerChoice2}}
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="answerChoice{{@index}}" id="exampleRadios3"
+                        <input class="form-check-input" type="radio" name="answerChoice{{@index}}" id="answerChoice3{{@index}}"
                             value="{{this.answerChoice3}}">
-                        <label class="form-check-label" for="exampleRadios3">
+                        <label class="form-check-label" for="answerChoice3{{@index}}">
                             C : {{this.answerChoice3}}
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="answerChoice{{@index}}" id="exampleRadios4"
+                        <input class="form-check-input" type="radio" name="answerChoice{{@index}}" id="answerChoice4{{@index}}"
                             value="{{this.answerChoice4}}">
-                        <label class="form-check-label" for="exampleRadios4">
+                        <label class="form-check-label" for="answerChoice4{{@index}}">
                             D : {{this.answerChoice4}}
                         </label>
                     </div>
-                    <button type="submit" data-id="{{@index}}" class="btn btn-primary">Submit Answer</button>
+                    <div class="quizAnsSubmit">
+                    <button type="submit" data-id="{{@index}}" class="btn btn-primary">Save Answer</button>
+                    </div>
+                        
                 </form>
             </div>
             {{/each}}
             <input type="hidden" value="{{quizData2}}" name="quizDataStr" id="quizDataStr" />
         </div>
-        <div class="col-sm-2" style="overflow-y: scroll; overflow-x: hidden; height: 157px;">
-            <div class="card" style="width: 18rem;">
+        <div class="col-sm-2 questionSideSec">
+            <div class="card" style="width: 10rem;">
                 <ul class="list-group list-group-flush" id="questionQuiclLink">
                 </ul>
             </div>

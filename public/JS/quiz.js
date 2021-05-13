@@ -116,6 +116,12 @@ $(".changeQuestion").click(function (event){
 })
 
 $(".quizSubmit").submit(function (event) {
+    // let rr = confirm("Please press ok if you are submitting quiz.");
+    // if(rr == false){
+    //     event.preventDefault();
+    //     return;
+    // } 
+
     let qID = $(this).attr("id");
     let id1 = $("#question" + qID);
     let id2 = $("#question" + (Number(qID) + 1));
@@ -137,7 +143,7 @@ $(".quizSubmit").submit(function (event) {
     }
 
     var request = $.ajax({
-        url: "./quiz-student-update",
+        url: "../quiz-student-update",
         method: "POST",
         data: {
             "questionId": questionId,
@@ -170,10 +176,15 @@ $(".quizSubmit").submit(function (event) {
 
 
 $("#submitButton").click(function (event) {
+    let rr = confirm("Please press ok if you are submitting quiz.");
+    if(rr == false){
+        event.preventDefault();
+        return;
+    } 
     let quizData = (JSON.parse(localStorage.getItem("quizDataStr")));
 
     let request = $.ajax({
-        url: "./quiz-student-submit",
+        url: "../quiz-student-submit",
         method: "POST",
         data: {
             "quizId" : quizData.quizId,

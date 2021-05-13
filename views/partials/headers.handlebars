@@ -23,32 +23,32 @@
                     let logoutPath;
                     if(len==0){
                         path = "./professor/";
-                        logoutPath = "../dashboard/logout";
+                        logoutPath = "../dashboard/";
                     } 
 
                     if(len==1){
                         path = "./";
-                        logoutPath = "../dashboard/logout";
+                        logoutPath = "../dashboard/";
                     } 
                     
                     if(len==2){
                         path = "./";
-                        logoutPath = "../../dashboard/logout";
+                        logoutPath = "../../dashboard/";
                     } 
 
                     if(len==3){
                         path = "./";
-                        logoutPath = "../../../dashboard/logout";
+                        logoutPath = "../../../dashboard/";
                     } 
 
                     let menu = `<li class="nav-item" id="welcomName">
-                                    <a class="nav-link" href="#">${"Hi, "+loggedInUser.firstName}</a>
+                                    <a class="nav-link" href="${logoutPath}userProfile">${"Hi, "+loggedInUser.firstName}</a>
                                 </li>
                                 <li class="nav-item loggedInProfessor">
                                     <a class="nav-link" href="${path+"category"}">Dashboard</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="${logoutPath}">Logout</a>
+                                    <a class="nav-link" href="${logoutPath}logout">Logout</a>
                                 </li>
                                 `;
                     $("#menu-list").html(menu);
@@ -59,28 +59,28 @@
                     let logoutPath;
                     if(len==0){
                         path = "./student/";
-                        logoutPath = "../dashboard/logout";
+                        logoutPath = "../dashboard/";
                     } 
 
                     if(len==1){
                         path = "./";
-                        logoutPath = "../dashboard/logout";
+                        logoutPath = "../dashboard/";
                     }
 
                     if(len==2){
                         path = "./";
-                        logoutPath = "../dashboard/logout";
+                        logoutPath = "../dashboard/";
                     } 
 
                     if(len==3){
                         path = "../";
-                        logoutPath = "../../dashboard/logout";
+                        logoutPath = "../../dashboard/";
                     } 
 
                     let menu;
                     if(loggedInUser.isActive === true){
                         menu = `<li class="nav-item" id="welcomName">
-                                    <a class="nav-link" href="#">${"Hi, "+loggedInUser.firstName}</a>
+                                    <a class="nav-link" href="${logoutPath}userProfile">${"Hi, "+loggedInUser.firstName}</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="${path}">Dashboard</a>
@@ -89,7 +89,7 @@
                                     <a class="nav-link" href="${path+"my-score"}">View Score</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="${logoutPath}">Logout</a>
+                                    <a class="nav-link" href="${logoutPath}logout">Logout</a>
                                 </li>`;
                     }else if(loggedInUser.isActive === false){
                         menu = `<li class="nav-item">
