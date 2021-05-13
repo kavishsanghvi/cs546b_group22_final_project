@@ -8,8 +8,6 @@ const usersObj = data.users
 
 router.get('/', async (req, res) => {
     try {
-        console.log(req.session.user)
-        console.log("hello")
         let getAllCategoryData = await studentData.getCategoryData(req.session.user);
         res.render('posts/student', { categoriesResult: getAllCategoryData, userData: JSON.stringify(req.session.user) })
     } catch (e) {
@@ -39,7 +37,7 @@ router.get('/category/:category', async (req, res) => {
 router.get('/start-quiz', async (req, res) => {
     try {
         console.log(req.session.user);
-        let quiz = await quizDataStudent.getQuiz(req.session.user, "609841c8a3e28f392ccc5ab4");
+        let quiz = await quizDataStudent.getQuiz(req.session.user, "609b4f5dcf19f32ee811f030");
         res.render('posts/quiz', { title: "Quiz", quizData: quiz, quizData2: JSON.stringify(quiz), userData: JSON.stringify(req.session.user) });
     } catch (e) {
         res.render('posts/401', { title: "Error", userData: JSON.stringify(req.session.user) });

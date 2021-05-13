@@ -83,23 +83,23 @@ const variableSanityCheck = async (value, type, elementName, minLength, maxLengt
 const dateCreationOnly = async function dateCreationOnly(dateType) {
     let date_ob = new Date();
     if (dateType === "startDate") {
-
         // current date
         // adjust 0 before single digit date
-        var date = ("0" + date_ob.getDate() + "").slice(-1);
-
+        var date = ("0" + date_ob.getDate()).slice(-2);
+        // ("0" + date_ob.getDate() + "").slice(-1);
 
     } else if (dateType === "endDate") {
-        var date = ("0" + (date_ob.getDate() - 1) + "").slice(-1);
+        var date = ("0" + (date_ob.getDate()- 1) + "").slice(-2);
+        // ("0" + (date_ob.getDate() - 1) + "").slice(-1);
     }
     // current month
-    let month = ("0" + (date_ob.getMonth() + 1)).slice(-1);
+    let month = ("0" + (date_ob.getMonth() + 1)).slice(-2)
+    // ("0" + (date_ob.getMonth() + 1)).slice(-2);
 
     // current year
     let year = date_ob.getFullYear();
 
-
-    console.log(month + "/" + date + "/" + year);
+    // console.log(month + "/" + date + "/" + year);
     return month + "/" + date + "/" + year;
 }
 
