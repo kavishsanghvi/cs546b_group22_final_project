@@ -1,0 +1,31 @@
+{{> headers this}}
+
+
+<div class="container" style="margin-top:30px">
+  <div class="row justify-content-md-center row-custom">
+    <div class="col-sm-8">
+      <div class="error-template">
+                <h1>
+                    Yay..</h1>
+                <h2>
+                    Your quiz has been submitted, your score will be available shortly. </h2>
+                <div class="error-details">
+                    You will be redirect on dashboard in 3-4 sec..
+                </div>
+            </div>
+    </div>
+  </div>
+</div>
+<script>
+  localStorage.clear();
+
+  window.addEventListener( "pageshow", function ( event ) {
+  var historyTraversal = event.persisted || 
+                         ( typeof window.performance != "undefined" && 
+                              window.performance.navigation.type === 2 );
+  if ( historyTraversal ) {
+    // Handle page restore.
+    window.location.reload();
+  }
+});
+</script>
