@@ -69,8 +69,10 @@ const updateTimer = async function updateTimer(loggedInUser, quizID, tagName) {
 
 const updateReleaseAndEndTags = async function updateReleaseAndEndTags(loggedInUser) {
     const localQuizDataObj = await quizDataObj();
-    await localQuizDataObj.updateMany({ $and: [{ startDate: await utilsObj.dateCreationOnly("startDate"), quizReleased: false }] }, { $set: { quizReleased: true } });
-    await localQuizDataObj.updateMany({ $and: [{ endDate: await utilsObj.dateCreationOnly("endDate"), quizEnded: false }] }, { $set: { quizEnded: true } });
+    let todayDate = await utilsObj.dateCreationOnly("startDate");
+    let endDate = await utilsObj.dateCreationOnly("endDate");
+    await localQuizDataObj.updateMany({ $and: [{ startDate: todayDate, quizReleased: false }] }, { $set: { quizReleased: true } });
+    await localQuizDataObj.updateMany({ $and: [{ endDate: endDate, quizEnded: false }] }, { $set: { quizEnded: true } });
 }
 
 module.exports = {
