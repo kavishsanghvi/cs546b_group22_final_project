@@ -3,14 +3,14 @@ const quizObj = mongoCollections.quiz;
 const categoryObj = mongoCollections.users ;
 const submitedObj = mongoCollections.studentSubmittedQuiz;
 let { ObjectId } = require('mongodb');
-
+const utilsObj = require('./utils')
 
 const getCategoryData = async function getCategoryData(session) {
-   try{   
    if(session.userID){
     let parsedId = ObjectId(session.userID)
     const categoryCollection = await categoryObj();
    const getAllData = await categoryCollection.findOne({ _id: parsedId });
+   if(getAllData.isActive === false) throw { "result": false, status: false, statusCode: 401, "message": "", error: "You're enrollment is not yet confirmed by any professor." }
     if(getAllData.enrolledIn){
         getStudentCategories = getAllData.enrolledIn
     }
@@ -21,14 +21,13 @@ const getCategoryData = async function getCategoryData(session) {
     return getStudentCategories1
     }
 }
-catch (e) {
-    return e
-}
-}
 
 const getSubCategoryOfCategory = async function getSubCategoryOfCategory(session, mainCategory) {
     try {
         if (session.userID) {
+            let checkmainCategory = await utilsObj.variableSanityCheck(mainCategory, "string", "Category");
+            if (checkmainCategory.result) mainCategory = checkmainCategory.value
+            else throw { "result": false, statusCode: 400, "message": "", error: "Please provide a valid data in string.", userData: null }
             let given = []
             let notgiven = []
             let parsedId = ObjectId(session.userID)
@@ -44,7 +43,7 @@ const getSubCategoryOfCategory = async function getSubCategoryOfCategory(session
             }
             for (let j = 0; j < submited.length; j++) {
                 for (let k = 0; k < subcategory.length; k++) {
-                    if (submited[j].subCategory == subcategory[k].subCategory) {
+                    if (submited[j].quizId.toString() == subcategory[k].quizID) {
                         given.push({ subCategory: subcategory[k].subCategory, quizID: subcategory[k].quizID })
                     }
                 }

@@ -131,6 +131,30 @@ const updateStudentStatus = async function updateStudentStatus(session, id) {
 }
 
 async function createnewuser(firstName, lastName, email, userType, password, universityName) {
+    let checkFirstName = await utilsObj.variableSanityCheck(firstName, "string", "First Name");
+    if (checkFirstName.result) firstName = checkFirstName.value
+    else throw { "result": false, statusCode: 400, "message": "", error: "Provide a first name or provided first name is not string.", userData: null }
+
+    let checkLastName = await utilsObj.variableSanityCheck(lastName, "string", "Last Name");
+    if (checkLastName.result) lastName = checkLastName.value
+    else throw { "result": false, statusCode: 400, "message": "", error: "Provide a last name or provided last name is not string.", userData: null }
+
+    let checkEmail = await utilsObj.variableSanityCheck(email, "string", "Email");
+    if (checkEmail.result) email = checkEmail.value
+    else throw { "result": false, statusCode: 400, "message": "", error: "Please provide valid email address.", userData: null }
+
+    let checkPassword = await utilsObj.variableSanityCheck(password, "string", "Password");
+    if (checkPassword.result) password = checkPassword.value
+    else throw { "result": false, statusCode: 400, "message": "", error: "Please enter password.", userData: null }
+
+    let checkUserType = await utilsObj.variableSanityCheck(userType, "string", "User Type");
+    if (checkUserType.result) userType = checkUserType.value
+    else throw { "result": false, statusCode: 400, "message": "", error: "Provide a usertype or provided usertype is not string.", userData: null }
+
+    let checkUniversityName = await utilsObj.variableSanityCheck(universityName, "string", "User Type");
+    if (checkUniversityName.result) universityName = checkUniversityName.value
+    else throw { "result": false, statusCode: 400, "message": "", error: "Provide a usertype or provided usertype is not string.", userData: null }
+
     const userCollections = await usersObj();
     function ValidateEmail(mail) {
         if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail)) {
@@ -138,12 +162,6 @@ async function createnewuser(firstName, lastName, email, userType, password, uni
         }
         return (false)
     }
-    if (!email || ValidateEmail(email) == false) throw { "result": false, statusCode: 400, "message": "", error: "Please provide valid email address." }
-    if (!password) throw { "result": false, statusCode: 400, "message": "", error: "Please enter password." }
-    if (!firstName || typeof firstName != 'string') throw { "result": false, statusCode: 400, "message": "", error: "Provide a first name or provided first name is not string." }
-    if (!lastName || typeof lastName != 'string') throw { "result": false, statusCode: 400, "message": "", error: "Provide a last name or provided last name is not string" }
-    if (!universityName || typeof universityName != 'string') throw { "result": false, statusCode: 400, "message": "", error: "Provide a universityName or provided universityName is not string." }
-    if (!userType || typeof userType != 'string') throw { "result": false, statusCode: 400, "message": "", error: "Provide a usertype or provided usertype is not string." }
     let isActive = false;
     if (userType.toLowerCase() == "professor") {
         isActive = true;
@@ -188,6 +206,14 @@ async function getuserbyid(id) {
 }
 
 const enrollNow = async function enrollNow(session, professorID, categoryName) {
+    let checkID = await utilsObj.variableSanityCheck(professorID, "ObjectID", "ID");
+    if (checkID.result) professorID = checkID.value
+    else throw { "result": false, statusCode: 400, "message": "", error: "Please provide a valid ID.", userData: null }
+
+    let checkcategoryName = await utilsObj.variableSanityCheck(categoryName, "string", "Category");
+    if (checkcategoryName.result) categoryName = checkcategoryName.value
+    else throw { "result": false, statusCode: 400, "message": "", error: "Please provide a valid data in string.", userData: null }
+
     let localUsersObj = await usersObj();
 
     if (session.userID) {
@@ -231,6 +257,7 @@ const enrollNow = async function enrollNow(session, professorID, categoryName) {
 }
 
 const getAllCategoryData = async function getAllCategoryData(session, reqType) {
+    if(!session.userID) throw { "result": false, status: false, statusCode: 401, "message": "", error: "You're not authorized to perform this operation." }
     const localCategoryObj = await categoryObj();
     let allCategoryData = await localCategoryObj.aggregate([
         {
@@ -243,7 +270,6 @@ const getAllCategoryData = async function getAllCategoryData(session, reqType) {
     let universityCategories = []
     allCategoryData.forEach(async (element) => {
 
-        console.log(element._id.category)
         if (element._id.universityDomain) {
             if (element._id.universityDomain === session.universityDomain) {
                 universityCategories.push(element._id)
@@ -251,7 +277,11 @@ const getAllCategoryData = async function getAllCategoryData(session, reqType) {
         }
     });
 
-    return universityCategories
+    if (Object.keys(universityCategories).length === 0)
+        return { data: universityCategories, "result": true, statusCode: 200, "message": "No Record Found!!", error: "" }
+    if (Object.keys(universityCategories).length > 0)
+        return { data: universityCategories, "result": true, statusCode: 200, "message": "", error: "" }
+    // return universityCategories
 }
 
 module.exports = {

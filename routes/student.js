@@ -6,29 +6,35 @@ const studentData = data.student;
 const dashbaordData = data.dashboard;
 const quizDataStudent = data.quiz;
 const usersObj = data.users
+const xss = require('xss');
+const utilsObj = require('../data/utils')
 
 router.get('/', async (req, res) => {
     try {
         let getAllCategoryData = await studentData.getCategoryData(req.session.user);
         res.render('posts/student', { categoriesResult: getAllCategoryData, userData: JSON.stringify(req.session.user) })
     } catch (e) {
-        res.status(500).json({ error: e });
+        res.status(e.statusCode?e.statusCode:401).render('posts/student', { getAllCategoryData: [], userData : JSON.stringify(req.session.user), message: e.message, error: e.error })
+        // res.status(500).json({ error: e, userData : JSON.stringify(req.session.user) });
     }
 });
 
 router.get('/my-score', async (req, res) => {
     try {
         let score = await dashbaordData.getQuizData(req.session.user)
-        res.render('posts/studentViewScore', { myres: score, userData: JSON.stringify(req.session.user) });
+        res.status(score.statusCode?score.statusCode:200).render('posts/studentViewScore', { myres: score.data, message: score.message, error: score.error, userData : JSON.stringify(req.session.user) })
     } catch (e) {
-        res.status(404).json({ error: 'No Test Given' });
+        res.status(404).json({ error: 'No Test Given', userData : JSON.stringify(req.session.user) });
     }
 });
 
 router.get('/category/:category', async (req, res) => {
     try {
-        console.log(req.params.category)
-        let getSubCategoryData = await studentData.getSubCategoryOfCategory(req.session.user, req.params.category);
+        let checkmainCategory = await utilsObj.variableSanityCheck(req.params.category, "string", "Category");
+        if (checkmainCategory.result) req.params.category = checkmainCategory.value
+        else throw { "result": false, statusCode: 400, "message": "", error: "Please provide a valid data in string.", userData: null }
+
+        let getSubCategoryData = await studentData.getSubCategoryOfCategory(req.session.user, xss(req.params.category));
         
         res.status(getSubCategoryData.statusCode?getSubCategoryData.statusCode:200).render('posts/student-sub-category', { subCategoriesResult: getSubCategoryData.data, message: getSubCategoryData.message, error: getSubCategoryData.error, userData : JSON.stringify(req.session.user) })
     } catch (e) {
@@ -78,21 +84,29 @@ router.post('/quiz-student-submit', async (req, res) => {
 
 router.get('/enroll-now', async (req, res) => {
     try {
-        console.log(req.session.user);
         let getAllCategoryData = await usersObj.getAllCategoryData(req.session.user, "category");
-        res.render('posts/enrollNow', { getAllCategoryData, userData: JSON.stringify(req.session.user) });
+        res.status(getAllCategoryData.statusCode?getAllCategoryData.statusCode:200).render('posts/enrollNow', { getAllCategoryData: getAllCategoryData.data, message: getAllCategoryData.message, error: getAllCategoryData.error, userData : JSON.stringify(req.session.user) })
+
+        // res.render('posts/enrollNow', { getAllCategoryData, userData: JSON.stringify(req.session.user) });
     } catch (e) {
-        console.log(e.err);
+        res.status(e.statusCode?e.statusCode:500).render('posts/enrollNow', { getAllCategoryData: [], userData : JSON.stringify(req.session.user), message: e.message, error: e.error })
     }
 })
 
 router.post('/enroll-now', async (req, res) => {
     try {
-        console.log(req.session.user);
-        let getAllCategoryData = await usersObj.enrollNow(req.session.user, req.body.dataid, req.body.dataValue);
+        let checkID = await utilsObj.variableSanityCheck(xss(req.body.dataid), "ObjectID", "ID");
+        if (checkID.result) req.body.dataid = checkID.value
+        else throw { "result": false, statusCode: 400, "message": "", error: "Please provide a valid ID.", userData: null }
+
+        let checkDataValue = await utilsObj.variableSanityCheck(req.body.dataValue, "string", "Category");
+        if (checkDataValue.result) req.body.dataValue = checkDataValue.value
+        else throw { "result": false, statusCode: 400, "message": "", error: "Please provide a valid data in string.", userData: null }
+        
+        let getAllCategoryData = await usersObj.enrollNow(req.session.user, xss(req.body.dataid), xss(req.body.dataValue));
         res.json(getAllCategoryData);
     } catch (e) {
-        console.log(e.err);
+        res.status(e.statusCode?e.statusCode:500).json({userData : JSON.stringify(req.session.user), message: e.message?e.message:"Something went wrong!!", error: e.error })
     }
 })
 
