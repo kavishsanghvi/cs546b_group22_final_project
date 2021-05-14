@@ -27,7 +27,7 @@ router.get('/logout', async (req, res) => {
   req.session.destroy();
   //res.send('Logged out!!');
   //return res.render('posts/index', {error: "You are logout now", title: "Login", notFound: false });
-  //res.redirect('../login');
+  res.redirect('../login');
 })
 
 module.exports = router;

@@ -9,14 +9,15 @@
           <li class="breadcrumb-item"><a href="#">Sub Category(Quiz)</a></li>
         </ol>
       </nav>
-      <div class="card" style="width: 50rem;">
+      <div class="card col-sm-12">
         <div class="card-body">
           <h2 class="card-title">Sub Category(Quiz)</h2>
         </div>
         {{#each subCategoriesResult}}
         <ul class="list-group list-group-flush">
-          <li class="list-group-item">{{this.subCategory}}</li>
-          <button type="submit" class="btn btn-primary startQuiz" data-id="{{this.quizID}}" id="takeAQuizID">Take A Test</button>
+          <li class="list-group-item">{{this.subCategory}}
+          <button type="submit" class="btn btn-primary startQuiz" data-id="{{this.quizID}}" id="takeAQuizID">Start Quiz</button>
+          </li>
         </ul>
         {{/each}}
       </div>
