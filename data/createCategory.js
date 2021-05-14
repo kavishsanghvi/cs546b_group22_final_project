@@ -1,7 +1,7 @@
 const mongoCollections = require('../config/mongoCollections');
 const categories = mongoCollections.categories;
 var ObjectId = require('mongodb').ObjectID;
-
+const utilsObj = require('./utils')
 
 const testString = function testString(testStr) {
     try {
@@ -88,12 +88,18 @@ const createCategory = async function createCategory(categoryName, subCategoryNa
 }
 
 const getCategories = async function getCategories(session) {
+    if(!session.userID) throw { "result": false, status: false, statusCode: 401, "message": "", error: "You're not authorized to perform this operation." }
     const categoryCollection = await categories();
     var categoryList = await categoryCollection.distinct('category', { createdBy: ObjectId(session.userID) });
     return categoryList
 }
 
 const getSubCategories = async function getSubCategories(session, categoryName) {
+    if(!session.userID) throw { "result": false, status: false, statusCode: 401, "message": "", error: "You're not authorized to perform this operation." }
+    let checkcategoryName = await utilsObj.variableSanityCheck(categoryName, "string", "Category");
+    if (checkcategoryName.result) categoryName = checkcategoryName.value
+    else throw { "result": false, statusCode: 400, "message": "", error: "Please provide a valid data in string.", userData: null }
+
     const categoryCollection = await categories();
     var subCategoryData = await categoryCollection.find({createdBy: ObjectId(session.userID), category: { $eq: categoryName } }, { subCategory: 1 }).toArray()
     var subCategoryList = []
