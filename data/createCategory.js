@@ -17,7 +17,7 @@ const testString = function testString(testStr) {
 }
 
 
-const getCatOrSubCatByName = async function getCatOrSubCatByName(name, type) {
+const getCatOrSubCatByName = async function getCatOrSubCatByName(session, name, type) {
 
     if (testString(name)['error'] == true) throw testString(name)['message']
 
@@ -26,7 +26,7 @@ const getCatOrSubCatByName = async function getCatOrSubCatByName(name, type) {
 
 
     // find documents based on our query and projection
-    const info = await categoryCollection.find({ [type]: name }).toArray();
+    const info = await categoryCollection.find({ [type]: name, createdBy: ObjectId(session.user.userID) }).toArray();
     return info
 
 }
@@ -48,6 +48,14 @@ const getCategoryByID = async function getCategoryByID(id) {
 
 
 const createCategory = async function createCategory(categoryName, subCategoryName, session) {
+    let checkcategoryName = await utilsObj.variableSanityCheck(categoryName, "string", "Category Name", 1, 50);
+    if (checkcategoryName.result) categoryName = checkcategoryName.value
+    else throw `${checkcategoryName.message}`
+
+    let checksubCategoryName = await utilsObj.variableSanityCheck(subCategoryName, "string", "Sub Category", 1, 50);
+    if (checksubCategoryName.result) subCategoryName = checksubCategoryName.value
+    else throw `${checksubCategoryName.message}`
+
     categoryName = categoryName.trim().toLowerCase()
     subCategoryName = subCategoryName.trim().toLowerCase()
 
@@ -66,8 +74,8 @@ const createCategory = async function createCategory(categoryName, subCategoryNa
             createdBy: ObjectId(session.user["userID"])
         }
 
-        const categoryList = await getCatOrSubCatByName(categoryName, "category");
-        const subCategoryList = await getCatOrSubCatByName(subCategoryName, "subCategory")
+        const categoryList = await getCatOrSubCatByName(session, categoryName, "category");
+        const subCategoryList = await getCatOrSubCatByName(session, subCategoryName, "subCategory")
 
         if (categoryList != 0 & subCategoryList != 0) throw `The Sub Category "${subCategoryName}" within Category "${categoryName}" already exists`
 

@@ -1,7 +1,7 @@
 const mongoCollections = require('../config/mongoCollections');
 const quiz = mongoCollections.quiz;
 var ObjectId = require('mongodb').ObjectID;
-
+const utilsObj = require('./utils')
 
 const testString =function testString(testStr){
     try{
@@ -88,7 +88,31 @@ const create = async function create(startDate, endDate, category, subCategory, 
 
         var questions = []
         for (i in questionName){
-            if(correctAnswer[i].toLowerCase() == optionA[i].toLowerCase() || correctAnswer[i].toLowerCase() == optionB[i].toLowerCase() || correctAnswer[i].toLowerCase() == optionC[i].toLowerCase() || correctAnswer[i].toLowerCase() == optionD[i].toLowerCase()){
+            let checkquestionName = await utilsObj.variableSanityCheck(questionName[i], "string", "Question Name", 1, 200);
+            if (checkquestionName.result) questionName[i] = checkquestionName.value
+            else throw `${checkquestionName.message}`
+
+            let checkOptionA = await utilsObj.variableSanityCheck(optionA[i], "string", "Option 1", 1, 200);
+            if (checkOptionA.result) optionA[i] = checkOptionA.value
+            else throw `${checkOptionA.message}`
+
+            let checkOptionB = await utilsObj.variableSanityCheck(optionB[i], "string", "Option 2", 1, 200);
+            if (checkOptionB.result) optionB[i] = checkOptionB.value
+            else throw `${checkOptionB.message}`
+
+            let checkOptionC = await utilsObj.variableSanityCheck(optionC[i], "string", "Option 3", 1, 200);
+            if (checkOptionC.result) optionC[i] = checkOptionC.value
+            else throw `${checkOptionC.message}`
+
+            let checkOptionD = await utilsObj.variableSanityCheck(optionD[i], "string", "Option 4", 1, 200);
+            if (checkOptionD.result) optionD[i] = checkOptionD.value
+            else throw `${checkOptionD.message}`
+
+            let checkcorrectAnswer = await utilsObj.variableSanityCheck(correctAnswer[i], "string", "Correct Answer", 1, 200);
+            if (checkcorrectAnswer.result) correctAnswer[i] = checkcorrectAnswer.value
+            else throw `${checkcorrectAnswer.message}`
+
+            if(correctAnswer[i].trim().toLowerCase() == optionA[i].trim().toLowerCase() || correctAnswer[i].trim().toLowerCase() == optionB[i].trim().toLowerCase() || correctAnswer[i].trim().toLowerCase() == optionC[i].trim().toLowerCase() || correctAnswer[i].trim().toLowerCase() == optionD[i].trim().toLowerCase()){
                 if (testArray(questionName)['error'] == true) throw testArray(questionName)['message']
                 if (testArray(optionA)['error'] == true) throw testArray(optionA)['message']
                 if (testArray(optionB)['error'] == true) throw testArray(optionB)['message']
@@ -97,12 +121,12 @@ const create = async function create(startDate, endDate, category, subCategory, 
                 if (testArray(correctAnswer)['error'] == true) throw testArray(correctAnswer)['message']
                 questions.push({
                     questionID: ObjectId(),
-                    question: questionName[i].trim(),
-                    answerChoice1: optionA[i].trim(),
-                    answerChoice2: optionB[i].trim(),
-                    answerChoice3: optionC[i].trim(),
-                    answerChoice4: optionD[i].trim(),
-                    correctAnswer: correctAnswer[i].trim()
+                    question: questionName[i].trim().toLowerCase(),
+                    answerChoice1: optionA[i].trim().toLowerCase(),
+                    answerChoice2: optionB[i].trim().toLowerCase(),
+                    answerChoice3: optionC[i].trim().toLowerCase(),
+                    answerChoice4: optionD[i].trim().toLowerCase(),
+                    correctAnswer: correctAnswer[i].trim().toLowerCase()
                 })
             }else{
                 throw 'Invalid Correct Answer'
