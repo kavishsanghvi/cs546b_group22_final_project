@@ -48,8 +48,8 @@ const getCategoryByID = async function getCategoryByID(id) {
 
 
 const createCategory = async function createCategory(categoryName, subCategoryName, session) {
-    categoryName = categoryName.toLowerCase()
-    subCategoryName = subCategoryName.toLowerCase()
+    categoryName = categoryName.trim().toLowerCase()
+    subCategoryName = subCategoryName.trim().toLowerCase()
 
     try {
         if (session.user == null) throw 'Session Expired'

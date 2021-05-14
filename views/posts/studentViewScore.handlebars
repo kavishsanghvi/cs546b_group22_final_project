@@ -1,5 +1,5 @@
 {{> headers this}}
-<div class="container" style="margin-top:30px">
+<div class="container">
   <div class="row justify-content-md-center row-custom">
     <div class="col-sm-8">
       <h1> My Results </h1>
@@ -15,7 +15,8 @@
           <tr>
             <th class="th-sm">Category</th>
             <th class="th-sm">Sub Category</th>
-            <th class="th-sm">Score</th>
+            <th class="th-sm">Your Score</th>
+            <th class="th-sm">Out of</th>
           </tr>
         </thead>
         {{#if myres.length }}
@@ -25,6 +26,7 @@
             <td>{{this.cat}}</td>
             <td>{{this.subCat}}</td>
             <td>{{this.tstScore}}</td>
+            <td>{{this.totalQuizScore}}</td>
           </tr>
           {{/each}}
 
