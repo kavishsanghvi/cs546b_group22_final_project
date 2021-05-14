@@ -147,7 +147,7 @@ router.post('/createQuiz', async (req, res) => {
             timer = parseInt(req.body.timer)
             if (timer < 0) throw 'Error: Timer cannot have a negative value'
         }
-        const createQuiz = await createQuizData.create(xss(req.body.startDate), xss(req.body.endDate), xss(req.body.Categories), xss(req.body.SubCategories), xss(req.body.questionName), xss(req.body.optionA), xss(req.body.optionB), xss(req.body.optionC), xss(req.body.optionD), xss(req.body.correctAnswer), timerEnabled, quizReleased, quizEnded, xss(timer), req.session.user['userID']);
+        const createQuiz = await createQuizData.create(xss(req.body.startDate), xss(req.body.endDate), xss(req.body.Categories), xss(req.body.SubCategories), req.body.questionName, req.body.optionA, req.body.optionB, req.body.optionC, req.body.optionD, req.body.correctAnswer, timerEnabled, quizReleased, quizEnded, xss(timer), req.session.user['userID']);
         res.render('Create Quiz/createQuiz', { success: 1, message: 'Quiz created Successfully ', title: 'Create Quiz', categoryList: categoryList, userData : JSON.stringify(req.session.user) });
     } catch (e) {
         res.status(400).render('Create Quiz/createQuiz', { is_error: 1, message: e, title: 'Create Quiz', categoryList: categoryList, userData : JSON.stringify(req.session.user) });
