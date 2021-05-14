@@ -19,7 +19,8 @@ const getQuizData = async function getQuizData(session) {
                     if (quiz[i].subCategory == groupbysub[k] && quiz[i].category == groupbycategory[j]) {
                         myresult.cat = quiz[i].category
                         myresult.subCat = quiz[i].subCategory
-                        myresult.tstScore = quiz[i].totalScore
+                        myresult.tstScore = quiz[i].totalScore         
+                        myresult.totalQuizScore = quiz[i].totalQuizScore
                         score.push(Object.assign(i, myresult))
 
                     }
