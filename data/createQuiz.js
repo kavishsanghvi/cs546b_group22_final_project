@@ -88,7 +88,7 @@ const create = async function create(startDate, endDate, category, subCategory, 
 
         var questions = []
         for (i in questionName){
-            if(correctAnswer[i].toLowerCase() == optionA[i].toLowerCase() || correctAnswer[i].toLowerCase() == optionB[i].toLowerCase() || correctAnswer[i].toLowerCase() == optionC[i].toLowerCase() || correctAnswer[i].toLowerCase() == optionD[i].toLowerCase()){
+            if(correctAnswer[i].trim().toLowerCase() == optionA[i].trim().toLowerCase() || correctAnswer[i].trim().toLowerCase() == optionB[i].trim().toLowerCase() || correctAnswer[i].trim().toLowerCase() == optionC[i].trim().toLowerCase() || correctAnswer[i].trim().toLowerCase() == optionD[i].trim().toLowerCase()){
                 if (testArray(questionName)['error'] == true) throw testArray(questionName)['message']
                 if (testArray(optionA)['error'] == true) throw testArray(optionA)['message']
                 if (testArray(optionB)['error'] == true) throw testArray(optionB)['message']
@@ -97,12 +97,12 @@ const create = async function create(startDate, endDate, category, subCategory, 
                 if (testArray(correctAnswer)['error'] == true) throw testArray(correctAnswer)['message']
                 questions.push({
                     questionID: ObjectId(),
-                    question: questionName[i].trim(),
-                    answerChoice1: optionA[i].trim(),
-                    answerChoice2: optionB[i].trim(),
-                    answerChoice3: optionC[i].trim(),
-                    answerChoice4: optionD[i].trim(),
-                    correctAnswer: correctAnswer[i].trim()
+                    question: questionName[i].trim().toLowerCase(),
+                    answerChoice1: optionA[i].trim().toLowerCase(),
+                    answerChoice2: optionB[i].trim().toLowerCase(),
+                    answerChoice3: optionC[i].trim().toLowerCase(),
+                    answerChoice4: optionD[i].trim().toLowerCase(),
+                    correctAnswer: correctAnswer[i].trim().toLowerCase()
                 })
             }else{
                 throw 'Invalid Correct Answer'
