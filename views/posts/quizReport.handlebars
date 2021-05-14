@@ -1,6 +1,6 @@
 {{> headers this}}
 
-<div class="container" style="margin-top:30px">
+<div class="container">
   <div class="row justify-content-md-center row-custom">
     <div class="col-sm-8">
       <h1>{{studentResult.category}} Quiz Data</h1>
@@ -26,9 +26,9 @@
             <th class="th-sm">End date
 
             </th>
-            <th class="th-sm">Score
+            <th class="th-sm">Score</th>
+            <th class="th-sm">Out of</th>
 
-            </th>
           </tr>
         </thead>
         {{#if studentResult.length }}
@@ -40,6 +40,7 @@
             <td>{{startDate}}</td>
             <td>{{endDate}}</td>
             <td>{{totalScore}}</td>
+            <td>{{totalQuizScore}}</td>
           </tr>
           {{/each}}
 

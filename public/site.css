@@ -137,10 +137,15 @@ tr:nth-child(even) {
 }
 
 .container{
-  margin-top: 30px;
+  margin-top: 90px;
   margin-bottom: 5rem !important;
 }
 
 .cardBtn{
   text-align: center;
+}
+
+.enableToggleClass, .quizReleaseToggleClass, .disableToggleClass{
+  float: right;
+  margin-left: 4px;;
 }

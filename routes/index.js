@@ -1,5 +1,5 @@
 const loginRoutes = require('./login');
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
 // const usersRoutes = require('./users');
 // const createCategoryRoutes = require('./createCategory');
 const path = require('path');
@@ -37,18 +37,18 @@ const constructorMethod = (app) => {
   });
 };
 
-const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers['authorization']
-  const token = authHeader && authHeader.split(' ')[1]
+// const authenticateToken = (req, res, next) => {
+//   const authHeader = req.headers['authorization']
+//   const token = authHeader && authHeader.split(' ')[1]
 
-  if (token == null) return res.sendStatus(401)
+//   if (token == null) return res.sendStatus(401)
 
-  jwt.verify(token, "3e2c5bea78f9020f7c5e2bb24ac10d8b390c2ddb9fab2560ee12c24ede61d1a7", (err, user) => {
-    if (err) return res.sendStatus(403)
-    req.user = user
-    next()
-  })
-}
+//   jwt.verify(token, "3e2c5bea78f9020f7c5e2bb24ac10d8b390c2ddb9fab2560ee12c24ede61d1a7", (err, user) => {
+//     if (err) return res.sendStatus(403)
+//     req.user = user
+//     next()
+//   })
+// }
 
 const verifyUserLogIn = (req, res, next) => {
 
@@ -63,9 +63,9 @@ const verifyUserLogIn = (req, res, next) => {
 
 
         if((req.baseUrl).replace(/\//gi, "") == "" || (req.baseUrl).replace(/\//gi, "") == "login" || (req.baseUrl).replace(/\//gi, "") == "sign-up"){
-          if(req.session.user.userType == "professor") res.redirect('./professor/category');
+          if(req.session.user.userType == "professor") {res.redirect('./professor/category'); return;}
           console.log(req.session.user.userType);
-          if(req.session.user.userType == "student") res.redirect('./student');
+          if(req.session.user.userType == "student") {res.redirect('./student'); return}
         }
 
         // if(req.session.user.isActive == false && req.session.user.userType == "student"){
