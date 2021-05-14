@@ -38,6 +38,7 @@ const testArray = function testArray(arr){
     if (Array.isArray(arr) == false) throw 'The parameter should be an array'
     if(arr.length == 0) throw 'The array cannot be empty'
     for(var i=0 ; i<arr.length; i++){
+        if(arr[i].trim().length == 0) throw 'The field cannot have empty string.'
         if(typeof arr[i] != 'string') throw 'The array values should be a string'
      }
     }catch(err){
@@ -83,18 +84,17 @@ const create = async function create(startDate, endDate, category, subCategory, 
         if (Date.parse(startDate) < Date.parse(date)) throw 'Start Date Cannot be Smaller than the current date'
         if(Date.parse(endDate) < Date.parse(startDate)) throw 'End Date Cannot be smaller than the start Date'
 
-        
-        if (testArray(questionName)['error'] == true) throw testArray(questionName)['message']
-        if (testArray(optionA)['error'] == true) throw testArray(optionA)['message']
-        if (testArray(optionB)['error'] == true) throw testArray(optionB)['message']
-        if (testArray(optionC)['error'] == true) throw testArray(optionC)['message']
-        if (testArray(optionD)['error'] == true) throw testArray(optionD)['message']
-        if (testArray(correctAnswer)['error'] == true) throw testArray(correctAnswer)['message']
-        
-        
+        if(timer < 30 || timer > 360) throw 'Timer can not have less than 30 or more than 360 minutes.'
+
         var questions = []
         for (i in questionName){
             if(correctAnswer[i].toLowerCase() == optionA[i].toLowerCase() || correctAnswer[i].toLowerCase() == optionB[i].toLowerCase() || correctAnswer[i].toLowerCase() == optionC[i].toLowerCase() || correctAnswer[i].toLowerCase() == optionD[i].toLowerCase()){
+                if (testArray(questionName)['error'] == true) throw testArray(questionName)['message']
+                if (testArray(optionA)['error'] == true) throw testArray(optionA)['message']
+                if (testArray(optionB)['error'] == true) throw testArray(optionB)['message']
+                if (testArray(optionC)['error'] == true) throw testArray(optionC)['message']
+                if (testArray(optionD)['error'] == true) throw testArray(optionD)['message']
+                if (testArray(correctAnswer)['error'] == true) throw testArray(correctAnswer)['message']
                 questions.push({
                     questionID: ObjectId(),
                     question: questionName[i].trim(),

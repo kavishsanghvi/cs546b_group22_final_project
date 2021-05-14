@@ -22,16 +22,16 @@
         <div class="form-group col-sm-6">
           <label for="startDate">Start Date</label>
           <input class="form-control" type="text" id="startDate" name="startDate" placeholder="mm/dd/yyyy"
-            onkeydown="return false"  autocomplete="off">
+            onkeydown="return false"  autocomplete="off" required>
 
-          <label for="End Date">End Date</label>
+          <label for="end_Date">End Date</label>
           <input class="form-control" type="text" id="end_Date" name="endDate" placeholder="mm/dd/yyyy"
-            onkeydown="return false"  autocomplete="off">
+            onkeydown="return false"  autocomplete="off" required>
         </div>
 
         <div class="form-group col-sm-6">
           <label for="Categories">Select Category:</label>
-          <select class="form-control" name="Categories" id="Categories">
+          <select class="form-control" name="Categories" id="Categories" required>
             <option value="">Select</option>
             {{#each categoryList}}
             <option value="{{this}}">{{this}}</option>
@@ -41,7 +41,7 @@
 
         <div class="form-group col-sm-6">
           <label for="SubCategories">Select Sub-Category:</label>
-          <select class="form-control" name="SubCategories" id="SubCategories">
+          <select class="form-control" name="SubCategories" id="SubCategories" required>
             <option value="">Select</option>
           </select>
         </div>
@@ -57,7 +57,7 @@
 -->
         <div class="form-group col-sm-6">
           <label for="timer"> Timer(in minutes)</label>
-          <input class="form-control" type="number" id="timer" name="timer" value="timer" placeholder="30" autocomplete="off">
+          <input class="form-control" type="number" id="timer" name="timer" value="timer" placeholder="30" autocomplete="off" required>
         </div>
 
         <div class="form-group col-sm-6">
@@ -109,6 +109,7 @@
     //input.setAttribute("align", "center");
     input.setAttribute("class", "form-control col-sm-4");
     input.setAttribute("autocomplete", "off");
+    input.setAttribute("required", "");
     return input
   }
 
@@ -127,7 +128,7 @@
 
     var label = document.createElement("label");
     var node = document.createTextNode("Question " + (numberOfChildren + 1) + ":  ");
-    label.setAttribute("for", "question");
+    label.setAttribute("for", "questionName");
     label.setAttribute("align", "center");
     label.appendChild(node);
 
@@ -138,19 +139,20 @@
     input.setAttribute("align", "center");
     input.setAttribute("class", "form-control");
     input.setAttribute("autocomplete", "off");
+    input.setAttribute("required", "");
 
     var line = document.createElement("br");
     var line2 = document.createElement("br");
 
-    var labelA = createOptionLabel("Option 1", "option1")
+    var labelA = createOptionLabel("Option 1", "optionA")
     var optionA = createOptioninput("optionA")
-    var labelB = createOptionLabel("Option 2", "option2")
+    var labelB = createOptionLabel("Option 2", "optionB")
     var optionB = createOptioninput("optionB")
-    var labelC = createOptionLabel("Option 3", "option3")
+    var labelC = createOptionLabel("Option 3", "optionC")
     var optionC = createOptioninput("optionC")
-    var labelD = createOptionLabel("Option 4", "option4")
+    var labelD = createOptionLabel("Option 4", "optionD")
     var optionD = createOptioninput("optionD")
-    var correctAnswerLabel = createOptionLabel("Correct Answer", "Correct Answer")
+    var correctAnswerLabel = createOptionLabel("Correct Answer", "correctAnswer")
     var correctAnswer = createOptioninput("correctAnswer")
 
 

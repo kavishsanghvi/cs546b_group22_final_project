@@ -87,15 +87,15 @@ const createCategory = async function createCategory(categoryName, subCategoryNa
 
 }
 
-const getCategories = async function getCategories() {
+const getCategories = async function getCategories(session) {
     const categoryCollection = await categories();
-    var categoryList = await categoryCollection.distinct('category');
+    var categoryList = await categoryCollection.distinct('category', { createdBy: ObjectId(session.userID) });
     return categoryList
 }
 
-const getSubCategories = async function getSubCategories(categoryName) {
+const getSubCategories = async function getSubCategories(session, categoryName) {
     const categoryCollection = await categories();
-    var subCategoryData = await categoryCollection.find({ category: { $eq: categoryName } }, { subCategory: 1 }).toArray()
+    var subCategoryData = await categoryCollection.find({createdBy: ObjectId(session.userID), category: { $eq: categoryName } }, { subCategory: 1 }).toArray()
     var subCategoryList = []
 
     for (i in subCategoryData) {
