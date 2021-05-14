@@ -15,11 +15,12 @@
       {{#each categoriesResult}}
       <div class="card" style="width: 18rem;">
         <div class="card-body">
-          <h2 class="card-title">{{this}}</h2>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-            content.</p>
+          <h5 class="card-title">{{this}}</h5>
+          <p class="card-text">Brows all sub-category by view all button.</p>
         </div>
+        <div class="cardBtn">
         <a href="/professor/category/{{this}}" class="btn btn-primary">View All</a>
+        </div>
       </div>
       {{/each}}
       {{/if}}

@@ -139,3 +139,16 @@ h2 {
 .timer{
   margin-top: 30px;
 }
+
+.footerSec{
+  padding: 1rem 2rem;
+}
+
+.container{
+  margin-top: 30px;
+  margin-bottom: 5rem !important;
+}
+
+.cardBtn{
+  text-align: center;
+}

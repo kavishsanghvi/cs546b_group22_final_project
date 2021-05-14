@@ -29,11 +29,13 @@ router.get('/category/:category', async (req, res) => {
     try {
         console.log(req.params.category)
         let getSubCategoryData = await studentData.getSubCategoryOfCategory(req.session.user, req.params.category);
-        res.render('posts/student-sub-category', { subCategoriesResult: getSubCategoryData, userData: JSON.stringify(req.session.user) })
+        
+        res.status(getSubCategoryData.statusCode?getSubCategoryData.statusCode:200).render('posts/student-sub-category', { subCategoriesResult: getSubCategoryData.data, message: getSubCategoryData.message, error: getSubCategoryData.error, userData : JSON.stringify(req.session.user) })
     } catch (e) {
-        res.status(500).json({ error: e });
+        res.status(e.statusCode?e.statusCode:401).render('posts/student-sub-category', { getSubCategoryData: [], userData : JSON.stringify(req.session.user), message: e.message, error: e.error })
     }
 });
+
 
 router.get('/start-quiz/:qid', async (req, res) => {
     try {

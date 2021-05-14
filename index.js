@@ -41,6 +41,7 @@ process.on('rejectionHandled', (promise) => {
 
 schedule.scheduleJob('30 * * * * *', function(){
     dataObj.retriveQuizData.updateReleaseAndEndTags();
+    dataObj.quiz.autoCalculateScore();
     // console.log('The answer to life, the universe, and everything!');
 });
 
