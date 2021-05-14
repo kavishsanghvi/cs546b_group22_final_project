@@ -22,16 +22,15 @@ const getQuiz = async function getQuiz() {
 
 const getProfessorData = async function getProfessorData(session) {
     const localUsersObj = await usersObj();
-    const getProfessorDetails = await localUsersObj.findOne({ $and: [{ _id: objOfObjectID(session.userID), userType: "professor" }] });
-    // if (getProfessorDetails.length === 0)
-    //     return []
-    // if (getProfessorDetails.length > 0)
-    // return JSON.parse(JSON.stringify(getProfessorDetails));
-
-    return getProfessorDetails;
+    if (session.userID) {
+        const getProfessorDetails = await localUsersObj.findOne({ $and: [{ _id: objOfObjectID(session.userID), userType: "professor" }] });
+        return getProfessorDetails;
+    } else throw { "result": false, status: false, statusCode: 401, "message": "", error: "You're not authorized to perform this operation." }
 }
 
 const getStudentRecord = async function getStudentRecord(session, studentUserIDs) {
+    if(!session.userID) throw { "result": false, status: false, statusCode: 401, "message": "", error: "You're not authorized to perform this operation." }
+
     const localUsersObj = await usersObj();
     const getStudentRecord = []
     for (let i = 0; i < studentUserIDs.length; i++) {
@@ -41,16 +40,31 @@ const getStudentRecord = async function getStudentRecord(session, studentUserIDs
 }
 
 const getCategoryData = async function getCategoryData(session, reqType) {
-    const localCategoryObj = await categoryObj();
-    let getProfessorCategories = await localCategoryObj.distinct(reqType, { createdBy: objOfObjectID(session.userID) })
+    if (session.userID) {
+        let checkreqType = await utilsObj.variableSanityCheck(reqType, "string", "Value");
+        if (checkreqType.result) reqType = checkreqType.value
+        else throw { "result": false, statusCode: 400, "message": "", error: "Please provide a valid data in string.", userData: null }
 
-    if (getProfessorCategories.length === 0)
-        return { data: getProfessorCategories, "result": true, statusCode: 200, "message": "No categories added yet. Please add a category first.", error: "" }
-    if (getProfessorCategories.length > 0)
-        return { data: getProfessorCategories, "result": true, statusCode: 200, "message": "", error: "" }
+        const localCategoryObj = await categoryObj();
+        let getProfessorCategories = await localCategoryObj.distinct(reqType, { createdBy: objOfObjectID(session.userID) })
+
+        if (getProfessorCategories.length === 0)
+            return { data: getProfessorCategories, "result": true, statusCode: 200, "message": "No categories added yet. Please add a category first.", error: "" }
+        if (getProfessorCategories.length > 0)
+            return { data: getProfessorCategories, "result": true, statusCode: 200, "message": "", error: "" }
+    } else throw { "result": false, status: false, statusCode: 401, "message": "", error: "You're not authorized to perform this operation." }
 }
 
 const getSubCategoryOfCategory = async function getSubCategoryOfCategory(session, mainCategory, subCategory) {
+    if(!session.userID) throw { "result": false, status: false, statusCode: 401, "message": "", error: "You're not authorized to perform this operation." }
+    let checkmainCategory = await utilsObj.variableSanityCheck(mainCategory, "string", "Category");
+    if (checkmainCategory.result) mainCategory = checkmainCategory.value
+    else throw { "result": false, statusCode: 400, "message": "", error: "Please provide a valid data in string.", userData: null }
+
+    let checkSubCategory = await utilsObj.variableSanityCheck(subCategory, "string", "Sub Category");
+    if (checkSubCategory.result) subCategory = checkSubCategory.value
+    else throw { "result": false, statusCode: 400, "message": "", error: "Please provide a valid data in string.", userData: null }
+
     const localCategoryObj = await categoryObj();
     let getProfessorCategories = await localCategoryObj.distinct(subCategory, { createdBy: objOfObjectID(session.userID), category: mainCategory })
     if (getProfessorCategories.length === 0)
@@ -60,24 +74,26 @@ const getSubCategoryOfCategory = async function getSubCategoryOfCategory(session
 }
 
 const getAllStudentUnderProfessorData = async function getAllStudentUnderProfessorData(session) {
-    let returnDataFromProfessor = await getProfessorData(session);
-    const getStudentsUnderProfessorRecord = []
-    if (returnDataFromProfessor.enrolledStudents) {
-        for (let i = 0; i < Object.keys(returnDataFromProfessor.enrolledStudents).length; i++) {
-            let keyName = Object.keys(returnDataFromProfessor.enrolledStudents)[i];
-            for (let j = 0; j < returnDataFromProfessor.enrolledStudents[keyName].length; j++) {
-                getStudentsUnderProfessorRecord.push(returnDataFromProfessor.enrolledStudents[keyName][j])
+    if (session.userID) {
+        let returnDataFromProfessor = await getProfessorData(session);
+        const getStudentsUnderProfessorRecord = []
+        if (returnDataFromProfessor.enrolledStudents) {
+            for (let i = 0; i < Object.keys(returnDataFromProfessor.enrolledStudents).length; i++) {
+                let keyName = Object.keys(returnDataFromProfessor.enrolledStudents)[i];
+                for (let j = 0; j < returnDataFromProfessor.enrolledStudents[keyName].length; j++) {
+                    getStudentsUnderProfessorRecord.push(returnDataFromProfessor.enrolledStudents[keyName][j])
+                }
             }
-        }
-        let returnStudentData = await getOneStudentRecord(session, getStudentsUnderProfessorRecord);
-        // To check the new return below line is working:
-        // return returnStudentData
-        if (returnStudentData.length === 0)
-            return { data: returnStudentData, "result": true, statusCode: 200, "message": "No Record Found!!", error: "" }
-        if (returnStudentData.length > 0)
-            return { data: returnStudentData, "result": true, statusCode: 200, "message": "", error: "" }
-    } else
-        throw { "result": false, statusCode: 404, "message": "", error: "No students enrolled yet!!" };
+            let returnStudentData = await getOneStudentRecord(session, getStudentsUnderProfessorRecord);
+            // To check the new return below line is working:
+            // return returnStudentData
+            if (returnStudentData.length === 0)
+                return { data: returnStudentData, "result": true, statusCode: 200, "message": "No Record Found!!", error: "" }
+            if (returnStudentData.length > 0)
+                return { data: returnStudentData, "result": true, statusCode: 200, "message": "", error: "" }
+        } else
+            throw { "result": false, statusCode: 404, "message": "", error: "No students enrolled yet!!" };
+    } else throw { "result": false, status: false, statusCode: 401, "message": "", error: "You're not authorized to perform this operation." }
 }
 
 const getOneStudentRecord = async function getOneStudentRecord(session, studentUserIDs) {
@@ -94,6 +110,10 @@ const fetchStudentData = async function fetchStudentData(id) {
 }
 
 const updateStudentStatus = async function updateStudentStatus(session, id) {
+    let checkID = await utilsObj.variableSanityCheck(id, "ObjectID", "ID");
+    if (checkID.result) id = checkID.value
+    else throw { "result": false, statusCode: 400, "message": "", error: "Please provide a valid ID.", userData: null }
+
     if (session.userType === "professor") {
         let getStudentData = await fetchStudentData(id);
         let result = { status: false, message: "" }
@@ -102,16 +122,12 @@ const updateStudentStatus = async function updateStudentStatus(session, id) {
             const updateisActiveIntoDB = await localUsersObj.updateOne({ _id: objOfObjectID(id) }, { $set: { "isActive": true } });
             if (updateisActiveIntoDB.modifiedCount === 0)
                 return { data: updateisActiveIntoDB, "result": false, status: false, statusCode: 400, "message": "Something went wrong!!", error: "" }
-            // { status: false, message: "Not Verified!!" }
             if (updateisActiveIntoDB.modifiedCount === 1)
                 return { data: updateisActiveIntoDB, "result": true, status: true, statusCode: 200, "message": "Student verified successfully!!", error: "" }
-            // { status: true, message: "Verified Successfully!!" }
         } else {
             return { "result": false, status: false, statusCode: 400, "message": "Something went wrong!!", error: "" }
-            // { status: false, message: "Not Verified!!" }
         }
     } else throw { "result": false, status: false, statusCode: 401, "message": "", error: "You're not authorized to perform this operation." }
-    // `You're not authorized to perform this operation.`
 }
 
 async function createnewuser(firstName, lastName, email, userType, password, universityName) {

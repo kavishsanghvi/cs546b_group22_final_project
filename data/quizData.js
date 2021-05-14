@@ -5,14 +5,21 @@ const objOfObjectID = require('mongodb').ObjectID;
 const utilsObj = require('./utils')
 
 const getStudentDataUnderProfessor = async function getStudentDataUnderProfessor(session, subCategoryValue) {
+    if(!session.userID) throw { "result": false, status: false, statusCode: 401, "message": "", error: "You're not authorized to perform this operation." }
+
+    let checkSubCategory = await utilsObj.variableSanityCheck(subCategoryValue, "string", "Sub Category");
+    if (checkSubCategory.result) subCategoryValue = checkSubCategory.value
+    else throw { "result": false, statusCode: 400, "message": "", error: "Please provide a valid data in string.", userData: null }
+
     const localStudentSubQuizObj = await studentSubQuizObj();
     const getProfessorDetails = await localStudentSubQuizObj.find({ $and: [{ createdBy: objOfObjectID(session.userID), subCategory: subCategoryValue }] }).toArray();
     return JSON.parse(JSON.stringify(getProfessorDetails));
 }
 
-const getAllQuiz = async function getAllQuiz(loggedInUser) {
+const getAllQuiz = async function getAllQuiz(session) {
+    if(!session.userID) throw { "result": false, status: false, statusCode: 401, "message": "", error: "You're not authorized to perform this operation." }
     const localQuizDataObj = await quizDataObj();
-    const getProfessorDetails = await localQuizDataObj.find({ createdBy: objOfObjectID(loggedInUser.userID) }).toArray();
+    const getProfessorDetails = await localQuizDataObj.find({ createdBy: objOfObjectID(session.userID) }).toArray();
 
     if (getProfessorDetails.length === 0)
         return { data: getProfessorDetails, "result": true, statusCode: 200, "message": "No Records Found!!", error: "" }
@@ -31,6 +38,16 @@ const getQuizDataUsingID = async function getQuizDataUsingID(loggedInUser, quizI
 }
 
 const updateTimer = async function updateTimer(loggedInUser, quizID, tagName) {
+    if(!loggedInUser.userID) throw { "result": false, status: false, statusCode: 401, "message": "", error: "You're not authorized to perform this operation." }
+
+    let checkID = await utilsObj.variableSanityCheck(quizID, "ObjectID", "ID");
+    if (checkID.result) quizID = checkID.value
+    else throw { "result": false, statusCode: 400, "message": "", error: "Please provide a valid ID.", userData: null }
+
+    let checkTagName = await utilsObj.variableSanityCheck(tagName, "string", "Category");
+    if (checkTagName.result) tagName = checkTagName.value
+    else throw { "result": false, statusCode: 400, "message": "", error: "Please provide a valid data in string.", userData: null }
+
     let returnedQuizData = await getQuizDataUsingID(loggedInUser, quizID);
     let result = { status: returnedQuizData[tagName], message: "" }
 
