@@ -48,6 +48,14 @@ const getCategoryByID = async function getCategoryByID(id) {
 
 
 const createCategory = async function createCategory(categoryName, subCategoryName, session) {
+    let checkcategoryName = await utilsObj.variableSanityCheck(categoryName, "string", "Category Name", 1, 50);
+    if (checkcategoryName.result) categoryName = checkcategoryName.value
+    else throw `${checkcategoryName.message}`
+
+    let checksubCategoryName = await utilsObj.variableSanityCheck(subCategoryName, "string", "Sub Category", 1, 50);
+    if (checksubCategoryName.result) subCategoryName = checksubCategoryName.value
+    else throw `${checksubCategoryName.message}`
+
     categoryName = categoryName.trim().toLowerCase()
     subCategoryName = subCategoryName.trim().toLowerCase()
 

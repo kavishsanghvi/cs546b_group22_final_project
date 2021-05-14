@@ -131,13 +131,13 @@ const updateStudentStatus = async function updateStudentStatus(session, id) {
 }
 
 async function createnewuser(firstName, lastName, email, userType, password, universityName) {
-    let checkFirstName = await utilsObj.variableSanityCheck(firstName, "string", "First Name");
+    let checkFirstName = await utilsObj.variableSanityCheck(firstName, "string", "First Name", 1, 50);
     if (checkFirstName.result) firstName = checkFirstName.value
-    else throw { "result": false, statusCode: 400, "message": "", error: "Provide a first name or provided first name is not string.", userData: null }
+    else throw { "result": false, statusCode: 400, "message": "", error: checkFirstName.message, userData: null }
 
-    let checkLastName = await utilsObj.variableSanityCheck(lastName, "string", "Last Name");
+    let checkLastName = await utilsObj.variableSanityCheck(lastName, "string", "Last Name", 1, 50);
     if (checkLastName.result) lastName = checkLastName.value
-    else throw { "result": false, statusCode: 400, "message": "", error: "Provide a last name or provided last name is not string.", userData: null }
+    else throw { "result": false, statusCode: 400, "message": "", error: checkLastName.message, userData: null }
 
     let checkEmail = await utilsObj.variableSanityCheck(email, "string", "Email");
     if (checkEmail.result) email = checkEmail.value
