@@ -1,10 +1,5 @@
 const loginRoutes = require('./login');
-const jwt = require('jsonwebtoken');
-// const usersRoutes = require('./users');
-// const createCategoryRoutes = require('./createCategory');
 const path = require('path');
-// const quizDataRoutes = require('./quizData');
-// const createQuizRoutes = require('./createQuiz');
 const signUpRoutes = require('./sign-up');
 
 const dashboardRoutes = require('./dashboard')
@@ -14,25 +9,18 @@ const studentRoutes = require('./student')
 
 
 const constructorMethod = (app) => {
-  // app.use('/users', verifyUserLogIn, usersRoutes);
   app.use('/login',verifyUserLogIn, loginRoutes);
   app.use('/dashboard', verifyUserLogIn, dashboardRoutes);
   app.use('/accepted', verifyUserLogIn, acceptedRoutes)
-  // app.use('/createCategory', verifyUserLogIn, createCategoryRoutes);
   app.use('/student', verifyUserLogIn, studentRoutes);
-  // app.use('/createCategory', verifyUserLogIn, createCategoryRoutes);
-  // app.use('/quiz', verifyUserLogIn, quizDataRoutes);
-  // app.use('/createQuiz', verifyUserLogIn, createQuizRoutes);
   app.use('/professor', verifyUserLogIn, professorRoutes);
   app.use('/sign-up',verifyUserLogIn, signUpRoutes);
 
   app.get('/', verifyUserLogIn, (req, res) => {
-    // res.sendFile(path.resolve('static/index.html'));
     res.render('posts/index', { userData: JSON.stringify(req.session.user) })
   });
 
   app.use('*', (req, res) => {
-    //res.status(404).json({ error: 'Not found' });
     res.status(404).render('posts/404')
   });
 };

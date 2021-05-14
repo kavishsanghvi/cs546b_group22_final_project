@@ -26,7 +26,7 @@ const getQuizData = async function getQuizData(session) {
                 }
             }
         }
-        return score
+        return { data: score, "result": true, statusCode: 200, "message": "", error: "" }
     }
 }
 

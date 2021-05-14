@@ -3,6 +3,7 @@ const { users } = require('../data');
 const router = express.Router();
 const data = require("../data");
 const loginData = data.login;
+const xss = require('xss');
 
 router.get('/', async (req, res) => {
     try {
@@ -48,12 +49,12 @@ router.post('/', async (req, res) => {
             throw { "result": false, statusCode: 400, "message": "", error: "Please select university." }
         }
         let user = {
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            email: req.body.emailAddress,
-            userType: req.body.selectUserType,
-            password: req.body.password,
-            universityName: req.body.universityName,
+            firstName: xss(req.body.firstName),
+            lastName: xss(req.body.lastName),
+            email: xss(req.body.emailAddress),
+            userType: xss(req.body.selectUserType),
+            password: xss(req.body.password),
+            universityName: xss(req.body.universityName),
         }
 
         const bloguserdata = user;

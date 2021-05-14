@@ -17,12 +17,9 @@
             {{#if is_error}}
             <p class="error text-danger"> {{message}} </p>
             {{/if}}
-            {{!-- <form method="post"> --}}
                 <div id="studentSelectCategory">
                     <div class="form-group">
                         <label for="category_name">Category Name: </label>
-                        {{!-- <input list="category_name_list" class="form-control" name="category_name"
-                            id="category_name" placeholder="Search/Enter Category"> --}}
                         <select id="category_name_list">
                             <option disabled>Select category</option>
                             {{#each getAllCategoryData}}
@@ -31,17 +28,9 @@
                             {{/each}}
                         </select>
                     </div>
-                    {{!-- <div class="form-group">
-                        <label for="sub_category_name">Sub Category Name</label>
-                        <input type="text" id="sub_category_name" name="sub_category_name" class="form-control"
-                            placeholder="Enter Sub Category">
-                    </div> --}}
                     <button type="submit" id="submitStudentCategoryData"
                         class="btn btn-primary submitStudentCategoryData">Submit</button>
                 </div>
-                {{!--
-            </form> --}}
-            {{!-- <a href='/' class="create_category btn btn-primary"> Go Back</a> --}}
         </div>
     </div>
 </div>
