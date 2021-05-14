@@ -16,13 +16,13 @@ module.exports={
         }
         return (false)
     }
-    let checkFirstName = await utilsObj.variableSanityCheck(updateduser.firstName, "string", "First Name");
+    let checkFirstName = await utilsObj.variableSanityCheck(updateduser.firstName, "string", "First Name", 1, 50);
     if (checkFirstName.result) updateduser.firstName = checkFirstName.value
-    else throw { "result": false, statusCode: 400, "message": "", error: "Provide a first name or provided first name is not string.", userData: null }
+    else throw { "result": false, statusCode: 400, "message": "", error: checkFirstName.message, userData: null }
 
-    let checkLastName = await utilsObj.variableSanityCheck(updateduser.lastName, "string", "Last Name");
+    let checkLastName = await utilsObj.variableSanityCheck(updateduser.lastName, "string", "Last Name", 1, 50);
     if (checkLastName.result) updateduser.lastName = checkLastName.value
-    else throw { "result": false, statusCode: 400, "message": "", error: "Provide a last name or provided last name is not string.", userData: null }
+    else throw { "result": false, statusCode: 400, "message": "", error: checkLastName.message, userData: null }
 
     let checkEmail = await utilsObj.variableSanityCheck(updateduser.email, "string", "Email");
     if (checkEmail.result) updateduser.email = checkEmail.value

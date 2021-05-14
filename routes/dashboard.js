@@ -69,7 +69,8 @@ router.post('/editProfile', async (req, res) => {
     }
 }
     catch (e) {
-        res.status(e.statusCode ? e.statusCode : 400).render('posts/userProfile', { message: e.message, error: e.error })
+        const oldPost = await usersData.getuserbyid(req.session.user.userID);
+        res.status(e.statusCode ? e.statusCode : 400).render('posts/editProfile', { keyobject: oldPost,  userData : JSON.stringify(req.session.user) , message: e.message, error: e.error })
     }
     
 });
