@@ -4,6 +4,7 @@ const utils = require("./utils");
 const ObjectId = require('mongodb').ObjectId;
 const quizObj = mongoCollections.quiz;
 const studentSubmittedQuizObj = mongoCollections.studentSubmittedQuiz;
+const usersObj = mongoCollections.users;
 
 
 const getQuiz = async function getQuiz(loggedInUser, quizID){
@@ -11,11 +12,24 @@ const getQuiz = async function getQuiz(loggedInUser, quizID){
     let userId = loggedInUser.userID;
     let studentQuizObjData = await studentSubmittedQuizObj();
     const isAlreadyTaken = await studentQuizObjData.find({quizId : ObjectId(quizID),userid : ObjectId(userId) }).toArray();
-    //if(isAlreadyTaken && isAlreadyTaken.length>0) throw {message:"Already taken", err: "error", "statusCode" : 500};
-    
+    if(isAlreadyTaken && isAlreadyTaken.length>0) throw {message:"Already taken", err: "error", "statusCode" : 500};
+
+       
     let quizObjData = await quizObj();
     const getQuizData = await quizObjData.find({_id : ObjectId(quizID)}).toArray();
     if(getQuizData && getQuizData.length>0){
+
+        let usersObjData = await usersObj();
+        let categoryNameStd = `enrolledStudents.${getQuizData[0].category}`;
+        const isInvalidAccessStd = await usersObjData.find({[categoryNameStd] : ObjectId(userId)}).toArray();
+
+        let categoryNamePro = `enrolledIn.categoryName`;
+        let professorIDPro = `enrolledIn.professorID`;
+        const isInvalidAccessPro = await usersObjData.find({_id : ObjectId(userId), [professorIDPro]: getQuizData[0].createdBy, [categoryNamePro] : getQuizData[0].category}).toArray();
+        
+        if(isInvalidAccessStd && isInvalidAccessPro &&  isInvalidAccessStd.length<1 && isInvalidAccessPro.length<1) throw {message:"Authorised Access", err: "error", "statusCode" : 500};
+
+        
         let quizData = getQuizData[0]; 
         let questions = quizData.questions;
         delete quizData.questions;
