@@ -43,7 +43,7 @@ schedule.scheduleJob('30 * * * * *', function(){
     dataObj.retriveQuizData.updateReleaseAndEndTags();
     dataObj.quiz.autoCalculateScore();
     // console.log('The answer to life, the universe, and everything!');
-  });
+});
 
 app.listen(3000, () => {
     console.log("Server is started now!");

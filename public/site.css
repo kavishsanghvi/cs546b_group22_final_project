@@ -120,6 +120,14 @@ tr:nth-child(even) {
 .error-actions {margin-top:15px;margin-bottom:15px;}
 .error-actions .btn { margin-right:10px; }
 
+h1 {
+  font-size: 32px;
+}
+
+h2 {
+  font-size: 24px;
+}
+
 .questionSideSec{
   overflow-y: auto; overflow-x: hidden; height: 250px; cursor: pointer;
 }
