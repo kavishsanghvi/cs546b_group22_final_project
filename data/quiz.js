@@ -12,7 +12,7 @@ const getQuiz = async function getQuiz(loggedInUser, quizID){
     let userId = loggedInUser.userID;
     let studentQuizObjData = await studentSubmittedQuizObj();
     const isAlreadyTaken = await studentQuizObjData.find({quizId : ObjectId(quizID),userid : ObjectId(userId) }).toArray();
-    if(isAlreadyTaken && isAlreadyTaken.length>0) throw {message:"Already taken", err: "error", "statusCode" : 500};
+    //if(isAlreadyTaken && isAlreadyTaken.length>0) throw {message:"Already taken", err: "error", "statusCode" : 500};
 
        
     let quizObjData = await quizObj();
@@ -27,7 +27,7 @@ const getQuiz = async function getQuiz(loggedInUser, quizID){
         let professorIDPro = `enrolledIn.professorID`;
         const isInvalidAccessPro = await usersObjData.find({_id : ObjectId(userId), [professorIDPro]: getQuizData[0].createdBy, [categoryNamePro] : getQuizData[0].category}).toArray();
         
-        if(isInvalidAccessStd && isInvalidAccessPro &&  isInvalidAccessStd.length<1 && isInvalidAccessPro.length<1) throw {message:"Authorised Access", err: "error", "statusCode" : 500};
+        //if(isInvalidAccessStd && isInvalidAccessPro &&  isInvalidAccessStd.length<1 && isInvalidAccessPro.length<1) throw {message:"Authorised Access", err: "error", "statusCode" : 500};
 
         
         let quizData = getQuizData[0]; 
@@ -101,7 +101,7 @@ const updateStudentQuiz = async function updateStudentQuiz(userID, quizDataByStu
     if(updatequestion.modifiedCount >= 1 &&  updatequestion.matchedCount >=1){
         return {message:"Question updates", statusCode:200}
     }else if(updatequestion.modifiedCount ===0 &&  updatequestion.matchedCount >=1){
-        throw {message:"Modified content not found, we are unable to update book!!", statusCode:400}
+        throw {message:"Modified content not found, we are unable to update record!!", statusCode:400}
     }else{
         throw {message:"Something went wrong!!", statusCode:500}
     }
@@ -129,7 +129,8 @@ const submitStudentQuiz = async (userID, quizDataByStudent) =>{
             if(updateScore.modifiedCount >= 1 &&  updateScore.matchedCount >=1){
                 return {message:"Quiz Submitted", statusCode:200}
             }else if(updateScore.modifiedCount ===0 &&  updateScore.matchedCount >=1){
-                throw {message:"Modified content not found, we are unable to update record!!", statusCode:400}
+                return {message:"Quiz Submitted", statusCode:200}
+                //throw {message:"Modified content not found, we are unable to update record!!", statusCode:400}
             }else{
                 throw {message:"Something went wrong!!", statusCode:500}
             }
@@ -137,7 +138,7 @@ const submitStudentQuiz = async (userID, quizDataByStudent) =>{
             throw {message:"Something went wrong!!", statusCode:500}
         }
     }else if(submitQuiz.modifiedCount ===0 &&  submitQuiz.matchedCount >=1){
-        throw {message:"Modified content not found, we are unable to update book!!", statusCode:400}
+        throw {message:"Modified content not found, we are unable to update record!!", statusCode:400}
     }else{
         throw {message:"Something went wrong!!", statusCode:500}
     }
@@ -164,10 +165,10 @@ const calculateScore = async (studentData,type)=>{
             return {status : true, score};
             
         }else{
-            throw {message:"Modified content not found, we are unable to update book!!", statusCode:400}
+            throw {message:"Modified content not found, we are unable to update record!!", statusCode:400}
         }
     }else{
-        throw {message:"Modified content not found, we are unable to update book!!", statusCode:400}
+        throw {message:"Modified content not found, we are unable to update record!!", statusCode:400}
     }
 }
 
