@@ -1,4 +1,5 @@
-    //save in localstore
+localStorage.clear();
+//save in localstore
     var quizDataStr = $('#quizDataStr').val();
     var quizData = JSON.parse(quizDataStr);
     localStorage.setItem("quizDataStr", quizDataStr);

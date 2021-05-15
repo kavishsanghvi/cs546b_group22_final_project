@@ -30,55 +30,71 @@ router.get('/my-score', async (req, res) => {
 
 router.get('/category/:category', async (req, res) => {
     try {
-        let checkmainCategory = await utilsObj.variableSanityCheck(req.params.category, "string", "Category");
+        let checkmainCategory = await utilsObj.variableSanityCheck(xss(req.params.category), "string", "Category");
         if (checkmainCategory.result) req.params.category = checkmainCategory.value
         else throw { "result": false, statusCode: 400, "message": "", error: "Please provide a valid data in string.", userData: null }
 
         let getSubCategoryData = await studentData.getSubCategoryOfCategory(req.session.user, xss(req.params.category));
-        
         res.status(getSubCategoryData.statusCode?getSubCategoryData.statusCode:200).render('posts/student-sub-category', { subCategoriesResult: getSubCategoryData.data, message: getSubCategoryData.message, error: getSubCategoryData.error, userData : JSON.stringify(req.session.user) })
     } catch (e) {
-        res.status(e.statusCode?e.statusCode:401).render('posts/student-sub-category', { getSubCategoryData: [], userData : JSON.stringify(req.session.user), message: e.message, error: e.error })
+        res.status(e.statusCode?e.statusCode:401).render('posts/student-sub-category', { getSubCategoryData: [], userData : JSON.stringify(req.session.user), message: e.message,  error: e.error?e.error:"Something went wrong!!" })
     }
 });
 
 
 router.get('/start-quiz/:qid', async (req, res) => {
     try {
-        //console.log(Buffer.from(req.params.qid, 'base64').toString());
-        console.log((Buffer.from(req.params.qid,'base64')).toString());
 
-
-        let quiz = await quizDataStudent.getQuiz(req.session.user, (Buffer.from(req.params.qid,'base64')).toString());
-
+        let checkQuizId = await utilsObj.variableSanityCheck(xss(req.params.qid), "string", "Quiz Id");
+        if (checkQuizId.result) req.params.qid = checkQuizId.value
+        else throw { "result": false, statusCode: 400, "message": "", error: "Please provide a valid data in string.", userData: null }
+        
+        let quiz = await quizDataStudent.getQuiz(req.session.user, (Buffer.from(xss(req.params.qid),'base64')).toString());
         res.render('posts/quiz', { title: "Quiz", quizData: quiz, quizData2: JSON.stringify(quiz), userData: JSON.stringify(req.session.user) });
     } catch (e) {
-        res.render('posts/401', { title: "Error", userData: JSON.stringify(req.session.user) });
-        console.log(e.err);
+        res.status(e.statusCode?e.statusCode:500).json({userData : JSON.stringify(req.session.user), message: e.message?e.message:"Something went wrong!!", error: e.error?e.error:"Something went wrong!!" });
     }
 })
 
 router.post('/quiz-student-update', async (req, res) => {
     try {
-        let questionId = req.body.questionId
-        let selectedAns = req.body.selectedAns
+        
+
+        let checkQIs = await utilsObj.variableSanityCheck(xss(req.body.questionId), "string", "Question Id");
+        if (checkQIs.result) req.body.questionId = checkQIs.value
+        else throw { "result": false, statusCode: 400, "message": "", error: "Please provide a valid data in string.", userData: null }
+
+
+        let checkCategory = await utilsObj.variableSanityCheck(xss(req.body.selectedAns), "string", "Category");
+        if (checkCategory.result) req.body.selectedAns = checkCategory.value
+        else throw { "result": false, statusCode: 400, "message": "", error: "Please provide a valid data in string.", userData: null }
+
+        
         let userID = req.session.user.userID;
         let quiz = await quizDataStudent.updateStudentQuiz(userID, req.body);
         res.json(quiz);
     } catch (e) {
-        console.log(e.err);
+        res.status(e.statusCode?e.statusCode:500).json({userData : JSON.stringify(req.session.user), message: e.message?e.message:"Something went wrong!!", error: e.error?e.error:"Something went wrong!!" });
     }
 });
 
 router.post('/quiz-student-submit', async (req, res) => {
     try {
-        let quizId = req.body.quizId
-        let id = req.body.id
+
+        let checkQuizId = await utilsObj.variableSanityCheck(xss(req.body.quizId), "string", "Quiz invalid quiz id");
+        if (checkQuizId.result) req.body.quizId = checkQuizId.value
+        else throw { "result": false, statusCode: 400, "message": "", error: checkQuizId.message, userData: null }
+
+        let checkQuestionID = await utilsObj.variableSanityCheck(xss(req.body.id), "string", "Question Id");
+        if (checkQuestionID.result) req.body.id = checkQuestionID.value
+        else throw { "result": false, statusCode: 400, "message": "", error: checkQuestionID.message, userData: null }
+
         let userID = req.session.user.userID;
         let quiz = await quizDataStudent.submitStudentQuiz(userID, req.body);
         res.json(quiz);
     } catch (e) {
-        console.log(e.err);
+        //console.log(e.err);
+        res.status(e.statusCode?e.statusCode:500).json({userData : JSON.stringify(req.session.user), message: e.message?e.message:"Something went wrong!!", error: e.error?e.error:"Something went wrong!!" });
     }
 });
 
