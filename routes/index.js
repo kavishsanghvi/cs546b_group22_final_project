@@ -67,7 +67,7 @@ const verifyUserLogIn = (req, res, next) => {
           }
           console.log(req.session.user.userType);
           if (req.session.user.userType == "student") {
-            res.redirect('./student');
+            res.redirect('./student/');
             return
           }
         }

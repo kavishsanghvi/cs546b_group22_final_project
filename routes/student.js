@@ -52,7 +52,7 @@ router.get('/start-quiz/:qid', async (req, res) => {
         let quiz = await quizDataStudent.getQuiz(req.session.user, (Buffer.from(xss(req.params.qid),'base64')).toString());
         res.render('posts/quiz', { title: "Quiz", quizData: quiz, quizData2: JSON.stringify(quiz), userData: JSON.stringify(req.session.user) });
     } catch (e) {
-        res.status(e.statusCode?e.statusCode:500).json({userData : JSON.stringify(req.session.user), message: e.message?e.message:"Something went wrong!!", error: e.error?e.error:"Something went wrong!!" });
+        res.render('posts/401', { title: "Error", message: e.message?e.message:"Something went wrong!!", error: e.error?e.error:"Something went wrong!!" , userData: JSON.stringify(req.session.user) });
     }
 })
 
