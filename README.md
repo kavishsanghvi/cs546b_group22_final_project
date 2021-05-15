@@ -42,6 +42,13 @@ This repository contains the source code for the Quizmania - University quiz app
    ```
 5. The result will be available at http://localhost:3000
 
+## Database
+The database access to provided to Professor Patrick Hill's email address. 
+Database can be accessed via MongoDB compass at 
+```sh
+mongodb+srv://ashivank:mongodb2021@cluster0.szjer.mongodb.net/Group22_Final_Project_CS546?retryWrites=true&w=majority
+```
+
 ## Links
 Project Pitch presentation: https://youtu.be/APtIzAgOE64  
 Final Walkthrough presentation: https://youtu.be/yZloiw6b0FM
