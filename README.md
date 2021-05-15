@@ -16,8 +16,16 @@ This repository contains the source code for the Quizmania - University quiz app
 ```sh
   npm install npm@latest -g
   ```
-* Seed file: 
+* Seed file
+```sh
+  node seed
+  ```
 
+## Application workflow
+1. By default, the students are not enrolled in any categories, which means they are inactive. They need to be verified by the professor.
+2. Student needs to login and click on "enroll" button to enroll themselves in any course/category. 
+3. Once clicked on enroll, professor will receive the request for the verification. Only one time verification per student per university is needed. Student can enroll without verification for courses from the same university after the initial verification.
+4. Student needs to relogin to access the student portal and the quizzes because the session needs to be reinitiated.
 
 ## How to install?
 1. clone the repository
@@ -34,6 +42,6 @@ This repository contains the source code for the Quizmania - University quiz app
    ```
 5. The result will be available at http://localhost:3000
 
-# Links
+## Links
 Project Pitch presentation: https://youtu.be/APtIzAgOE64  
-Final Walkthrough presentation: 
+Final Walkthrough presentation: https://youtu.be/yZloiw6b0FM
