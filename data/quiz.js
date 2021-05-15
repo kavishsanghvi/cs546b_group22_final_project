@@ -12,7 +12,7 @@ const getQuiz = async function getQuiz(loggedInUser, quizID){
     let userId = loggedInUser.userID;
     let studentQuizObjData = await studentSubmittedQuizObj();
     const isAlreadyTaken = await studentQuizObjData.find({quizId : ObjectId(quizID),userid : ObjectId(userId) }).toArray();
-    //if(isAlreadyTaken && isAlreadyTaken.length>0) throw {message:"Already taken", err: "error", "statusCode" : 500};
+    if(isAlreadyTaken && isAlreadyTaken.length>0) throw {message:"Already taken", err: "error", "statusCode" : 500};
 
        
     let quizObjData = await quizObj();
@@ -27,7 +27,7 @@ const getQuiz = async function getQuiz(loggedInUser, quizID){
         let professorIDPro = `enrolledIn.professorID`;
         const isInvalidAccessPro = await usersObjData.find({_id : ObjectId(userId), [professorIDPro]: getQuizData[0].createdBy, [categoryNamePro] : getQuizData[0].category}).toArray();
         
-        //if(isInvalidAccessStd && isInvalidAccessPro &&  isInvalidAccessStd.length<1 && isInvalidAccessPro.length<1) throw {message:"Authorised Access", err: "error", "statusCode" : 500};
+        if(isInvalidAccessStd && isInvalidAccessPro &&  isInvalidAccessStd.length<1 && isInvalidAccessPro.length<1) throw {message:"Authorised Access", err: "error", "statusCode" : 500};
 
         
         let quizData = getQuizData[0]; 
