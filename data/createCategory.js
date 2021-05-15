@@ -17,7 +17,7 @@ const testString = function testString(testStr) {
 }
 
 
-const getCatOrSubCatByName = async function getCatOrSubCatByName(name, type) {
+const getCatOrSubCatByName = async function getCatOrSubCatByName(session, name, type) {
 
     if (testString(name)['error'] == true) throw testString(name)['message']
 
@@ -26,7 +26,7 @@ const getCatOrSubCatByName = async function getCatOrSubCatByName(name, type) {
 
 
     // find documents based on our query and projection
-    const info = await categoryCollection.find({ [type]: name }).toArray();
+    const info = await categoryCollection.find({ [type]: name, createdBy: ObjectId(session.user.userID) }).toArray();
     return info
 
 }
@@ -74,8 +74,8 @@ const createCategory = async function createCategory(categoryName, subCategoryNa
             createdBy: ObjectId(session.user["userID"])
         }
 
-        const categoryList = await getCatOrSubCatByName(categoryName, "category");
-        const subCategoryList = await getCatOrSubCatByName(subCategoryName, "subCategory")
+        const categoryList = await getCatOrSubCatByName(session, categoryName, "category");
+        const subCategoryList = await getCatOrSubCatByName(session, subCategoryName, "subCategory")
 
         if (categoryList != 0 & subCategoryList != 0) throw `The Sub Category "${subCategoryName}" within Category "${categoryName}" already exists`
 
