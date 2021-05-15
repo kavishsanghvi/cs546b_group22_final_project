@@ -64,9 +64,11 @@ router.post('/quiz-student-update', async (req, res) => {
         else throw { "result": false, statusCode: 400, "message": "", error: "Please provide a valid data in string.", userData: null }
 
 
-        let checkCategory = await utilsObj.variableSanityCheck(xss(req.body.selectedAns), "string", "Category");
-        if (checkCategory.result) req.body.selectedAns = checkCategory.value
-        else throw { "result": false, statusCode: 400, "message": "", error: "Please provide a valid data in string.", userData: null }
+        if(req.body.selectedAns){
+            let checkCategory = await utilsObj.variableSanityCheck(xss(req.body.selectedAns), "string", "Category");
+            if (checkCategory.result) req.body.selectedAns = checkCategory.value
+            else throw { "result": false, statusCode: 400, "message": "", error: "Please provide a valid data in string.", userData: null }
+        }
 
         
         let userID = req.session.user.userID;

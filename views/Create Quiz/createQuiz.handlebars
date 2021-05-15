@@ -18,7 +18,7 @@
       <p class="error text-danger"> {{message}} </p>
       {{/if}}
 
-      <form method="post" action="">
+      <form method="post">
         <div class="form-group col-sm-6">
           <label for="startDate">Start Date</label>
           <input class="form-control" type="text" id="startDate" name="startDate" placeholder="mm/dd/yyyy"
@@ -48,14 +48,14 @@
 
         <div class="form-group col-sm-6">
           <label for="timer"> Timer(in minutes)</label>
-          <input class="form-control" type="number" id="timer" name="timer" value="timer" placeholder="30" autocomplete="off" required>
+          <input class="form-control" type="number" id="timer" name="timer" placeholder="30" autocomplete="off" required>
         </div>
 
         <div class="form-group col-sm-6">
           <button name="addQuestion" id="addQuestion" class="btn btn-success" onclick="add()" type="button">Add
             Question</button>
         </div>
-        <div class="form-group col-sm-12" id="questions" class="column">
+        <div class="form-group col-sm-12 column" id="questions">
 
         </div>
         <div id="submit">
@@ -188,8 +188,8 @@
 </script>
 
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script type="text/javascript">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
   $(document).ready(function () {
     $("#Categories").change(function () {
       var categoryName = $(this).val();
@@ -215,9 +215,8 @@
 
 <link rel="stylesheet" type="text/css"
   href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
-<script type="text/javascript"
-  src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
-<script type="text/javascript">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+<script>
   $(document).ready(function () {
     $('#startDate').datepicker({
       format: "mm/dd/yyyy",

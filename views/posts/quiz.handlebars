@@ -3,13 +3,13 @@
 <div class="container">
     <div class="row justify-content-md-center row-custom showSuccessContent">
         <div class="col-sm-8">
-            <h2>
+            <h1>
                 {{quizData.category}} : {{quizData.subCategory}}
+            </h1>
                 <p class="timer" id="app"></p>
                 <div class="quizAnsSubmit">
                 <button type="button" id="submitButton" class="btn btn-primary">Submit Quiz</button>
                 </div>
-            </h2>
             <div id="alertWarning"></div>
             {{#each quizData.questions}}
             <div class="question" id="question{{@index}}">

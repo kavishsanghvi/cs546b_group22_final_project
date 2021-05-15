@@ -11,10 +11,9 @@
         </nav>
       <div class="card col-sm-12">
         <div class="card-body">
-          <h2 class="card-title">All Student</h2>
+          <h1 class="card-title">All Student</h1>
         </div>
         <ul class="list-group list-group-flush" id="todoArea">
-          {{> error-section this}}
           {{#each getAllStudentUnderProfessorResult}}
           <li class="list-group-item"><a>{{firstName}} {{lastName}}</a>
             {{#if isActive }}
@@ -26,6 +25,7 @@
           {{/each}}
         </ul>
       </div>
+      {{> error-section this}}
     </div>
   </div>
 </div>
