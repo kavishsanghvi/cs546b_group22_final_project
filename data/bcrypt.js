@@ -5,7 +5,6 @@ async function hashing(pswd){
     const password = pswd;
     const hash = await bcrypt.hash(password, saltRounds);
     return hash
-    console.log(hash)
 }
 async function checker(userid, password){
          for(let i = 0; i<data.length; i++){

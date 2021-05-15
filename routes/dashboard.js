@@ -7,7 +7,6 @@ const updatedUserObj = data.updateUser;
 
 router.get('/userProfile', async (req, res) => {
   try {
-    console.log(req.session.user.userID)
     let user = await usersData.getuserbyid(req.session.user.userID);
     res.status(200).render('posts/userProfile', { keyobject: user,  userData : JSON.stringify(req.session.user) });
   } catch (e) {
@@ -22,7 +21,6 @@ router.get('/logout', async (req, res) => {
 
 router.get('/editProfile', async (req, res) => {
   try {
-    console.log(req.session.user.userID)
     let user = await usersData.getuserbyid(req.session.user.userID);
     res.status(200).render('posts/editProfile', { keyobject: user,  userData : JSON.stringify(req.session.user) });
   } catch (e) {
@@ -45,7 +43,6 @@ router.post('/editProfile', async (req, res) => {
 
         
     const requestBody = req.body;
-    console.log(requestBody);
     let updatedObject = {};
     updatedObject = await usersData.getuserbyid(req.session.user.userID);
     

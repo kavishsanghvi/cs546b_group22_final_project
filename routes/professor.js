@@ -95,12 +95,10 @@ router.post('/allquiz/toggleTimer', async (req, res) => {
         res.json(updatedData);
     } catch (e) {
         res.status(e.statusCode?e.statusCode:500).json({userData : JSON.stringify(req.session.user), message: e.message?e.message:"Something went wrong!!", error: e.error })
-        // res.status(500).json({ error: e });
     }
 });
 
 // Create Route From Here
-
 router.get('/createQuiz', async (req, res) => {
     if (req.session.user == null) {
         res.redirect('/')
@@ -122,7 +120,6 @@ router.post('/createQuiz/getSubCat', async (req, res) => {
         res.json(subCategoryList)
     } catch (e) {
         res.status(400).render('Create Quiz/createQuiz', { is_error: 1, message: e, title: 'Create category', userData : JSON.stringify(req.session.user) });
-        console.log('Error', e)
     }
 });
 
@@ -151,7 +148,6 @@ router.post('/createQuiz', async (req, res) => {
         res.render('Create Quiz/createQuiz', { success: 1, message: 'Quiz created Successfully ', title: 'Create Quiz', categoryList: categoryList, userData : JSON.stringify(req.session.user) });
     } catch (e) {
         res.status(400).render('Create Quiz/createQuiz', { is_error: 1, message: e, title: 'Create Quiz', categoryList: categoryList, userData : JSON.stringify(req.session.user) });
-        console.log('Error', e)
     }
 });
 

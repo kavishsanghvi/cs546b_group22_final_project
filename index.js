@@ -29,20 +29,15 @@ configRoutes(app);
 const unhandledRejections = new Map();
 process.on('unhandledRejection', async (reason, promise) => {
     console.log(reason);
-    //console.log(promise);
-    //unhandledRejections.set(promise, reason);
-   // fs.appendFile('mynewfile1.txt', 'Hello content!');
 });
 process.on('rejectionHandled', (promise) => {
-     //unhandledRejections.delete(promise);
     console.log(reason);
-    //console.log(promise);
 });
 
+//config scheduler to auto release and close the the quizzes and calculation of score if user left the quiz in between
 schedule.scheduleJob('30 * * * * *', function(){
     dataObj.retriveQuizData.updateReleaseAndEndTags();
     dataObj.quiz.autoCalculateScore();
-    // console.log('The answer to life, the universe, and everything!');
 });
 
 app.listen(3000, () => {

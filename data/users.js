@@ -86,7 +86,7 @@ const getAllStudentUnderProfessorData = async function getAllStudentUnderProfess
             }
             let returnStudentData = await getOneStudentRecord(session, getStudentsUnderProfessorRecord);
             // To check the new return below line is working:
-            // return returnStudentData
+
             if (returnStudentData.length === 0)
                 return { data: returnStudentData, "result": true, statusCode: 200, "message": "No Record Found!!", error: "" }
             if (returnStudentData.length > 0)
@@ -245,7 +245,7 @@ const enrollNow = async function enrollNow(session, professorID, categoryName) {
                 try {
                     const updateEnrolledStudentsForProfessorIntoDB = await localUsersObj.updateOne({ _id: objOfObjectID(professorID) }, { $push: { [categoryName]: objOfObjectID(session.userID) } })
                 } catch (e) {
-                    console.log(e)
+                    throw { "result": false, statusCode: 500, "message": "", error: e, userData: null }
                 }
             }
         }
@@ -281,7 +281,6 @@ const getAllCategoryData = async function getAllCategoryData(session, reqType) {
         return { data: universityCategories, "result": true, statusCode: 200, "message": "No Record Found!!", error: "" }
     if (Object.keys(universityCategories).length > 0)
         return { data: universityCategories, "result": true, statusCode: 200, "message": "", error: "" }
-    // return universityCategories
 }
 
 module.exports = {

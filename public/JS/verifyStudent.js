@@ -9,7 +9,6 @@ $(".verifyClass").click(function () {
         });
 
         request.done(function (msg) {
-            console.log(msg)
             if (msg.status) {
                 $("button[data-id='" + dataValue + "']").remove();
                 alert(msg.message)
@@ -18,7 +17,6 @@ $(".verifyClass").click(function () {
         });
 
         request.fail(function (jqXHR, textStatus) {
-            console.log(textStatus)
             alert("Request failed: " + textStatus);
         });
     }

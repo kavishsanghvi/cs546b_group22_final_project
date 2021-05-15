@@ -15,7 +15,6 @@ router.get('/', async (req, res) => {
         res.render('posts/student', { categoriesResult: getAllCategoryData, userData: JSON.stringify(req.session.user) })
     } catch (e) {
         res.status(e.statusCode?e.statusCode:401).render('posts/student', { getAllCategoryData: [], userData : JSON.stringify(req.session.user), message: e.message, error: e.error })
-        // res.status(500).json({ error: e, userData : JSON.stringify(req.session.user) });
     }
 });
 
@@ -93,7 +92,6 @@ router.post('/quiz-student-submit', async (req, res) => {
         let quiz = await quizDataStudent.submitStudentQuiz(userID, req.body);
         res.json(quiz);
     } catch (e) {
-        //console.log(e.err);
         res.status(e.statusCode?e.statusCode:500).json({userData : JSON.stringify(req.session.user), message: e.message?e.message:"Something went wrong!!", error: e.error?e.error:"Something went wrong!!" });
     }
 });
@@ -102,8 +100,6 @@ router.get('/enroll-now', async (req, res) => {
     try {
         let getAllCategoryData = await usersObj.getAllCategoryData(req.session.user, "category");
         res.status(getAllCategoryData.statusCode?getAllCategoryData.statusCode:200).render('posts/enrollNow', { getAllCategoryData: getAllCategoryData.data, message: getAllCategoryData.message, error: getAllCategoryData.error, userData : JSON.stringify(req.session.user) })
-
-        // res.render('posts/enrollNow', { getAllCategoryData, userData: JSON.stringify(req.session.user) });
     } catch (e) {
         res.status(e.statusCode?e.statusCode:500).render('posts/enrollNow', { getAllCategoryData: [], userData : JSON.stringify(req.session.user), message: e.message, error: e.error })
     }

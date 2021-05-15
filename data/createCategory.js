@@ -125,14 +125,3 @@ module.exports = {
     getCategories,
     getSubCategories
 }
-
-
-/*
-
-Categories {
-id: '',
-category: '',
-subCategory: '',
-}
-
-*/

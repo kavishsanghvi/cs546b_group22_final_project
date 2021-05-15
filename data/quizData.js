@@ -30,7 +30,6 @@ const getAllQuiz = async function getAllQuiz(session) {
 const getQuizDataUsingID = async function getQuizDataUsingID(loggedInUser, quizID) {
     const localQuizDataObj = await quizDataObj();
     let getQuizData = await localQuizDataObj.findOne({ $and: [{ createdBy: objOfObjectID(loggedInUser.userID), _id: objOfObjectID(quizID) }] });
-    // let getQuizData = await localQuizDataObj.findOne({ _id: objOfObjectID(quizID) });
     if (Object.keys(getQuizData).length === 0)
         return "No Data Found!!"
     if (Object.keys(getQuizData).length > 0)

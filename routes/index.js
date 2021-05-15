@@ -39,16 +39,11 @@ const verifyUserLogIn = (req, res, next) => {
         }
 
         if ((req.baseUrl).replace(/\//gi, "") == "dashboard") {
-          // if ((req.originalUrl).replace(/\//gi, "") != "dashboardlogout") {
-          //   next();
-          //   return
-          // }
           next();
           return;
         }
 
         if (req.session.user.isActive == false && req.session.user.userType == "student" && (req.originalUrl).replace(/\//gi, "") == 'studentenroll-now') {
-          //res.redirect("./enroll-now");
           next()
           return;
         } else if (req.session.user.isActive == false && req.session.user.userType == "student") {
@@ -65,14 +60,12 @@ const verifyUserLogIn = (req, res, next) => {
             res.redirect('./professor/category');
             return;
           }
-          console.log(req.session.user.userType);
+
           if (req.session.user.userType == "student") {
             res.redirect('./student/');
             return
           }
         }
-
-
 
 
         if (typeof (req.session) !== "undefined" && req.session.user.userType && (req.baseUrl).replace(/\//gi, "") == req.session.user.userType) next();
@@ -94,7 +87,6 @@ const verifyUserLogIn = (req, res, next) => {
       }
     }
   } catch (e) {
-    console.log(e);
     res.redirect('../')
   }
 
