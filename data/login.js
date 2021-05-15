@@ -21,7 +21,7 @@ const login = async function login(email, password) {
         return {"result": false, statusCode:404, "message": "User not found!", userData:null};
     if (loggerInUser.length > 0) {
         let checkPassword = await bcrypt.compare(password, loggerInUser[0].password);
-            if(!checkPassword) throw {"result": false, "message": "User not found!", statusCode:404, error: "User not found!", userData:null};
+            if(!checkPassword) throw {"result": false, "message": "Invalid email or password!", statusCode:404, error: "User not found!", userData:null};
     
         return {"result": true, statusCode:200, "message": "user verified..",  userData:loggerInUser[0]};
     }

@@ -86,7 +86,11 @@
     var nodeA = document.createTextNode(labelText);
     labelA.setAttribute("for", labelName);
     //labelA.setAttribute("align", "center");
-    labelA.setAttribute("class", "col-sm-2");
+    if(labelName == "correctAnswer"){
+      labelA.setAttribute("class", "col-sm-12");
+    }else{
+      labelA.setAttribute("class", "col-sm-2");
+    }
     labelA.appendChild(nodeA);
     return labelA
   }
@@ -143,7 +147,7 @@
     var optionC = createOptioninput("optionC")
     var labelD = createOptionLabel("Option 4", "optionD")
     var optionD = createOptioninput("optionD")
-    var correctAnswerLabel = createOptionLabel("Correct Answer", "correctAnswer")
+    var correctAnswerLabel = createOptionLabel("Correct Answer (Please insert text exclty same as above option.)", "correctAnswer")
     var correctAnswer = createOptioninput("correctAnswer")
 
 
