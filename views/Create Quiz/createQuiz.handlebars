@@ -46,15 +46,6 @@
           </select>
         </div>
 
-
-        <!--
-    <input type="checkbox" id="isTimerEnabled" name="isTimerEnabled" value="enabled">
-    <label for="isTimerEnabled"> Enable Timer</label><br>
-
-    
-    <input type="checkbox" id="quizReleased" name="quizReleased" value="enabled">
-    <label for="quizReleased"> Release Quiz</label><br>
--->
         <div class="form-group col-sm-6">
           <label for="timer"> Timer(in minutes)</label>
           <input class="form-control" type="number" id="timer" name="timer" value="timer" placeholder="30" autocomplete="off" required>
@@ -95,7 +86,11 @@
     var nodeA = document.createTextNode(labelText);
     labelA.setAttribute("for", labelName);
     //labelA.setAttribute("align", "center");
-    labelA.setAttribute("class", "col-sm-2");
+    if(labelName == "correctAnswer"){
+      labelA.setAttribute("class", "col-sm-12");
+    }else{
+      labelA.setAttribute("class", "col-sm-2");
+    }
     labelA.appendChild(nodeA);
     return labelA
   }
@@ -152,7 +147,7 @@
     var optionC = createOptioninput("optionC")
     var labelD = createOptionLabel("Option 4", "optionD")
     var optionD = createOptioninput("optionD")
-    var correctAnswerLabel = createOptionLabel("Correct Answer", "correctAnswer")
+    var correctAnswerLabel = createOptionLabel("Correct Answer (Please insert text exclty same as above option.)", "correctAnswer")
     var correctAnswer = createOptioninput("correctAnswer")
 
 
@@ -199,7 +194,6 @@
     $("#Categories").change(function () {
       var categoryName = $(this).val();
       if (categoryName != "") {
-        console.log(categoryName)
         $.ajax({
           url: "/professor/createQuiz/getSubCat",
           data: { categoryName: categoryName },
@@ -213,7 +207,6 @@
           }
         });
       } else {
-        console.log("failed")
         $("#SubCategories").html("<option value=''>Select</option>");
       }
     });

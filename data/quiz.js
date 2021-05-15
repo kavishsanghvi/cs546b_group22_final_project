@@ -8,7 +8,6 @@ const usersObj = mongoCollections.users;
 
 
 const getQuiz = async function getQuiz(loggedInUser, quizID){
-    console.log(loggedInUser);
     let userId = loggedInUser.userID;
     let studentQuizObjData = await studentSubmittedQuizObj();
     const isAlreadyTaken = await studentQuizObjData.find({quizId : ObjectId(quizID),userid : ObjectId(userId) }).toArray();
@@ -86,7 +85,6 @@ const addQuizInStudent = async function addQuizInStudent(quizData, userID){
 }
 
 const updateStudentQuiz = async function updateStudentQuiz(userID, quizDataByStudent){
-    console.log(quizDataByStudent);
     let questionId = ObjectId(quizDataByStudent.questionId);
     let selectedAns = quizDataByStudent.selectedAns;
     let quizId = ObjectId(quizDataByStudent.quizId);
@@ -109,7 +107,6 @@ const updateStudentQuiz = async function updateStudentQuiz(userID, quizDataByStu
 
 
 const submitStudentQuiz = async (userID, quizDataByStudent) =>{
-    console.log(quizDataByStudent);
     let quizId = quizDataByStudent.quizId;
     let loggedInUser = ObjectId(userID);
     let id = ObjectId(quizDataByStudent.id);

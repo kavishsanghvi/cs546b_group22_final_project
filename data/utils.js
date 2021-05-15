@@ -3,33 +3,12 @@ const ObjectId = require('mongodb').ObjectID;
 const dateCreation = async function dateCreation() {
     let date_ob = new Date();
 
-    // current date
-    // adjust 0 before single digit date
     let date = ("0" + date_ob.getDate()).slice(-2);
-
-    // current month
     let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
-
-    // current year
     let year = date_ob.getFullYear();
-
-    // current hours
     let hours = date_ob.getHours();
-
-    // current minutes
     let minutes = date_ob.getMinutes();
-
-    // current seconds
     let seconds = date_ob.getSeconds();
-
-    // prints date in YYYY-MM-DD format
-    //console.log(year + "-" + month + "-" + date);
-
-    // prints date & time in YYYY-MM-DD HH:MM:SS format
-    //console.log(year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds);
-
-    // prints time in HH:MM format
-    //console.log(hours + ":" + minutes);
     return month + "/" + date + "/" + year + " " + hours + ":" + minutes + ":" + seconds;
 }
 
@@ -37,12 +16,6 @@ const dateCreation = async function dateCreation() {
 const variableSanityCheck = async (value, type, elementName, minLength, maxLength) => {
     if (type) {
         switch (type) {
-            // case "string":
-            //     if (!value) return { result: false, value: false, message: elementName + " should be passed!" };
-            //     if (typeof value !== "string") return { result: false, value: false, message: elementName + " should be string!" };
-            //     if (value.trim() == "") return { result: false, value: false, message: elementName + " should not be blank!" };
-            //     else return { result: true, value: value.trim(), message: "" }
-            //     break;
             case "string":
                 if (!value) return { result: false, value: false, message: elementName + " should be passed!" };
                 if (typeof value !== "string") return { result: false, value: false, message: elementName + " should be string!" };
@@ -92,23 +65,13 @@ const variableSanityCheck = async (value, type, elementName, minLength, maxLengt
 const dateCreationOnly = async function dateCreationOnly(dateType) {
     let date_ob = new Date();
     if (dateType === "startDate") {
-        // current date
-        // adjust 0 before single digit date
         var date = ("0" + date_ob.getDate()).slice(-2);
-        // ("0" + date_ob.getDate() + "").slice(-1);
-
     } else if (dateType === "endDate") {
         var date = ("0" + (date_ob.getDate()- 1) + "").slice(-2);
-        // ("0" + (date_ob.getDate() - 1) + "").slice(-1);
     }
-    // current month
-    let month = ("0" + (date_ob.getMonth() + 1)).slice(-2)
-    // ("0" + (date_ob.getMonth() + 1)).slice(-2);
-
-    // current year
+    
+    let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
     let year = date_ob.getFullYear();
-
-    // console.log(month + "/" + date + "/" + year);
     return month + "/" + date + "/" + year;
 }
 
